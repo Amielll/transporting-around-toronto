@@ -35,16 +35,18 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: true
-          
+
+      # debug step
+      - name: Debug - Check Current Directory Structure
+        run: |
+          echo "Current working directory: $(pwd)"
+          ls -la
+        
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 18
           cache: 'npm' # Caches dependencies
-
-      # debug step
-      - name: Debug - Check package-lock.json location
-        run: ls -la ${{ github.workspace }}
 
       - name: Install dependencies
         run: npm install
