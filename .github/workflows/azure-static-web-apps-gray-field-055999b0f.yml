@@ -27,6 +27,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
+          ref: ${{ github.event.inputs.branch || github.ref_name }}
           submodules: true
           lfs: false
       - name: Install OIDC Client from Core Package
