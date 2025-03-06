@@ -39,14 +39,20 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 18 # Use your preferred Node.js version
+          node-version: 18
           cache: 'npm' # Caches dependencies
 
+      # debug step
+      - name: Debug - Check package-lock.json location
+        run: ls -la ${{ github.workspace }}
+
       - name: Install dependencies
-        run: npm install # Change to `yarn install` or `pnpm install` if applicable
+        run: npm install
+        working-directory: ${{ github.workspace }}
 
       - name: Build the Vite app
         run: npm run build
+        working-directory: ${{ github.workspace }}
 
       - name: Build And Deploy
         id: builddeploy
