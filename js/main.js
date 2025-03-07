@@ -1,3 +1,4 @@
+import * as d3 from "d3";
 import { BikeshareMapVis } from './mapVis.js';
 let bikeshareMapVis;
 

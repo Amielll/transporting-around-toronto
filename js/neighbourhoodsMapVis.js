@@ -1,6 +1,7 @@
 /* * * * * * * * * * * * * *
 *          MapVis          *
 * * * * * * * * * * * * * */
+import * as d3 from "d3";
 
 let titles = {
     "average_income_2020": "Average Annual Income (2020)",

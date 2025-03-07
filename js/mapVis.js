@@ -1,3 +1,5 @@
+import * as d3 from "d3";
+
 // TODO: Figure out how to reuse this class with Mieko's MapVis class
 export class BikeshareMapVis {
 
