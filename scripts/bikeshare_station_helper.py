@@ -111,14 +111,14 @@ def prepare_data(ridership_df, stations_df):
 
 
 if __name__ == '__main__':
-    RIDERSHIP_DATA_PATH = '../data/bike_share_ridership_2024-01.csv'
-    STATION_INFO_DATA_PATH = '../data/station_metadata.csv'
+    RIDERSHIP_DATA_PATH = '../public/data/bike_share_ridership_2024-01.csv'
+    STATION_INFO_DATA_PATH = '../public/data/station_metadata.csv'
     aggregate_ridership_df = aggregate_station_data(RIDERSHIP_DATA_PATH)
     station_info_df = pd.read_csv(STATION_INFO_DATA_PATH)
 
     final_df, station_list = prepare_data(aggregate_ridership_df, station_info_df)
-    output_json_file = '../data/bike_share_stations_2024-01.json'
-    output_csv_file = '../data/bike_share_trips_2024-01.csv'
+    output_json_file = '../public/data/bike_share_stations_2024-01.json'
+    output_csv_file = '../public/data/bike_share_trips_2024-01.csv'
 
     with open(output_json_file, 'w') as f:
         json.dump(station_list, f)
