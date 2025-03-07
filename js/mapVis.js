@@ -1,9 +1,10 @@
 class MapVis {
 
-    constructor(parentElement, bikeshareData, torontoMapData) {
+    constructor(parentElement, stationData, bikeshareData, mapData) {
         this.parentElement = parentElement;
-        this.bikeshareData = bikeshareData;
-        this.mapData = torontoMapData;
+        this.tripData = bikeshareData;
+        this.stationData = stationData;
+        this.mapData = mapData;
 
         this.initVis()
     }
@@ -11,32 +12,33 @@ class MapVis {
     initVis() {
         let vis = this;
 
-        vis.margin = {top: 20, right: 20, bottom: 20, left: 20};
-        vis.width = document.getElementById(vis.parentElement).getBoundingClientRect().width - vis.margin.left - vis.margin.right;
-        vis.height = document.getElementById(vis.parentElement).getBoundingClientRect().height - vis.margin.top - vis.margin.bottom;
+        // Define margins and compute dimensions based on the parent element's size.
+        vis.margin = { top: 20, right: 20, bottom: 20, left: 20 };
+        const container = document.getElementById(vis.parentElement).getBoundingClientRect();
+        vis.width = container.width - vis.margin.left - vis.margin.right;
+        vis.height = container.height - vis.margin.top - vis.margin.bottom;
 
-        console.log(document.getElementById(vis.parentElement).getBoundingClientRect());
-        // init drawing area
-        vis.svg = d3.select("#" + vis.parentElement).append("svg")
+        // Create the SVG drawing area.
+        vis.svg = d3.select("#" + vis.parentElement)
+            .append("svg")
             .attr("width", vis.width)
             .attr("height", vis.height)
-            .attr('transform', `translate (${vis.margin.left}, ${vis.margin.top})`);
+            .append("g")
+            .attr("transform", `translate(${vis.margin.left}, ${vis.margin.top})`);
 
-        // add title
-        vis.svg.append('g')
-            .attr('class', 'title')
-            .attr('id', 'map-title')
-            .append('text')
-            .text('Toronto Bike Share Trip Volume')
-            .attr('transform', `translate(${vis.width / 2}, 20)`)
-            .attr('text-anchor', 'middle');
+        // Add a title.
+        vis.svg.append("text")
+            .attr("x", vis.width / 2)
+            .attr("y", 20)
+            .attr("text-anchor", "middle")
+            .text("Toronto City Wards");
 
-        // Create a projection that fits the loaded GeoJSON into the SVG dimensions
+        // Create a projection that fits the GeoJSON data.
         vis.projection = d3.geoMercator()
             .fitSize([vis.width, vis.height], vis.mapData);
         vis.path = d3.geoPath().projection(vis.projection);
 
-        // Draw each ward as an SVG path
+        // Draw the map paths.
         vis.svg.selectAll("path")
             .data(vis.mapData.features)
             .enter()
@@ -44,5 +46,74 @@ class MapVis {
             .attr("d", vis.path)
             .attr("fill", "#ddd")
             .attr("stroke", "#333");
+
+        // Draw initial station dots (all stations).
+        vis.stationDots = vis.svg.selectAll("circle.station")
+            .data(vis.stationData, d => d["Station Id"]);
+
+        // ENTER: Append circles for each station.
+        vis.stationDots.enter()
+            .append("circle")
+            .attr("class", "station")
+            .attr("cx", d => vis.projection([+d.Longitude, +d.Latitude])[0])
+            .attr("cy", d => vis.projection([+d.Longitude, +d.Latitude])[1])
+            .attr("r", 4)
+            .attr("fill", "red")
+            .attr("stroke", "#fff")
+            .attr("stroke-width", 1)
+            .on("click", (event, d) => {
+                // When a station is clicked, update the visualization.
+                vis.onStationClick(d);
+            })
+            .append("title")
+            .text(d => d["Station Name"]);
+    }
+
+    /**
+     * Called when a station dot is clicked.
+     * Filters the tripData for trips starting at the clicked station and
+     * updates the end station dots using the enter/update/exit pattern.
+     * @param {object} clickedStation - The station object that was clicked.
+     */
+    onStationClick(clickedStation) {
+        let vis = this;
+
+        // Filter tripData for trips starting from the clicked station.
+        let filteredTrips = vis.tripData.filter(t => +t["Start Station Id"] === +clickedStation["Station Id"]);
+
+        // For each trip, look up the corresponding end station info from stationData.
+        // We also include the "Count" attribute from the trip record.
+        let endStations = filteredTrips.map(t => {
+            let stationInfo = vis.stationData.find(s => +s["Station Id"] === +t["End Station Id"]);
+            return { ...stationInfo, Count: +t["Count"] };
+        });
+
+        // Join the endStations data with existing end station dots.
+        let endDots = vis.svg.selectAll("circle.end")
+            .data(endStations, d => d["Station Id"]);
+
+        // EXIT: Remove any dots that no longer exist.
+        endDots.exit().remove();
+
+        // UPDATE: Update attributes of existing dots.
+        endDots
+            .attr("cx", d => vis.projection([+d.Longitude, +d.Latitude])[0])
+            .attr("cy", d => vis.projection([+d.Longitude, +d.Latitude])[1])
+            .attr("r", d => 4 + Math.log(d.Count))
+            .select("title")
+            .text(d => `${d["Station Name"]}: ${d.Count} trips`);
+
+        // ENTER: Append new dots for new data.
+        endDots.enter()
+            .append("circle")
+            .attr("class", "end")
+            .attr("cx", d => vis.projection([d.Longitude, d.Latitude])[0])
+            .attr("cy", d => vis.projection([d.Longitude, d.Latitude])[1])
+            .attr("r", d => 4 + Math.log(d.Count))
+            .attr("fill", "blue")
+            .attr("stroke", "#fff")
+            .attr("stroke-width", 1)
+            .append("title")
+            .text(d => `${d["Station Name"]}: ${d.Count} trips`);
     }
 }
