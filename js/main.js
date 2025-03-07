@@ -1,8 +1,5 @@
-import '../css/style.css'
+let bikeshareMapVis;
 
-
-document.querySelector('#app').innerHTML = `
-  <div>
-    Hello world!
-   </div>
-`
+d3.json('data/Neighbourhoods.geojson').then(data => {
+    bikeshareMapVis = new MapVis('app', [], data);
+})
