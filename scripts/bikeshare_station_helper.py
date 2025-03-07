@@ -3,7 +3,6 @@ This helper script is used for preparing Toronto's Open Data on Bike Share
 Ridership.
 """
 import pandas as pd
-import geojson
 import json
 
 def aggregate_station_data(ridership_data_path) -> pd.DataFrame:
@@ -38,9 +37,9 @@ def aggregate_station_data(ridership_data_path) -> pd.DataFrame:
     return combined_df
 
 
-def prepare_geojson(ridership_df, stations_df):
+def prepare_data(ridership_df, stations_df):
     """
-    Prepares geojson data of the bikeshare info to be fed into the D3 visualization.
+    Prepares data of the bikeshare info to be fed into the D3 visualization.
     """
 
     # Prepare dataframe with the geographic coords + station names
@@ -83,69 +82,27 @@ def prepare_geojson(ridership_df, stations_df):
     dropped_count = before_count - after_count
     print(f"Rows before dropna: {before_count}, after dropna: {after_count}. Dropped rows: {dropped_count}")
 
-    # Build LineString features for each trip pair from clean data
-    connection_features = []
-    for _, row in pairs_with_coords_clean.iterrows():
-        properties = {
-            'Start Station Id': row['Start Station Id'],
-            'End Station Id': row['End Station Id'],
-            'Start Station Name': row['Start Station Name'],
-            'End Station Name': row['End Station Name'],
-            'Count': row['Count'],
-            'Average Duration': row['Average Duration'],
-        }
-        # GeoJSON uses (longitude, latitude)
-        # Build a LineString using (longitude, latitude) for both start and end
-        line = geojson.LineString([
-            (row['Start Lon'], row['Start Lat']),
-            (row['End Lon'], row['End Lat'])
-        ])
-        feature = geojson.Feature(geometry=line, properties=properties)
-        connection_features.append(feature)
-
-    connections_feature_collection = geojson.FeatureCollection(connection_features)
-
-    # Build unique station points (from both start and end)
+    # Extract unique station data (here, just Station Id and Station Name)
     station_points = {}
     for _, row in pairs_with_coords_clean.iterrows():
-        # Add start station if not already present
+        # Add start station
         start_id = row['Start Station Id']
         if start_id not in station_points:
             station_points[start_id] = {
                 'Station Id': start_id,
-                'Station Name': row['Start Station Name'],
-                'Latitude': row['Start Lat'],
-                'Longitude': row['Start Lon']
+                'Station Name': row['Start Station Name']
             }
-        # Add end station if not already present
+        # Add end station
         end_id = row['End Station Id']
         if end_id not in station_points:
             station_points[end_id] = {
                 'Station Id': end_id,
-                'Station Name': row['End Station Name'],
-                'Latitude': row['End Lat'],
-                'Longitude': row['End Lon']
+                'Station Name': row['End Station Name']
             }
 
-    station_features = []
-    for station in station_points.values():
-        point = geojson.Point((station['Longitude'], station['Latitude']))
-        feature = geojson.Feature(
-            geometry=point,
-            properties={
-                'Station Id': station['Station Id'],
-                'Station Name': station['Station Name']
-            }
-        )
-        station_features.append(feature)
+    station_list = list(station_points.values())
 
-    stations_feature_collection = geojson.FeatureCollection(station_features)
-
-    # Return the GeoJSON FeatureCollection containing only lines
-    return {
-        'connections': connections_feature_collection,
-        'stations': stations_feature_collection
-    }
+    return pairs_with_coords_clean, station_list
 
 
 if __name__ == '__main__':
@@ -154,8 +111,13 @@ if __name__ == '__main__':
     aggregate_ridership_df = aggregate_station_data(RIDERSHIP_DATA_PATH)
     station_info_df = pd.read_csv(STATION_INFO_DATA_PATH)
 
-    output = prepare_geojson(aggregate_ridership_df, station_info_df)
-    output_file = '../data/bike_share_geojson_2024-01.json'
-    with open(output_file, 'w') as f:
-        json.dump(output, f)
-    print(f"GeoJSON data written to {output_file}")
+    final_df, station_list = prepare_data(aggregate_ridership_df, station_info_df)
+    output_json_file = '../data/bike_share_stations_2024-01.json'
+    output_csv_file = '../data/bike_share_trips_2024-01.csv'
+
+    with open(output_json_file, 'w') as f:
+        json.dump(station_list, f)
+    print(f"JSON data written to {output_json_file}")
+
+    final_df.to_csv(output_csv_file, index=False)
+    print(f"CSV data written to {output_csv_file}")
