@@ -47,8 +47,8 @@ def prepare_data(ridership_df, stations_df):
         columns={
             'Station Id': 'Start Station Id',
             'Station Name': 'Start Station Name',
-            'Latitude': 'Start Lat',
-            'Longitude': 'Start Lon'
+            'Latitude': 'Start Latitude',
+            'Longitude': 'Start Longitude'
         }
     )
     pairs_with_start = pd.merge(
@@ -62,8 +62,8 @@ def prepare_data(ridership_df, stations_df):
         columns={
             'Station Id': 'End Station Id',
             'Station Name': 'End Station Name',
-            'Latitude': 'End Lat',
-            'Longitude': 'End Lon'
+            'Latitude': 'End Latitude',
+            'Longitude': 'End Longitude'
         }
     )
 
@@ -84,20 +84,25 @@ def prepare_data(ridership_df, stations_df):
 
     # Extract unique station data (here, just Station Id and Station Name)
     station_points = {}
+    station_points = {}
     for _, row in pairs_with_coords_clean.iterrows():
         # Add start station
         start_id = row['Start Station Id']
         if start_id not in station_points:
             station_points[start_id] = {
                 'Station Id': start_id,
-                'Station Name': row['Start Station Name']
+                'Station Name': row['Start Station Name'],
+                'Latitude': row['Start Latitude'],
+                'Longitude': row['Start Longitude']
             }
         # Add end station
         end_id = row['End Station Id']
         if end_id not in station_points:
             station_points[end_id] = {
                 'Station Id': end_id,
-                'Station Name': row['End Station Name']
+                'Station Name': row['End Station Name'],
+                'Latitude': row['End Latitude'],
+                'Longitude': row['End Longitude']
             }
 
     station_list = list(station_points.values())
