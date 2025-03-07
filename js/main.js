@@ -1,7 +1,7 @@
 import '../css/style.css'
 
 
-document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
+document.querySelector('#app').innerHTML = `
   <div>
     Hello world!
    </div>
