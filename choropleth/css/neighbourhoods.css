@@ -1,0 +1,40 @@
+.map-title-text{
+    font-size: 20px;
+}
+
+#vis-toggle::-webkit-slider-thumb {
+    background: #08519c;
+}
+
+#vis-toggle::-moz-range-thumb {
+    background: #08519c;
+}
+#vis-toggle::-ms-thumb {
+    background: #08519c;
+}
+
+  /* #vis-toggle::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 0.5rem;
+    color: transparent;
+    cursor: pointer;
+    background-color: #08519c;
+    border-color: transparent;
+    border-radius: 1rem;
+  } */
+
+#vis-toggle {
+    margin-top: 7px;
+}
+
+.container-fluid{
+    height: 100vh; width: 100vw; padding-top: 1vh
+}
+
+#neighbourhoods-title {
+    text-align: center;
+}
+#data-type1 {
+    justify-self: right;
+}
+
