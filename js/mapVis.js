@@ -1,5 +1,5 @@
 // TODO: Figure out how to reuse this class with Mieko's MapVis class
-class BikeshareMapVis {
+export class BikeshareMapVis {
 
     constructor(parentElement, stationData, bikeshareData, mapData) {
         this.parentElement = parentElement;

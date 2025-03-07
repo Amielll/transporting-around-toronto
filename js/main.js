@@ -1,3 +1,4 @@
+import { BikeshareMapVis } from './mapVis.js';
 let bikeshareMapVis;
 
 // TODO: Combine the main.js / neighbourhoodsMain.js load data/init visualization stuff into a single file
@@ -14,9 +15,8 @@ Promise.all(bikesharePromises)
 
 function initProject(allDataArray) {
     console.log(allDataArray);
-    stationData = allDataArray[0];
-    tripData = allDataArray[1];
-    mapData = allDataArray[2];
-    console.log(allDataArray);
+    let stationData = allDataArray[0];
+    let tripData = allDataArray[1];
+    let mapData = allDataArray[2];
     bikeshareMapVis = new BikeshareMapVis('bikeshare-map-area', stationData, tripData, mapData);
 }

@@ -19,7 +19,7 @@ let colours = {
     "orange": d3.schemeOranges
 }
 
-class MapVis {
+export class MapVis {
 
     constructor(parentElement, valueData, geoData, variable, colour, id) {
         this.parentElement = parentElement;
