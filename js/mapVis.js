@@ -1,4 +1,5 @@
-class MapVis {
+// TODO: Figure out how to reuse this class with Mieko's MapVis class
+class BikeshareMapVis {
 
     constructor(parentElement, stationData, bikeshareData, mapData) {
         this.parentElement = parentElement;
@@ -31,7 +32,7 @@ class MapVis {
             .attr("x", vis.width / 2)
             .attr("y", 20)
             .attr("text-anchor", "middle")
-            .text("Toronto City Wards");
+            .text("Toronto Bikeshare Station Volume");
 
         // Create a projection that fits the GeoJSON data.
         vis.projection = d3.geoMercator()
@@ -55,14 +56,14 @@ class MapVis {
         vis.stationDots.enter()
             .append("circle")
             .attr("class", "station")
-            .attr("cx", d => vis.projection([+d.Longitude, +d.Latitude])[0])
-            .attr("cy", d => vis.projection([+d.Longitude, +d.Latitude])[1])
+            .attr("cx", d => vis.projection([d.Longitude, d.Latitude])[0])
+            .attr("cy", d => vis.projection([d.Longitude, d.Latitude])[1])
             .attr("r", 4)
             .attr("fill", "red")
             .attr("stroke", "#fff")
+            .attr("cursor", "pointer")
             .attr("stroke-width", 1)
             .on("click", (event, d) => {
-                // When a station is clicked, update the visualization.
                 vis.onStationClick(d);
             })
             .append("title")

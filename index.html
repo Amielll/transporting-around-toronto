@@ -1,30 +1,72 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Title</title>
+<head>
+    <meta charset="UTF-8"/>
+    <link rel="icon" type="image/svg+xml" href="/vite.svg"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Transporting around Toronto</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+          integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+
     <link rel="stylesheet" href="css/styles.css">
-  </head>
+    <link rel="stylesheet" href="css/neighbourhoods.css">
 
-  <body>
-    <div id="app" class="container-fluid">
+</head>
 
-      <!-- Header -->
-      <div class="row d-flex align-items-center">
+<body>
+<div id="app" class="container-fluid">
+    <!-- Header -->
+    <div class="row d-flex align-items-center">
         <h1 style="text-align: center">Our Project Title</h1>
-      </div>
-
-      <!-- Bike Share Station Map -->
-      <div class="row" id="bikeshare-map-area"></div>
     </div>
 
-    <script src="https://d3js.org/d3.v7.min.js"></script>
-    <script src="js/mapVis.js"></script>
-    <script src="/js/main.js"></script>
-  </body>
+    <!-- Neighbourhood Choropleth Visualization -->
+    <div id="neighbourhoods-choropleth">
+        <div class="row d-flex align-items-center" style="height: 10vh; width: 100%; padding: 0;">
+            <h2 id="neighbourhoods-title">Analyzing Toronto's Neighbourhoods</h2>
+        </div>
+        <div class="row justify-content-md-center">
+            <div class="col-auto align-items-right" id="neighbourhoods1-dropdown">
+                <select class="form-select" id="data-type1">
+                    <option value="average_income_2020">Average Annual Income</option>
+                    <option value="bicycle_commuters">Bike Commuter Proportion</option>
+                    <option value="bikeshare_stations">Bikeshare Stations</option>
+                    <option value="collisions">Bike Collisions</option>
+                    <option value="thefts">Bike Thefts</option>
+                </select>
+            </div>
+            <div class="col-auto">
+                <input type="range" class="form-range" id="vis-toggle" value="0">
+            </div>
+            <div class="col-auto">
+                <select class="form-select" id="data-type2">
+                    <option value="average_income_2020">Average Annual Income</option>
+                    <option value="bicycle_commuters" selected="selected">Bike Commuter Proportion</option>
+                    <option value="bikeshare_stations">Bikeshare Stations</option>
+                    <option value="collisions">Bike Collisions</option>
+                    <option value="thefts">Bike Thefts</option>
+                </select>
+            </div>
+        </div>
+        <div class="row"
+             style="height: 80vh; padding-top: 0; padding-left: 1vh; padding-right: 1vh; padding-bottom: 1vh">
+            <div id="map-div" style="height: 80vh; width: 100%; position:absolute;"></div>
+            <div id="map-div2" style="height: 80vh; width: 100%; position:absolute; visibility:hidden;"></div>
+        </div>
+    </div>
+
+    <!-- Bike Share Station Map -->
+    <div class="row" id="bikeshare-map-area"></div>
+
+</div>
+
+<script src="https://d3js.org/d3.v7.min.js"></script>
+
+
+<script src="js/neighbourhoodsMapVis.js"></script>
+<script src="js/neighbourhoodsMain.js"></script>
+<script src="js/mapVis.js"></script>
+<script src="/js/main.js"></script>
+</body>
 </html>
