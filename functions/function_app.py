@@ -6,7 +6,7 @@ import requests
 
 app = func.FunctionApp()
 
-@app.timer_trigger(schedule="0 */1 * * * *", arg_name="myTimer", run_on_startup=True,
+@app.timer_trigger(schedule="0 0 */6 * * *", arg_name="myTimer", run_on_startup=True,
               use_monitor=True) 
 @app.blob_output(arg_name="outputblob",
                 path="stationlob/{datetime:yyyyMMddHHmm}.json",
