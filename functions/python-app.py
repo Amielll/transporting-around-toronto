@@ -9,7 +9,7 @@ app = func.FunctionApp()
 @app.timer_trigger(schedule="0 0 */6 * * *", arg_name="myTimer", run_on_startup=True,
               use_monitor=True) 
 @app.blob_output(arg_name="outputblob",
-                path="stationlob/{datetime:yyyyMMddHHmm}.json",
+                path="stationsblob/{datetime:yyyyMMddHHmm}.json",
                 connection="AzureWebJobsStorage")
 def timer_trigger(myTimer: func.TimerRequest, outputblob: func.Out[str]) -> None:
     
@@ -19,7 +19,6 @@ def timer_trigger(myTimer: func.TimerRequest, outputblob: func.Out[str]) -> None
         # Perform the GET request
         response = requests.get(station_status_url)
         response.raise_for_status()
-
         json_data = response.json()
         json_str = json.dumps(json_data, indent=4)
         outputblob.set(json_str)
