@@ -6,11 +6,11 @@ import requests
 
 app = func.FunctionApp()
 
-@app.timer_trigger(schedule="0 0 */6 * * *", arg_name="myTimer", run_on_startup=True,
-              use_monitor=True) 
 @app.blob_output(arg_name="outputblob",
                 path="stationsblob/{datetime:yyyyMMddHHmm}.json",
                 connection="AzureWebJobsStorage")
+@app.timer_trigger(schedule="0 0 */6 * * *", arg_name="myTimer", run_on_startup=True,
+              use_monitor=True) 
 def timer_trigger(myTimer: func.TimerRequest, outputblob: func.Out[str]) -> None:
     
     station_status_url = "https://tor.publicbikesystem.net/ube/gbfs/v1/en/station_status"
