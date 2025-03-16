@@ -17,9 +17,9 @@
 <body>
 <div id="app" class="container-fluid">
     <!-- Header -->
-    <div class="row d-flex align-items-center">
+    <!-- <div class="row d-flex align-items-center">
         <h1 style="text-align: center">Our Project Title</h1>
-    </div>
+    </div> -->
 
     <!-- Neighbourhood Choropleth Visualization -->
     <div id="neighbourhoods-choropleth">
@@ -29,30 +29,48 @@
         <div class="row justify-content-md-center">
             <div class="col-auto align-items-right" id="neighbourhoods1-dropdown">
                 <select class="form-select" id="data-type1">
-                    <option value="average_income_2020">Average Annual Income</option>
+                    <option value="average_income">Average Annual Income</option>
                     <option value="bicycle_commuters">Bike Commuter Proportion</option>
                     <option value="bikeshare_stations">Bikeshare Stations</option>
+                    <option value="bike_parking_racks">Bike Parking Racks</option>
                     <option value="collisions">Bike Collisions</option>
                     <option value="thefts">Bike Thefts</option>
                 </select>
             </div>
             <div class="col-auto">
-                <input type="range" class="form-range" id="vis-toggle" value="0">
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" role="switch" id="vis-toggle">
+                  </div>
             </div>
             <div class="col-auto">
                 <select class="form-select" id="data-type2">
-                    <option value="average_income_2020">Average Annual Income</option>
+                    <option value="average_income">Average Annual Income</option>
                     <option value="bicycle_commuters" selected="selected">Bike Commuter Proportion</option>
                     <option value="bikeshare_stations">Bikeshare Stations</option>
+                    <option value="bike_parking_racks">Bike Parking Racks</option>
                     <option value="collisions">Bike Collisions</option>
                     <option value="thefts">Bike Thefts</option>
                 </select>
-            </div>
+            </div>           
+            <div class="col-auto" style="margin-top: -4px">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="toggle-bike-share">
+                    <label class="form-check-label" for="toggle-bike-share">
+                      View Bikeshare Stations
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="toggle-bike-rack">
+                    <label class="form-check-label" for="toggle-bike-rack">
+                      View Bike Racks
+                    </label>
+                </div>
+            </div> 
         </div>
         <div class="row"
              style="height: 80vh; padding-top: 0; padding-left: 1vh; padding-right: 1vh; padding-bottom: 1vh">
-            <div id="map-div" style="height: 80vh; width: 100%; position:absolute;"></div>
-            <div id="map-div2" style="height: 80vh; width: 100%; position:absolute; visibility:hidden;"></div>
+                <div id="map-div" style="height: 80vh; width: 100%; position:absolute;"></div>
+                <div id="map-div2" style="height: 80vh; width: 100%; position:absolute; visibility:hidden;"></div>
         </div>
     </div>
 
@@ -64,9 +82,19 @@
         </div>
     </div>
 
+    <div class="row" id="single-neighbourhood" style="height: 80vh; width:100vw; padding-top: 0; padding-left: 1vh; padding-right: 1vh; padding-bottom: 1vh">
+        <div class="col-6" id="nb-vis"></div>
+        <div class="col">
+            <div class="row" id="nb-selector"
+            style="height: 40vh; padding-top: 0; padding-left: 1vh; padding-right: 1vh; padding-bottom: 1vh"></div>
+            <div class="row" id="nb-info"
+            style="height: 40vh; padding-top: 0; padding-left: 1vh; padding-right: 1vh; padding-bottom: 1vh"></div>
+        </div>
+    </div>
+
     <!-- Bike Lane Visualizations -->
-    <img src="public/imgs/dihan-vis1.png" />
-    <img src="public/imgs/dihan-vis2.png" />
+    <img src="/imgs/dihan-vis1.png" />
+    <img src="/imgs/dihan-vis2.png" />
 
 </div>
 
