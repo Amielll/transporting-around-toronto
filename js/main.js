@@ -1,5 +1,5 @@
 import * as d3 from "d3";
-import { BikeshareMapVis } from './mapVis.js';
+import { BikeshareMapVis } from './bikeshareMapVis.js';
 let bikeshareMapVis;
 
 // TODO: Combine the main.js / neighbourhoodsMain.js load data/init visualization stuff into a single file
@@ -22,8 +22,7 @@ function initProject(allDataArray) {
     let tripData = allDataArray[2];
     let mapData = allDataArray[3];
     let stationData = processStationData(stationInfo, stationStatus, tripData);
-    console.log('stationData', stationData);
-    bikeshareMapVis = new BikeshareMapVis('bikeshare-map-area', stationInfo, tripData, mapData);
+    bikeshareMapVis = new BikeshareMapVis('bikeshare-station-map-vis', stationData, mapData);
 }
 
 function processStationData(stationInfo, stationStatus, tripData) {
