@@ -75,10 +75,36 @@
     </div>
 
     <!-- Bike Share Station Map -->
+    <div class="row" style="height: 10vh; width: 100%; padding: 0; text-align: center;">
+        <h2 id="bikeshare-station-title">Toronto's Bike Share Stations</h2>
+    </div>
     <div class="row">
-        <div class="col-8" id="bikeshare-station-map-vis" style="height: 80vh; padding-top: 0; padding-left: 1vh; padding-right: 1vh; padding-bottom: 1vh"></div>
-        <div class="col-5">
-            <div id="top-bikeshares-vis"></div>
+        <div class="col-8" id="bikeshare-station-map-vis" style="height: 80vh;"></div>
+        <div class="col-4">
+            <div id="bikeshare-station-summary" style="display: none">
+                <h4 style="text-align: center">Summary</h4>
+                <table class="table table-borderless">
+                    <tbody>
+                    <tr>
+                        <td>Station:</td>
+                        <th scope="row" id="bikeshare-summary-station-name"></th>
+                    </tr>
+                    <tr>
+                        <td>ID:</td>
+                        <th scope="row" id="bikeshare-summary-station-id"></th>
+                    </tr>
+                    <tr>
+                        <td>Neighbourhood:</td>
+                        <th scope="row" id="bikeshare-summary-station-neighbourhood"></th>
+                    </tr>
+                    <tr>
+                        <td>Location:</td>
+                        <th scope="row" id="bikeshare-summary-station-location"></th>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div id="bikeshare-station-bar-vis"></div>
         </div>
     </div>
 

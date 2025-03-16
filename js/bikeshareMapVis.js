@@ -45,14 +45,6 @@ export class BikeshareMapVis {
             .attr('transform', `translate(${vis.width / 2}, 20)`)
             .attr("text-anchor", "middle");
 
-        // Add tooltip
-        vis.tooltip = d3.select("body")
-            .append("div")
-            .attr("class", "tooltip")
-            .attr("id", "bikeshareMapTooltip")
-            .style("opacity", 0)  // hidden by default
-            .style("position", "absolute");
-
         // Create a projection that fits the GeoJSON data
         vis.projection = d3.geoMercator()
             .fitSize([vis.width, vis.height - vis.mapYOffset], vis.mapData);
@@ -66,6 +58,8 @@ export class BikeshareMapVis {
         vis.map = vis.mapContainer.append("g")
             .attr("class", "neighbourhoods");
 
+        vis.mapZoomScaleExtent = [1,10]; // for zooming
+
         // Draw the map
         vis.map.selectAll("path")
             .data(vis.mapData.features)
@@ -75,38 +69,43 @@ export class BikeshareMapVis {
             .attr("fill", "#ddd")
             .attr("stroke", "#333");
 
+        // Represent stations as dots on the map
         vis.stationDots = vis.map.selectAll("circle")
             .data(vis.stationData, d => d.id);
 
-        vis.stationDotRadius = 3;
-        vis.stationDotStrokeWidth = 1;
+        vis.radiusScale = d3.scaleLinear() // scale dots based on zoom for now, but in future change based on metric?
+            .domain(vis.mapZoomScaleExtent)
+            .range([3, 0.5])
+            .clamp(true);
 
+        // draw station dots and set up click listener
         vis.stationDots.enter()
             .append("circle")
             .attr("class", "station")
             .attr("cx", d => vis.projection([d.longitude, d.latitude])[0])
             .attr("cy", d => vis.projection([d.longitude, d.latitude])[1])
-            .attr("r", vis.stationDotRadius)
+            .attr("r", vis.radiusScale(1))
             .attr("fill", "red")
             .attr("stroke", "#fff")
             .attr("cursor", "pointer")
-            .attr("stroke-width", vis.stationDotStrokeWidth)
+            .attr("stroke-width", vis.radiusScale(1) / 4)
             .on("click", (event, d) => {
-                //vis.onStationClick(d);
+                vis.onStationClick(d);
             });
 
         // zooming functionality
         vis.zoomFunction = function(event) {
+            console.log(event.transform.k);
             vis.map.attr("transform", event.transform);
             vis.map.selectAll(".station")
-                .attr("r", vis.stationDotRadius / event.transform.k)
-                .attr("stroke-width", vis.stationDotStrokeWidth / event.transform.k);
+                .attr("r", vis.radiusScale(event.transform.k))
+                .attr("stroke-width", vis.radiusScale(event.transform.k) / 4)
 
             vis.updateVis();
         }
 
         vis.zoom = d3.zoom()
-            .scaleExtent([1, 8])
+            .scaleExtent(vis.mapZoomScaleExtent)
             .translateExtent([[0,0], [vis.width, vis.height - vis.mapYOffset]])
             .on("zoom", vis.zoomFunction);
 
@@ -131,5 +130,18 @@ export class BikeshareMapVis {
         let vis = this;
         vis.map.selectAll("path")
             .attr("d", vis.path);
+    }
+
+    onStationClick(station) {
+        console.log(station);
+        let summary = d3.select("#bikeshare-station-summary");
+        let summaryName = d3.select("#bikeshare-summary-station-name");
+        let summaryID = d3.select("#bikeshare-summary-station-id");
+        let summaryNeighbourhood = d3.select("#bikeshare-summary-station-neighbourhood");
+        summary.style("display", "block");
+        summaryName.text(station.name);
+        summaryID.text(station.id);
+        summaryNeighbourhood.text(station.neighbourhood);
+
     }
 }
