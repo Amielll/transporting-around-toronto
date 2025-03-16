@@ -2,7 +2,7 @@
 import * as d3 from "d3";
 import { MapVis } from "./neighbourhoodsMapVis.js";
 
-let valueData, geoData, choroplethVis1, choroplethVis2;
+let valueData, geoData, bikeshareData, bikeRackData, choroplethVis1, choroplethVis2;
 
 let choropleths =  [choroplethVis1, choroplethVis2];
 
@@ -23,39 +23,44 @@ function updateChoropleth(number){
 }
 
 function changeOpacity(){
-    let slider = d3.select("#vis-toggle").property("value");
+    let see2 = d3.select("#vis-toggle").property("checked");
 
     let visible1, visible2;
-    if (slider == 0) {
+    if (see2 == false) {
         visible1 = "visible";
         visible2 = "hidden";
-    } else if (slider == 100) {
+    } else {
         visible1 = "hidden";
         visible2 = "visible";
-    } else {
-        visible1 = "visible";
-        visible2 = "visible";
-    }
+    } 
 
-    console.log(slider)
     d3.select("#map-div")
-        .style("visibility", visible1)
-        .style("opacity", `${100-slider}%`);
+        .style("visibility", visible1);
 
     d3.select("#map-div2")
-        .style("visibility", visible2)
-        .style("opacity", `${slider}%`);
+        .style("visibility", visible2);
 
-    choroplethVis2.opacity = slider;
+}
+
+function toggleDots(type, state){
+    if (state == true){
+        d3.selectAll(`.${type}`).style("opacity", 0.5);
+    } else {
+        d3.selectAll(`.${type}`).style("opacity", 0);
+    }
 }
 
 d3.select("#data-type1").on("change", () => updateChoropleth(1));
 d3.select("#data-type2").on("change", () => updateChoropleth(2));
 d3.select("#vis-toggle").on("change", () => changeOpacity());
+d3.select("#toggle-bike-rack").on("change", () => toggleDots("bikerack", d3.select("#toggle-bike-rack").property("checked")));
+d3.select("#toggle-bike-share").on("change", () => toggleDots("bikeshare", d3.select("#toggle-bike-share").property("checked")));
 
 let promises = [
     d3.csv("data/neighbourhoods.csv"),
-    d3.json("data/Neighbourhoods.geojson")
+    d3.json("data/Neighbourhoods.geojson"),
+    d3.json("data/bike_share_stations_2024-01.json"),
+    d3.json("data/bike_racks_data.geojson")
 ];
 
 Promise.all(promises)
@@ -66,8 +71,10 @@ Promise.all(promises)
 function initMainPage(allDataArray) {
     valueData = allDataArray[0];
     geoData = allDataArray[1];
+    bikeshareData = allDataArray[2];
+    bikeRackData = allDataArray[3];
 
-    choroplethVis2 = new MapVis("map-div2", valueData, geoData, "bicycle_commuters", "green", 2);
-    choroplethVis1 = new MapVis("map-div", valueData, geoData, "average_income_2020", "blue", 1);
+    choroplethVis2 = new MapVis("map-div2", valueData, geoData, bikeshareData, bikeRackData, "bicycle_commuters", "green", 2);
+    choroplethVis1 = new MapVis("map-div", valueData, geoData, bikeshareData, bikeRackData, "average_income", "blue", 1);
     choropleths =  [choroplethVis1, choroplethVis2];
 }
