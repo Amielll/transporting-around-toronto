@@ -6,8 +6,9 @@ let bikeshareMapVis;
 // TODO: Keep the helper functions like changeOpacity or whatever else comes up in respective util files
 let bikesharePromises = [
     d3.json("data/bike_share_stations_2024-01.json"),
+    d3.json('data/bike_share_stationStatus.json'),
     d3.csv("data/bike_share_trips_2024-01.csv"),
-    d3.json('data/Neighbourhoods.geojson')
+    d3.json('data/Neighbourhoods.geojson'),
 ];
 
 Promise.all(bikesharePromises)
@@ -16,8 +17,45 @@ Promise.all(bikesharePromises)
 
 function initProject(allDataArray) {
     console.log(allDataArray);
-    let stationData = allDataArray[0];
-    let tripData = allDataArray[1];
-    let mapData = allDataArray[2];
-    bikeshareMapVis = new BikeshareMapVis('bikeshare-map-area', stationData, tripData, mapData);
+    let stationInfo = allDataArray[0];
+    let stationStatus = allDataArray[1];
+    let tripData = allDataArray[2];
+    let mapData = allDataArray[3];
+    let stationData = processStationData(stationInfo, stationStatus, tripData);
+    console.log('stationData', stationData);
+    bikeshareMapVis = new BikeshareMapVis('bikeshare-map-area', stationInfo, tripData, mapData);
+}
+
+function processStationData(stationInfo, stationStatus, tripData) {
+    let stationData = []
+
+    stationInfo.forEach((station) => {
+        let stationDataEntry = {};
+        stationDataEntry.id = `${station["Station Id"]}`;
+        stationDataEntry.name = station["Station Name"];
+        stationDataEntry.latitude = station["Latitude"];
+        stationDataEntry.longitude = station["Longitude"];
+        stationDataEntry.statusSamples = []
+        if (stationDataEntry.id in stationStatus) {
+            stationDataEntry.statusSamples = stationStatus[stationDataEntry.id]["samples"];
+        }
+
+        let filteredStartTrips = tripData.filter(tripDataEntry => tripDataEntry["Start Station Id"] === stationDataEntry.id);
+        let filteredEndTrips = tripData.filter(tripDataEntry => tripDataEntry["End Station Id"] === stationDataEntry.id);
+
+        stationDataEntry.asStartingCount = filteredStartTrips.reduce((runningSum, trip) => runningSum + +trip['Count'], 0);
+        stationDataEntry.asDestCount = filteredEndTrips.reduce((runningSum, trip) => runningSum + +trip['Count'], 0);
+        stationDataEntry.totalVolume = stationDataEntry.asStartingCount + stationDataEntry.asDestCount;
+
+        let totalDurationAsStart = filteredStartTrips.reduce((runningSum, trip) => runningSum + +trip['Total Duration'], 0);
+        let totalDurationAsDest = filteredEndTrips.reduce((runningSum, trip) => runningSum + +trip['Total Duration'], 0);
+        let totalDuration = totalDurationAsStart + totalDurationAsDest;
+
+        stationDataEntry.avgDurationAsStart = totalDurationAsStart / stationDataEntry.asStartingCount;
+        stationDataEntry.avgDurationAsDest = totalDurationAsStart / stationDataEntry.asDestCount;
+        stationDataEntry.avgDuration = totalDuration / stationDataEntry.totalVolume;
+        stationData.push(stationDataEntry);
+    });
+
+    return stationData;
 }
