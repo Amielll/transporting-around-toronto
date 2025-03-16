@@ -21,10 +21,19 @@ export class NeighbourhoodSelect {
             .attr("height", vis.height)
             .attr('transform', `translate (${vis.margin.left}, ${vis.margin.top})`);
         
-            vis.projection = d3.geoMercator().fitSize([vis.width,vis.height],vis.geoData)
+        vis.projection = d3.geoMercator().fitSize([vis.width,vis.height],vis.geoData)
         vis.path = d3.geoPath(vis.projection);
-        
-        vis.neighbourhoods = vis.svg.selectAll(".neighbourhood")
+
+        // Set up map group
+        vis.mapContainer = vis.svg.append("g")
+            //.attr("transform", `translate(0, ${vis.mapYOffset})`)
+            .attr("clip-path", "url(#bikeshareMapClip)");
+
+        vis.map = vis.mapContainer.append("g")
+            .attr("class", "neighbourhoods");
+
+        // Draw the map
+        vis.neighbourhoods = vis.map.selectAll("path")
             .data(vis.geoData.features)
             .enter()
             .append("path")
@@ -35,6 +44,9 @@ export class NeighbourhoodSelect {
             .attr("class", "neighbourhood")
             .attr('stroke-width', '1px')
             .attr('stroke', 'lightgrey');
+
+        console.log('map', vis.map);
+        console.log('hoods', vis.neighbourhoods);
         
         // add title
         // vis.svg.append('g')
@@ -57,17 +69,19 @@ export class NeighbourhoodSelect {
     
     updateVis() {
         let vis = this;
-        vis.neighbourhoods = vis.svg.selectAll(".neighbourhood")
-            .data(vis.geoData.features)
+        vis.map.selectAll("path")
+            .attr("d", vis.path);
 
         
-        this.neighbourhoods.enter()
+        vis.map.enter()
             .append("path")
             .attr("d", vis.path)
             .attr("id", (d) => {
                 return d.properties.AREA_NAME
             })
-			.merge(this.neighbourhoods)
+			.merge(vis.neighbourhoods);
+
+        vis.neighbourhoods
             .on('mouseover', function(event, d){
                 vis.neighbourhoods.attr('fill', 'black');
                 if (vis.selectedNB !== null){
@@ -84,10 +98,10 @@ export class NeighbourhoodSelect {
             })
             .on('click', function(event, d){
                 vis.neighbourhoods.attr('fill', 'black');
+                console.log('yerrr', d);
                 d3.select(this)
                     .attr('fill', 'red');
-                vis.selectedNB = d.properties;
-                vis.controlledVis.updateZoom(vis.selectedNB, event);
+                vis.controlledVis.updateZoom(d.properties, event);
             })
     }
     
