@@ -26,14 +26,13 @@ export class BikeshareMapVis {
             .attr("height", vis.height)
             .attr("transform", `translate(${vis.margin.left}, ${vis.margin.top})`);
 
-        vis.mapYOffset = 20; // For clipping map below title section
+        vis.mapYOffset = 40; // So that map/clipping region and title have some space in between
 
         // Define the clipping region
         vis.svg.append("defs")
             .append("clipPath")
             .attr("id", "bikeshareMapClip")
             .append("rect")
-            .attr('transform', `translate(0, ${vis.mapYOffset})`)
             .attr("width", vis.width)
             .attr("height", vis.height - vis.mapYOffset);
 
@@ -108,9 +107,10 @@ export class BikeshareMapVis {
 
         vis.zoom = d3.zoom()
             .scaleExtent([1, 8])
+            .translateExtent([[0,0], [vis.width, vis.height - vis.mapYOffset]])
             .on("zoom", vis.zoomFunction);
 
-        vis.map.call(vis.zoom);
+        vis.mapContainer.call(vis.zoom);
         this.wrangleData();
     }
 
