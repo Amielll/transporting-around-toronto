@@ -4,11 +4,12 @@
 import * as d3 from "d3";
 
 let titles = {
-    "average_income_2020": "Average Annual Income (2020)",
+    "average_income": "Average Annual Income (2021)",
     "bicycle_commuters": "Bike Commuter Proportion (2021)",
-    "bikeshare_stations": "Bikeshare Stations (2025)",
-    "collisions": "Bike Collisions (2006-2023)",
-    "thefts": "Bike Thefts (2009-2024)"
+    "bikeshare_stations": "Number of Bikeshare Stations (2025)",
+    "bike_parking_racks": "Number of Bike Parking Racks (2025)",
+    "collisions": "Bike Collisions (2009-2023)",
+    "thefts": "Bike Thefts (2009-2023)"
 }
 
 let colours = {
@@ -22,7 +23,7 @@ let colours = {
 
 export class MapVis {
 
-    constructor(parentElement, valueData, geoData, variable, colour, id) {
+    constructor(parentElement, valueData, geoData, stationData, rackData, variable, colour, id) {
         this.parentElement = parentElement;
         this.geoData = geoData;
         this.valueData = valueData;
@@ -36,6 +37,8 @@ export class MapVis {
         });
         
         this.valueData = JSON.parse(JSON.stringify(this.valueData));
+        this.stationData = stationData;
+        this.rackData = rackData;
 
         // define colors
         this.variable = variable;
@@ -70,14 +73,14 @@ export class MapVis {
             .attr('text-anchor', 'middle');
 
 
-        var projection = d3.geoMercator().fitSize([vis.width,vis.height],vis.geoData)
-        var path = d3.geoPath(projection);
+        vis.projection = d3.geoMercator().fitSize([vis.width,vis.height],vis.geoData)
+        vis.path = d3.geoPath(vis.projection);
         
         vis.neighbourhoods = vis.svg.selectAll(".neighbourhood")
             .data(vis.geoData.features)
             .enter()
             .append("path")
-            .attr("d",path)
+            .attr("d", vis.path)
             .attr("id", (d) => {
                 return d.properties.AREA_NAME
             })
@@ -202,8 +205,44 @@ export class MapVis {
                     .style("left", 0)
                     .style("top", 0)
                     .html(``);
-            })
+            });
+        
+        this.addDots();
         
 		// // vis.svg.select(".legend-axis").call(vis.legendAxis);
+    }
+
+    addDots() {
+        let vis = this;
+        
+        vis.bikeshare = vis.svg.selectAll("circle.bikeshare")
+            .data(vis.stationData, d => d["Station Id"]);
+
+        // ENTER: Append circles for each station.
+        vis.bikeshare.enter()
+            .append("circle")
+            .attr("class", "bikeshare")
+            .attr("cx", d => {
+                return vis.projection([d.Longitude, d.Latitude])[0]
+            })
+            .attr("cy", d => vis.projection([d.Longitude, d.Latitude])[1])
+            .attr("r", 4)
+            .attr("fill", "red")
+            .attr("stroke", "grey")
+            .attr("stroke-width", 1)
+            .style("opacity", 0);
+        
+        
+        
+        vis.bikerack = vis.svg.selectAll("path.bikerack")
+            .data(vis.rackData.features)
+            .enter()
+            .append("path")
+            .attr("d",vis.path)
+            .attr("class", "bikerack")
+            .attr("fill", "orange")
+            .attr("stroke", "grey")
+            .attr("stroke-width", 1)
+            .style("opacity", 0);
     }
 }
