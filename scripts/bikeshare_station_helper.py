@@ -25,15 +25,16 @@ def aggregate_station_data(ridership_data_path) -> pd.DataFrame:
     trip_counts['End Station Id'] = trip_counts['End Station Id'].astype(int)
 
     trips_with_duration_df = ridership_df[['Start Station Id', 'End Station Id', 'Trip  Duration']].copy()
-    trip_avg_duration = trips_with_duration_df \
-        .groupby(['Start Station Id', 'End Station Id'])['Trip  Duration']\
-        .mean() \
-        .reset_index(name='Average Duration')
 
-    trip_avg_duration['End Station Id'] = trip_avg_duration['End Station Id'].astype(int)
-    trip_avg_duration['Average Duration'] = trip_avg_duration['Average Duration'].astype(int) # round to a whole second
+    trip_total_duration = trips_with_duration_df \
+            .groupby(['Start Station Id', 'End Station Id'])['Trip  Duration']\
+            .sum() \
+            .reset_index(name='Total Duration')
 
-    combined_df = trip_counts.merge(trip_avg_duration, on=['Start Station Id', 'End Station Id'])
+    trip_total_duration['End Station Id'] = trip_total_duration['End Station Id'].astype(int)
+    trip_total_duration['Total Duration'] = trip_total_duration['Total Duration'].astype(int) # round to a whole second
+
+    combined_df = trip_counts.merge(trip_total_duration, on=['Start Station Id', 'End Station Id'])
     return combined_df
 
 
