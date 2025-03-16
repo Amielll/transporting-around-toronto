@@ -2,6 +2,7 @@ import * as d3 from "d3";
 import { BikeshareMapVis } from './mapVis.js';
 import { SingleNeighbourhoodVis } from "./singleNeighbourhoodVis.js";
 import { NeighbourhoodSelect } from './singleNeighbourhoodSelect.js';
+
 let bikeshareMapVis, singleNeighbourhoodVis;
 
 // TODO: Combine the main.js / neighbourhoodsMain.js load data/init visualization stuff into a single file
@@ -33,3 +34,7 @@ function initProject(allDataArray) {
     singleNeighbourhoodVis = new SingleNeighbourhoodVis('nb-vis', stationData, tripData, mapData, demographicData, bikeRackData, bikeLaneData);
     neighbourhoodSelect = new NeighbourhoodSelect('nb-selector', mapData, singleNeighbourhoodVis);
 }
+
+
+d3.select("#toggle-bike-rack-single").on("change", () => singleNeighbourhoodVis.toggleDots("bikerack", d3.select("#toggle-bike-rack-single").property("checked")));
+d3.select("#toggle-bike-share-single").on("change", () => singleNeighbourhoodVis.toggleDots("bikeshare", d3.select("#toggle-bike-share-single").property("checked")));

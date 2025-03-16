@@ -87,7 +87,7 @@ export class NeighbourhoodSelect {
                 d3.select(this)
                     .attr('fill', 'red');
                 vis.selectedNB = d.properties;
-                vis.controlledVis.wrangleData(vis.selectedNB);
+                vis.controlledVis.updateZoom(vis.selectedNB, event);
             })
     }
     

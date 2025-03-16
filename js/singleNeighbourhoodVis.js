@@ -1,4 +1,5 @@
 import * as d3 from "d3";
+let g;
 
 export class SingleNeighbourhoodVis {
     constructor(parentElement, stationData, tripData, geoData, demographicData, bikeRackData, bikeLaneData) {
@@ -40,16 +41,18 @@ export class SingleNeighbourhoodVis {
         
             vis.projection = d3.geoMercator().fitSize([vis.width,vis.height],vis.geoData)
         vis.path = d3.geoPath(vis.projection);
+
+        g = vis.svg.append("g");
         
-        vis.neighbourhoods = vis.svg.selectAll(".neighbourhood")
+        vis.neighbourhoods = g.selectAll(".neighbourhood")
             .data(vis.geoData.features)
             .enter()
             .append("path")
             .attr("d", vis.path)
             .attr("id", (d) => {
-                return d.properties.AREA_NAME
+                return `single-nb-${d.properties.AREA_LONG_CODE}`
             })
-            .attr("class", "neighbourhood")
+            .attr("class", "neighbourhood-single")
             .attr('stroke-width', '1px')
             .attr('stroke', 'white')
             .attr('fill', 'black');
@@ -63,14 +66,70 @@ export class SingleNeighbourhoodVis {
             .attr('id', 'map-title-text' + vis.id)
             .text(`Detailed Neighbourhood View:`)
             .attr('transform', `translate(${vis.width / 5}, 40)`);
+
+        vis.addDots()
+        
+        vis.zoom = d3.zoom()
+            .scaleExtent([1, 8])
+            .on("zoom", this.zoomed);
+
+        vis.svg.call(vis.zoom);
     }
 
-    wrangleData(neighbourhood){
-        this.neighbourhood = neighbourhood;
-        console.log(neighbourhood)
+    zoomed(event) {
+        let vis = this;
+        const {transform} = event;
+        g.attr("transform", transform);
+        g.attr("stroke-width", 1 / transform.k);
     }
 
+    updateZoom(neighbourhood, event){
+        let vis = this;
+        vis.currentNB = neighbourhood;
+        const [[x0, y0], [x1, y1]] = vis.path.bounds(vis.path.centroid(vis.geoData.features[vis.currentNB._id - 1]));
 
+        d3.select(`#single-nb-${vis.currentNB.AREA_LONG_CODE}`).transition().style("fill", "red");
+        vis.svg.transition().duration(750).call(
+        vis.zoom.transform,
+        d3.zoomIdentity
+            .translate(vis.width / 2, vis.height / 2)
+            .scale(Math.min(8, 0.9 / Math.max((x1 - x0) / vis.width, (y1 - y0) / vis.height)))
+            .translate(-(x0 + x1) / 2, -(y0 + y1) / 2),
+        d3.pointer(event, vis.svg.node())
+    );
+    }
+
+    addDots() {
+        let vis = this;
+        
+        vis.bikeshare = vis.svg.selectAll("circle.bikeshare")
+            .data(vis.stationData, d => d["Station Id"]);
+
+        // ENTER: Append circles for each station.
+        vis.bikeshare.enter()
+            .append("circle")
+            .attr("class", "bikeshare")
+            .attr("cx", d => {
+                return vis.projection([d.Longitude, d.Latitude])[0]
+            })
+            .attr("cy", d => vis.projection([d.Longitude, d.Latitude])[1])
+            .attr("r", 4)
+            .attr("fill", "red")
+            .attr("stroke", "grey")
+            .attr("stroke-width", 1)
+            .style("opacity", 0);
+        
+        vis.bikerack = vis.svg.selectAll("path.bikerack")
+            .data(vis.bikeRackData.features)
+            .enter()
+            .append("path")
+            .attr("d",vis.path)
+            .attr("class", "bikerack")
+            .attr("fill", "orange")
+            .attr("stroke", "grey")
+            .attr("stroke-width", 1)
+            .style("opacity", 0);
+    }
 
     
 }
