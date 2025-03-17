@@ -1,7 +1,7 @@
-#app {
-  height: 100vh;
+#bikeshare-station-summary {
+  margin: 20px;
 }
 
-#bikeshare-map-area {
-  height: 100%
+.bar {
+  fill: steelblue;
 }

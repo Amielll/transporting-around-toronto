@@ -1,6 +1,9 @@
 import * as d3 from "d3";
 import { BikeshareMapVis } from './bikeshareMapVis.js';
-let bikeshareMapVis;
+import { BarVis } from './barVis.js';
+
+let bikeshareMapVis, bikeshareBarVis;
+let selectedCategory = 'totalVolume';
 
 // TODO: Combine the main.js / neighbourhoodsMain.js load data/init visualization stuff into a single file
 // TODO: Keep the helper functions like changeOpacity or whatever else comes up in respective util files
@@ -22,7 +25,32 @@ function initProject(allDataArray) {
     let tripData = allDataArray[2];
     let mapData = allDataArray[3];
     let stationData = processStationData(stationInfo, stationStatus, tripData);
-    bikeshareMapVis = new BikeshareMapVis('bikeshare-station-map-vis', stationData, mapData);
+
+    let eventHandler = {
+        bind: (eventName, handler) => {
+            document.body.addEventListener(eventName, handler);
+        },
+        trigger: (eventName, extraParameters) => {
+            document.body.dispatchEvent(new CustomEvent(eventName, {
+                detail: extraParameters
+            }));
+        }
+    }
+
+    bikeshareMapVis = new BikeshareMapVis('bikeshare-station-map-vis', stationData, mapData, eventHandler);
+    bikeshareBarVis = new BarVis('bikeshare-station-bar-vis', stationData, eventHandler);
+
+    eventHandler.bind("selectionChanged", function(event) {
+        console.log(event);
+        bikeshareBarVis.onSelectionChange(event.detail);
+        bikeshareMapVis.onSelectionChange(event.detail);
+        updateSummary(event.detail);
+    });
+
+    window.addEventListener("load", document.getElementById('bikeshare-station-metric').addEventListener('change', function(e) {
+        console.log('Selected option:', e.target.value);
+        bikeshareBarVis.wrangleData(e.target.value);
+    }), false);
 }
 
 function processStationData(stationInfo, stationStatus, tripData) {
@@ -57,4 +85,24 @@ function processStationData(stationInfo, stationStatus, tripData) {
     });
 
     return stationData;
+}
+
+function updateSummary(station) {
+    let summary = d3.select("#bikeshare-station-summary");
+    let summaryName = d3.select("#bikeshare-summary-station-name");
+    let summaryID = d3.select("#bikeshare-summary-station-id");
+    let summaryNeighbourhood = d3.select("#bikeshare-summary-station-neighbourhood");
+    let summaryLocation = d3.select("#bikeshare-summary-station-location");
+    summary.style("display", "block");
+    summaryName.text(station.name);
+    summaryID.text(station.id);
+    summaryNeighbourhood.text(station.neighbourhood);
+    summaryLocation.text(station.latitude + ', ' + station.longitude);
+    summaryLocation.attr("href", `https://www.google.com/maps/place/${station.latitude},${station.longitude}`);
+    summaryLocation.attr("target", "_blank");
+}
+
+
+function categoryChange() {
+    bikeshareBarVis.wrangleData();
 }

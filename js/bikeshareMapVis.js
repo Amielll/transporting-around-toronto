@@ -2,10 +2,11 @@ import * as d3 from "d3";
 
 export class BikeshareMapVis {
 
-    constructor(parentElement, stationData, mapData) {
+    constructor(parentElement, stationData, mapData, eventHandler) {
         this.parentElement = parentElement;
         this.stationData = stationData;
         this.mapData = mapData;
+        this.eventHandler = eventHandler;
 
         this.initVis();
     }
@@ -41,7 +42,7 @@ export class BikeshareMapVis {
             .attr("class", "title")
             .attr("id",  "bikeshare-map-title")
             .append("text")
-            .text("Toronto Bikeshare Station Volume")
+            .text("Toronto Bikeshare Station")
             .attr('transform', `translate(${vis.width / 2}, 20)`)
             .attr("text-anchor", "middle");
 
@@ -58,7 +59,7 @@ export class BikeshareMapVis {
         vis.map = vis.mapContainer.append("g")
             .attr("class", "neighbourhoods");
 
-        vis.mapZoomScaleExtent = [1,10]; // for zooming
+        vis.mapZoomScaleExtent = [1,8]; // for zooming
 
         // Draw the map
         vis.map.selectAll("path")
@@ -85,17 +86,14 @@ export class BikeshareMapVis {
             .attr("cx", d => vis.projection([d.longitude, d.latitude])[0])
             .attr("cy", d => vis.projection([d.longitude, d.latitude])[1])
             .attr("r", vis.radiusScale(1))
-            .attr("fill", "red")
+            .attr("fill", "steelblue")
             .attr("stroke", "#fff")
             .attr("cursor", "pointer")
             .attr("stroke-width", vis.radiusScale(1) / 4)
-            .on("click", (event, d) => {
-                vis.onStationClick(d);
-            });
+            .on("click", (event, d) => vis.eventHandler.trigger("selectionChanged", d));
 
         // zooming functionality
         vis.zoomFunction = function(event) {
-            console.log(event.transform.k);
             vis.map.attr("transform", event.transform);
             vis.map.selectAll(".station")
                 .attr("r", vis.radiusScale(event.transform.k))
@@ -132,26 +130,28 @@ export class BikeshareMapVis {
             .attr("d", vis.path);
     }
 
-    onStationClick(station) {
-        this.updateSummary(station);
+    onSelectionChange(selectedStation) {
+        let vis = this;
+
+        vis.map.selectAll("circle.station")
+            .transition().duration(750)
+            .attr("fill", d => d.id === selectedStation.id ? "red" : "steelblue");
+
+        vis.updateZoom(selectedStation);
     }
 
-    updateSummary(station) {
-        let summary = d3.select("#bikeshare-station-summary");
-        let summaryName = d3.select("#bikeshare-summary-station-name");
-        let summaryID = d3.select("#bikeshare-summary-station-id");
-        let summaryNeighbourhood = d3.select("#bikeshare-summary-station-neighbourhood");
-        let summaryLocation = d3.select("#bikeshare-summary-station-location");
-        summary.style("display", "block");
-        summaryName.text(station.name);
-        summaryID.text(station.id);
-        summaryNeighbourhood.text(station.neighbourhood);
-        summaryLocation.text(station.latitude + ', ' + station.longitude);
-        summaryLocation.attr("href", this.mapsLink(station.latitude, station.longitude));
-        summaryLocation.attr("target", "_blank");
-    }
+    updateZoom(d) {
+        let vis = this;
+        const [x, y] = vis.projection([d.longitude, d.latitude]);
+        const scale = 8;
 
-    mapsLink(lat, lon) {
-        return `https://www.google.com/maps/place/${lat},${lon}`
+        const translateX = vis.width / 2 - scale * x;
+        const translateY = (vis.height - vis.mapYOffset) / 2 - scale * y;
+
+        // Apply the new transform with a smooth transition
+        vis.mapContainer.transition().duration(750).call(
+            vis.zoom.transform,
+            d3.zoomIdentity.translate(translateX, translateY).scale(scale)
+        );
     }
 }
