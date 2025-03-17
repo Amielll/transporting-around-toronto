@@ -44,9 +44,6 @@ export class NeighbourhoodSelect {
             .attr("class", "neighbourhood")
             .attr('stroke-width', '1px')
             .attr('stroke', 'lightgrey');
-
-        console.log('map', vis.map);
-        console.log('hoods', vis.neighbourhoods);
         
         // add title
         // vis.svg.append('g')

@@ -19,6 +19,19 @@ export class SingleNeighbourhoodVis {
             this.neighbourhoodData[d.number] = d;
         });
 
+        let bikeRackPoints = [];
+
+        this.bikeRackData.features.forEach((d) => {
+            bikeRackPoints.push({
+                ...d.properties,
+                Longitude: d.geometry.coordinates[0][0],
+                Latitude: d.geometry.coordinates[0][1],
+
+            })
+        })
+
+        this.bikeRackData = bikeRackPoints;
+
         this.currentNB = null;
         this.moneyFormat = d3.format(",")
 
@@ -48,17 +61,6 @@ export class SingleNeighbourhoodVis {
             .attr("width", vis.width)
             .attr("height", vis.height - vis.mapYOffset);
 
-        // // add title
-        // vis.title = vis.svg.append('g')
-        //     .attr('class', 'title')
-        //     .attr('id', 'map-title');
-        
-        // vis.title.append('text')
-        //     .attr('class', 'map-title-text')
-        //     .attr('id', 'map-title-text-singleNeighbourhood')
-        //     .text(`Detailed Neighbourhood View:`)
-        //     .attr('transform', `translate(${vis.width / 5}, 20)`);
-
         vis.projection = d3.geoMercator().fitSize([vis.width,vis.height],vis.geoData)
         vis.path = d3.geoPath(vis.projection);
 
@@ -81,9 +83,9 @@ export class SingleNeighbourhoodVis {
                 return `single-nb-${d.properties.AREA_LONG_CODE}`
             })
             .attr("class", "neighbourhood-single")
-            .attr('stroke-width', '1px')
-            .attr('stroke', 'white')
-            .attr('fill', 'black');
+            .attr('stroke-width', '0.5px')
+            .attr('stroke', 'black')
+            .attr('fill', 'white');
 
         vis.addDots()
 
@@ -106,7 +108,7 @@ export class SingleNeighbourhoodVis {
         const [[x0, y0], [x1, y1]] = vis.path.bounds(feature);
 
         
-        d3.selectAll(`.neighbourhood-single`).style('fill', 'black');
+        d3.selectAll(`.neighbourhood-single`).style('fill', 'white');
 
         d3.select(`#single-nb-${vis.currentNB.AREA_LONG_CODE}`).transition().style("fill", "#08519c");
         
@@ -119,9 +121,9 @@ export class SingleNeighbourhoodVis {
             d3.pointer(event, vis.svg.node())
         );
 
-        d3.select("#single-neighbourhood-name").text(vis.currentNB.AREA_NAME);
+        d3.select("#single-neighbourhood-name")
+            .html(`Detailed Neighbourhood View: <i>${vis.currentNB.AREA_NAME}</i>`);
 
-        console.log(this.neighbourhoodData);
         let neighbourhoodInfo = this.neighbourhoodData[vis.currentNB.AREA_LONG_CODE];
 
         d3.select("#nb-info").html(
@@ -156,34 +158,37 @@ export class SingleNeighbourhoodVis {
             .attr("fill", "red")
             .attr("stroke", "grey")
             .attr("stroke-width", 0.25)
-            .style("opacity", 0);
+            .style("opacity", .7);
         
-        vis.bikerack = vis.map.selectAll("path.single-bikerack")
-            .data(vis.bikeRackData.features)
-            .enter()
-            .append("path")
-            .attr("d",vis.path)
+
+        vis.bikerack = vis.map.selectAll("circle.single-bikerack")
+            .data(vis.bikeRackData);
+
+        vis.bikerack.enter()
+            .append("circle")
             .attr("class", "single-bikerack")
-            .attr("fill", "orange")
+            .attr("cx", d => {
+                return vis.projection([d.Longitude, d.Latitude])[0]
+            })
+            .attr("cy", d => vis.projection([d.Longitude, d.Latitude])[1])
             .attr("r", 1)
+            .attr("fill", "orange")
             .attr("stroke", "grey")
             .attr("stroke-width", 0.25)
-            .style("opacity", 0);
+            .style("opacity", .7);
 
-        vis.laneProjection = d3.geoMercator().fitSize([vis.width,vis.height],vis.bikeLaneData)
-        vis.lanePath = d3.path("MultiLineString ", vis.laneProjection);
-        
-        console.log(this.bikeLaneData);
+
+        vis.lanePath = d3.geoPath().projection(vis.projection);
 
         vis.bikePaths = vis.map.selectAll("path.single-lanes")
-            .data(vis.bikeLaneData.features)
+            .data(vis.bikeLaneData.features.flatMap(feature => feature.geometry.coordinates))
             .enter()
             .append("path")
-            .attr("d", d3.path)
-            .attr("class", "single-bikerack")
-            .attr("fill", "orange")
-            .attr("stroke-width", 2)
-            .style("opacity", 1);
+            .attr('d', d => vis.lanePath({ type: 'LineString', coordinates: d }))
+            .attr("class", "single-lanes")
+            .attr('stroke', '#41ab5d')
+            .attr("stroke-width", 0.5)
+            .attr('fill', 'none');
     }
 
     
