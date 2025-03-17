@@ -70,7 +70,7 @@ function initProject(allDataArray) {
     bikeshareBarVis = new BarVis('bikeshare-station-bar-vis', stationData, eventHandler);
     montrealBikeshareMapVis = new MontrealBikeshareMapVis('montreal-bikeshare-map-area',
         montrealStationData, montrealTripData, montrealMapData);
-    singleNeighbourhoodVis = new SingleNeighbourhoodVis('nb-vis', stationData, tripData, mapData, demographicData, bikeRackData, bikeLaneData);
+    singleNeighbourhoodVis = new SingleNeighbourhoodVis('nb-vis', stationInfo, tripData, mapData, demographicData, bikeRackData, bikeLaneData);
     neighbourhoodSelect = new NeighbourhoodSelect('nb-selector', mapData, singleNeighbourhoodVis);
 
     eventHandler.bind("selectionChanged", function(event) {
