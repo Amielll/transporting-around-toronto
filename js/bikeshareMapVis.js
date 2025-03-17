@@ -133,15 +133,25 @@ export class BikeshareMapVis {
     }
 
     onStationClick(station) {
-        console.log(station);
+        this.updateSummary(station);
+    }
+
+    updateSummary(station) {
         let summary = d3.select("#bikeshare-station-summary");
         let summaryName = d3.select("#bikeshare-summary-station-name");
         let summaryID = d3.select("#bikeshare-summary-station-id");
         let summaryNeighbourhood = d3.select("#bikeshare-summary-station-neighbourhood");
+        let summaryLocation = d3.select("#bikeshare-summary-station-location");
         summary.style("display", "block");
         summaryName.text(station.name);
         summaryID.text(station.id);
         summaryNeighbourhood.text(station.neighbourhood);
+        summaryLocation.text(station.latitude + ', ' + station.longitude);
+        summaryLocation.attr("href", this.mapsLink(station.latitude, station.longitude));
+        summaryLocation.attr("target", "_blank");
+    }
 
+    mapsLink(lat, lon) {
+        return `https://www.google.com/maps/place/${lat},${lon}`
     }
 }
