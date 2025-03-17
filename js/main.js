@@ -1,9 +1,12 @@
 import * as d3 from "d3";
+
 import { BikeshareMapVis } from './bikeshareMapVis.js';
 import { BarVis } from './barVis.js';
+import { MontrealBikeshareMapVis } from './montrealMapVis.js';
 
-let bikeshareMapVis, bikeshareBarVis;
+let bikeshareMapVis, bikeshareBarVis, montrealBikeshareMapVis;
 let selectedCategory = 'totalVolume';
+
 
 // TODO: Combine the main.js / neighbourhoodsMain.js load data/init visualization stuff into a single file
 // TODO: Keep the helper functions like changeOpacity or whatever else comes up in respective util files
@@ -12,6 +15,9 @@ let bikesharePromises = [
     d3.json('data/bike_share_stationStatus.json'),
     d3.csv("data/bike_share_trips_2024-01.csv"),
     d3.json('data/Neighbourhoods.geojson'),
+    d3.json("data/montreal_station_information_cleaned.json"),
+    d3.csv("data/Montreal Trip Counts.csv"),
+    d3.json('data/montreal-neighbourhoods.geojson')
 ];
 
 Promise.all(bikesharePromises)
@@ -20,10 +26,15 @@ Promise.all(bikesharePromises)
 
 function initProject(allDataArray) {
     console.log(allDataArray);
+
     let stationInfo = allDataArray[0];
     let stationStatus = allDataArray[1];
     let tripData = allDataArray[2];
     let mapData = allDataArray[3];
+    let montrealStationData = allDataArray[4];
+    let montrealTripData = allDataArray[5];
+    let montrealMapData = allDataArray[6];
+
     let stationData = processStationData(stationInfo, stationStatus, tripData);
 
     let eventHandler = {
@@ -39,6 +50,8 @@ function initProject(allDataArray) {
 
     bikeshareMapVis = new BikeshareMapVis('bikeshare-station-map-vis', stationData, mapData, eventHandler);
     bikeshareBarVis = new BarVis('bikeshare-station-bar-vis', stationData, eventHandler);
+    montrealBikeshareMapVis = new MontrealBikeshareMapVis('montreal-bikeshare-map-area',
+        montrealStationData, montrealTripData, montrealMapData);
 
     eventHandler.bind("selectionChanged", function(event) {
         console.log(event);
@@ -100,9 +113,4 @@ function updateSummary(station) {
     summaryLocation.text(station.latitude + ', ' + station.longitude);
     summaryLocation.attr("href", `https://www.google.com/maps/place/${station.latitude},${station.longitude}`);
     summaryLocation.attr("target", "_blank");
-}
-
-
-function categoryChange() {
-    bikeshareBarVis.wrangleData();
 }

@@ -2,6 +2,17 @@
   margin: 20px;
 }
 
+
 .bar {
   fill: steelblue;
+}
+
+#montreal-bikeshare-map-area {
+  height: 100%
+}
+
+ul {
+  list-style-type: disc !important;
+  padding-left:1em !important;
+  margin-left:1em;
 }
