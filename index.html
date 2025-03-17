@@ -75,7 +75,44 @@
     </div>
 
     <!-- Bike Share Station Map -->
-    <div class="row" id="bikeshare-map-area"></div>
+    <div class="row" style="height: 10vh; width: 100%; padding: 0; text-align: center;">
+        <h2 id="bikeshare-station-title">Toronto's Bike Share Stations</h2>
+    </div>
+    <div class="row justify-content-center" style="height: 10vh; width: 100%; padding: 0; text-align: center;">
+        <select class="custom-select align-self-center" style="width: 50%" id="bikeshare-station-metric">
+            <option value="totalVolume" selected>Total Volume</option>
+            <option value="avgDuration">Average Trip Duration</option>
+        </select>
+    </div>
+    <div class="row">
+        <div class="col-8" id="bikeshare-station-map-vis" style="height: 80vh;"></div>
+        <div class="col-4">
+            <div id="bikeshare-station-summary">
+                <h5 style="text-align: center">Summary</h5>
+                <table class="table table-borderless">
+                    <tbody>
+                    <tr>
+                        <td>Station:</td>
+                        <th scope="row" id="bikeshare-summary-station-name"></th>
+                    </tr>
+                    <tr>
+                        <td>ID:</td>
+                        <th scope="row" id="bikeshare-summary-station-id"></th>
+                    </tr>
+                    <tr>
+                        <td>Neighbourhood:</td>
+                        <th scope="row" id="bikeshare-summary-station-neighbourhood"></th>
+                    </tr>
+                    <tr>
+                        <td>Location:</td>
+                        <th scope="row"><a href="#" id="bikeshare-summary-station-location"></a></th>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div id="bikeshare-station-bar-vis" style="height: 50%"></div>
+        </div>
+    </div>
 
     <!-- Single Neighbourhood Vis -->
     
@@ -109,16 +146,29 @@
         </div>
     </div>
 
-    <!-- Bike Lane Visualizations -->
-    <img src="/imgs/dihan-vis1.png" />
-    <img src="/imgs/dihan-vis2.png" />
+    <div class="row" id="montreal-bikeshare-map-area"></div>
+
+    <div class="row" id="insights">
+        <p>Insights for Toronto</p>
+
+        <ul>
+            <li>Most bike commuters are downtown, but not in neighbourhoods with high bikeshare station density.</li>
+            <li>Bike parking racks are scarce in most neighbourhoods.</li>
+            <li>Bike theft rate is correlated with bikeshare station density in a neighbourhood.</li>
+        </ul>
+
+        <p>Insights for Toronto vs Montreal</p>
+        <ul>
+            <li>Toronto has a higher bikeshare station coverage (by percentage of city area) than Montreal's.</li>
+        </ul>
+
+        <p>Main message: Toronto has sizable biking infrastructure, but it's ultimately lacking.</p>
+    </div>
 
 </div>
 
 
-<script src="js/neighbourhoodsMapVis.js" type="module"></script>
 <script src="js/neighbourhoodsMain.js" type="module"></script>
-<script src="js/mapVis.js" type="module"></script>
 <script src="js/main.js" type="module"></script>
 </body>
 </html>
