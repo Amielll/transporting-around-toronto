@@ -125,7 +125,7 @@ export class SingleNeighbourhoodVis {
         let neighbourhoodInfo = this.neighbourhoodData[vis.currentNB.AREA_LONG_CODE];
 
         d3.select("#nb-info").html(
-            `<div style="border: thin solid grey; border-radius: 5px; background: lightgrey; padding: 20px">
+            `<div style="border: thin solid grey; border-radius: 5px; padding: 20px;">
                 <h4>${vis.currentNB.AREA_NAME} (${vis.currentNB.AREA_LONG_CODE})</h4> 
                 <p class="nb-stat"> <b>Average Income (2021):</b> $${this.moneyFormat(neighbourhoodInfo.average_income)}</p>  
                 <p class="nb-stat"> <b>Bike Commuter Percentage (2021):</b> ${neighbourhoodInfo.collisions}</p>                     
