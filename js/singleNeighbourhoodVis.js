@@ -20,6 +20,7 @@ export class SingleNeighbourhoodVis {
         });
 
         this.currentNB = null;
+        this.moneyFormat = d3.format(",")
 
         this.initVis()
     }
@@ -47,15 +48,16 @@ export class SingleNeighbourhoodVis {
             .attr("width", vis.width)
             .attr("height", vis.height - vis.mapYOffset);
 
-        // add title
-        vis.svg.append('g')
-            .attr('class', 'title')
-            .attr('id', 'map-title')
-            .append('text')
-            .attr('class', 'map-title-text')
-            .attr('id', 'map-title-text-singleNeighbourhood')
-            .text(`Detailed Neighbourhood View:`)
-            .attr('transform', `translate(${vis.width / 5}, 20)`);
+        // // add title
+        // vis.title = vis.svg.append('g')
+        //     .attr('class', 'title')
+        //     .attr('id', 'map-title');
+        
+        // vis.title.append('text')
+        //     .attr('class', 'map-title-text')
+        //     .attr('id', 'map-title-text-singleNeighbourhood')
+        //     .text(`Detailed Neighbourhood View:`)
+        //     .attr('transform', `translate(${vis.width / 5}, 20)`);
 
         vis.projection = d3.geoMercator().fitSize([vis.width,vis.height],vis.geoData)
         vis.path = d3.geoPath(vis.projection);
@@ -69,9 +71,10 @@ export class SingleNeighbourhoodVis {
             .attr("class", "neighbourhoods");
 
         // Draw the map
-        vis.map.selectAll("path")
-            .data(vis.geoData.features)
-            .enter()
+        vis.neighbourhoods = vis.map.selectAll("path")
+            .data(vis.geoData.features);
+        
+        vis.neighbourhoods.enter()
             .append("path")
             .attr("d", vis.path)
             .attr("id", (d) => {
@@ -102,9 +105,12 @@ export class SingleNeighbourhoodVis {
         const feature = vis.geoData.features[vis.currentNB._id - 1];
         const [[x0, y0], [x1, y1]] = vis.path.bounds(feature);
 
-        console.log(x0, y0, x1, y1);
-        d3.select(`#single-nb-${vis.currentNB.AREA_LONG_CODE}`).transition().style("fill", "red");
-            vis.svg.transition().duration(750).call(
+        
+        d3.selectAll(`.neighbourhood-single`).style('fill', 'black');
+
+        d3.select(`#single-nb-${vis.currentNB.AREA_LONG_CODE}`).transition().style("fill", "#08519c");
+        
+        vis.svg.transition().duration(750).call(
             vis.zoom.transform,
             d3.zoomIdentity
                 .translate(vis.width / 2, vis.height / 2)
@@ -112,38 +118,72 @@ export class SingleNeighbourhoodVis {
                 .translate(-(x0 + x1) / 2, -(y0 + y1) / 2),
             d3.pointer(event, vis.svg.node())
         );
+
+        d3.select("#single-neighbourhood-name").text(vis.currentNB.AREA_NAME);
+
+        console.log(this.neighbourhoodData);
+        let neighbourhoodInfo = this.neighbourhoodData[vis.currentNB.AREA_LONG_CODE];
+
+        d3.select("#nb-info").html(
+            `<div style="border: thin solid grey; border-radius: 5px; background: lightgrey; padding: 20px">
+                <h4>${vis.currentNB.AREA_NAME} (${vis.currentNB.AREA_LONG_CODE})</h4> 
+                <p class="nb-stat"> <b>Average Income (2021):</b> $${this.moneyFormat(neighbourhoodInfo.average_income)}</p>  
+                <p class="nb-stat"> <b>Bike Commuter Percentage (2021):</b> ${neighbourhoodInfo.collisions}</p>                     
+                <p class="nb-stat"> <b>Bikeshare Stations:</b> ${neighbourhoodInfo.bikeshare_stations}</p>      
+                <p class="nb-stat"> <b>Bike Racks:</b> ${neighbourhoodInfo.bike_parking_racks}</p>        
+                <p class="nb-stat"> <b>Total Bicycle Collisions (2009-2023):</b> ${neighbourhoodInfo.collisions}</p>      
+                <p class="nb-stat"> <b>Total Bicycle Thefts (2009-2023):</b> ${neighbourhoodInfo.thefts}</p>       
+            </div>`);
+
+        
     }
 
     addDots() {
         let vis = this;
         
-        vis.bikeshare = vis.svg.selectAll("circle.bikeshare")
+        vis.bikeshare = vis.map.selectAll("circle.single-bikeshare")
             .data(vis.stationData, d => d["Station Id"]);
 
         // ENTER: Append circles for each station.
         vis.bikeshare.enter()
             .append("circle")
-            .attr("class", "bikeshare")
+            .attr("class", "single-bikeshare")
             .attr("cx", d => {
                 return vis.projection([d.Longitude, d.Latitude])[0]
             })
             .attr("cy", d => vis.projection([d.Longitude, d.Latitude])[1])
-            .attr("r", 4)
+            .attr("r", 1)
             .attr("fill", "red")
             .attr("stroke", "grey")
-            .attr("stroke-width", 1)
+            .attr("stroke-width", 0.25)
             .style("opacity", 0);
         
-        vis.bikerack = vis.svg.selectAll("path.bikerack")
+        vis.bikerack = vis.map.selectAll("path.single-bikerack")
             .data(vis.bikeRackData.features)
             .enter()
             .append("path")
             .attr("d",vis.path)
-            .attr("class", "bikerack")
+            .attr("class", "single-bikerack")
             .attr("fill", "orange")
+            .attr("r", 1)
             .attr("stroke", "grey")
-            .attr("stroke-width", 1)
+            .attr("stroke-width", 0.25)
             .style("opacity", 0);
+
+        vis.laneProjection = d3.geoMercator().fitSize([vis.width,vis.height],vis.bikeLaneData)
+        vis.lanePath = d3.path("MultiLineString ", vis.laneProjection);
+        
+        console.log(this.bikeLaneData);
+
+        vis.bikePaths = vis.map.selectAll("path.single-lanes")
+            .data(vis.bikeLaneData.features)
+            .enter()
+            .append("path")
+            .attr("d", d3.path)
+            .attr("class", "single-bikerack")
+            .attr("fill", "orange")
+            .attr("stroke-width", 2)
+            .style("opacity", 1);
     }
 
     

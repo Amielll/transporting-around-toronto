@@ -35,6 +35,13 @@ function initProject(allDataArray) {
     neighbourhoodSelect = new NeighbourhoodSelect('nb-selector', mapData, singleNeighbourhoodVis);
 }
 
+export function toggleDots(type, state){
+    if (state == true){
+        d3.selectAll(`.single-${type}`).style("opacity", 1);
+    } else {
+        d3.selectAll(`.single-${type}`).style("opacity", 0);
+    }
+}
 
-d3.select("#toggle-bike-rack-single").on("change", () => singleNeighbourhoodVis.toggleDots("bikerack", d3.select("#toggle-bike-rack-single").property("checked")));
-d3.select("#toggle-bike-share-single").on("change", () => singleNeighbourhoodVis.toggleDots("bikeshare", d3.select("#toggle-bike-share-single").property("checked")));
+d3.select("#toggle-bike-rack-single").on("change", () => toggleDots("bikerack", d3.select("#toggle-bike-rack-single").property("checked")));
+d3.select("#toggle-bike-share-single").on("change", () => toggleDots("bikeshare", d3.select("#toggle-bike-share-single").property("checked")));

@@ -77,24 +77,33 @@
     <!-- Bike Share Station Map -->
     <div class="row" id="bikeshare-map-area"></div>
 
+    <!-- Single Neighbourhood Vis -->
+    
+    <div class="row d-flex align-items-center" style="height: 10vh; width: 100%; padding: 0;">
+        <div class="col-6">
+            <h5 id="single-neighbourhood-title">Detailed Neighbourhood View</h5>
+            <h2 id="single-neighbourhood-name"></h2>
+        </div>
+        <div class="col">
+            <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="toggle-bike-share-single">
+            <label class="form-check-label" for="toggle-bike-share-single">
+            View Bikeshare Stations
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="toggle-bike-rack-single">
+            <label class="form-check-label" for="toggle-bike-rack-single">
+            View Bike Racks
+            </label>
+        </div>
+    </div>
+    </div>
     <div class="row" id="single-neighbourhood" style="height: 80vh; width:100vw; padding-top: 0; padding-left: 1vh; padding-right: 1vh; padding-bottom: 1vh">
         <div class="col-6" id="nb-vis"></div>
         <div class="col">
             <div class="row" id="nb-selector"
-            style="height: 40vh; padding-top: 0; padding-left: 1vh; padding-right: 1vh; padding-bottom: 1vh">
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="toggle-bike-share-single">
-                    <label class="form-check-label" for="toggle-bike-share-single">
-                    View Bikeshare Stations
-                    </label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="toggle-bike-rack-single">
-                    <label class="form-check-label" for="toggle-bike-rack-single">
-                    View Bike Racks
-                    </label>
-                </div>
-            </div>
+            style="height: 40vh; padding-top: 0; padding-left: 1vh; padding-right: 1vh; padding-bottom: 1vh"></div>
             <div class="row" id="nb-info"
             style="height: 40vh; padding-top: 0; padding-left: 1vh; padding-right: 1vh; padding-bottom: 1vh"></div>
         </div>

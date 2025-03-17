@@ -85,22 +85,22 @@ export class NeighbourhoodSelect {
             .on('mouseover', function(event, d){
                 vis.neighbourhoods.attr('fill', 'black');
                 if (vis.selectedNB !== null){
-                    d3.select(`#neighbourhood-${vis.selectedNB.AREA_LONG_CODE}`).attr('fill', 'red');
+                    d3.select(`#neighbourhood-${vis.selectedNB.AREA_LONG_CODE}`).attr('fill', '#08519c');
                 }
                 d3.select(this)
-                    .attr('fill', 'red');
+                    .attr('fill', '#6baed6');
             })
             .on('mouseout', function(event, d){
                 vis.neighbourhoods.attr('fill', 'black');
                 if (vis.selectedNB !== null){
-                    d3.select(`#neighbourhood-${vis.selectedNB.AREA_LONG_CODE}`).attr('fill', 'red');
+                    d3.select(`#neighbourhood-${vis.selectedNB.AREA_LONG_CODE}`).attr('fill', '#08519c');
                 }
             })
             .on('click', function(event, d){
                 vis.neighbourhoods.attr('fill', 'black');
-                console.log('yerrr', d);
                 d3.select(this)
-                    .attr('fill', 'red');
+                    .attr('fill', '#08519c');
+                vis.selectedNB = d.properties;
                 vis.controlledVis.updateZoom(d.properties, event);
             })
     }
