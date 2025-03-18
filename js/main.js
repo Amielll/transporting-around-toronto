@@ -7,7 +7,6 @@ import { TorBikeshareController } from "./controllers/torBikeshareController.js"
 
 let montrealBikeshareMapVis, neighbourhoodSelect, singleNeighbourhoodVis;
 
-
 // TODO: Combine the main.js / neighbourhoodsMain.js load data/init visualization stuff into a single file
 // TODO: Keep the helper functions like changeOpacity or whatever else comes up in respective util files
 let bikesharePromises = [

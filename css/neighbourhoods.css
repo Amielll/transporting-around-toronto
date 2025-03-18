@@ -71,7 +71,12 @@
 }
 
 .form-check #toggle-bike-path-single:checked{
-    background-color: #41ab5d;
-    border-color: #41ab5d;
+    background-color: #006d2c;
+    border-color: #006d2c;
 
 }
+
+/* #nb-summary {
+    margin-top: 20px;
+} */
+  

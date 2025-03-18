@@ -33,7 +33,6 @@ export class SingleNeighbourhoodVis {
         this.bikeRackData = bikeRackPoints;
 
         this.currentNB = null;
-        this.moneyFormat = d3.format(",")
 
         this.initVis()
     }
@@ -85,7 +84,7 @@ export class SingleNeighbourhoodVis {
             .attr("class", "neighbourhood-single")
             .attr('stroke-width', '0.5px')
             .attr('stroke', 'black')
-            .attr('fill', 'white');
+            .attr('fill', '#ddd');
 
         vis.addDots()
 
@@ -108,9 +107,9 @@ export class SingleNeighbourhoodVis {
         const [[x0, y0], [x1, y1]] = vis.path.bounds(feature);
 
         
-        d3.selectAll(`.neighbourhood-single`).style('fill', 'white');
+        d3.selectAll(`.neighbourhood-single`).style('fill', '#ddd');
 
-        d3.select(`#single-nb-${vis.currentNB.AREA_LONG_CODE}`).transition().style("fill", "#08519c");
+        d3.select(`#single-nb-${vis.currentNB.AREA_LONG_CODE}`).transition().style("fill", "#6a9bc3");
         
         vis.svg.transition().duration(750).call(
             vis.zoom.transform,
@@ -126,18 +125,40 @@ export class SingleNeighbourhoodVis {
 
         let neighbourhoodInfo = this.neighbourhoodData[vis.currentNB.AREA_LONG_CODE];
 
-        d3.select("#nb-info").html(
-            `<div style="border: thin solid grey; border-radius: 5px; padding: 20px;">
-                <h4>${vis.currentNB.AREA_NAME} (${vis.currentNB.AREA_LONG_CODE})</h4> 
-                <p class="nb-stat"> <b>Average Income (2021):</b> $${this.moneyFormat(neighbourhoodInfo.average_income)}</p>  
-                <p class="nb-stat"> <b>Bike Commuter Percentage (2021):</b> ${neighbourhoodInfo.collisions}</p>                     
-                <p class="nb-stat"> <b>Bikeshare Stations:</b> ${neighbourhoodInfo.bikeshare_stations}</p>      
-                <p class="nb-stat"> <b>Bike Racks:</b> ${neighbourhoodInfo.bike_parking_racks}</p>        
-                <p class="nb-stat"> <b>Total Bicycle Collisions (2009-2023):</b> ${neighbourhoodInfo.collisions}</p>      
-                <p class="nb-stat"> <b>Total Bicycle Thefts (2009-2023):</b> ${neighbourhoodInfo.thefts}</p>       
-            </div>`);
+        this.updateSummary(neighbourhoodInfo)
+        // d3.select("#nb-info").html(
+        //     `<div>
+        //         <h4>${vis.currentNB.AREA_NAME} (${vis.currentNB.AREA_LONG_CODE})</h4> 
+        //         <p class="nb-stat"> <b>Average Income (2021):</b> $${this.moneyFormat(neighbourhoodInfo.average_income)}</p>  
+        //         <p class="nb-stat"> <b>Bike Commuter Percentage (2021):</b> ${neighbourhoodInfo.collisions}</p>                     
+        //         <p class="nb-stat"> <b>Bikeshare Stations:</b> ${neighbourhoodInfo.bikeshare_stations}</p>      
+        //         <p class="nb-stat"> <b>Bike Racks:</b> ${neighbourhoodInfo.bike_parking_racks}</p>        
+        //         <p class="nb-stat"> <b>Total Bicycle Collisions (2009-2023):</b> ${neighbourhoodInfo.collisions}</p>      
+        //         <p class="nb-stat"> <b>Total Bicycle Thefts (2009-2023):</b> ${neighbourhoodInfo.thefts}</p>       
+        //     </div>`);
 
         
+    }
+
+    updateSummary(neighbourhoodInfo) {
+        let summary = d3.select("#nb-summary");
+        let summaryName = d3.select("#nb-summary-name");
+        let summaryIncome = d3.select("#nb-summary-income");
+        let summaryCommuter = d3.select("#nb-summary-commuter");
+        let summaryStations = d3.select("#nb-summary-stations");
+        let summaryRacks = d3.select("#nb-summary-racks");
+        let summaryCollisions = d3.select("#nb-summary-collisions");
+        let summaryThefts = d3.select("#nb-summary-thefts");
+
+        console.log(neighbourhoodInfo)
+        // summary.style("display", "block");
+        summaryName.text(`${neighbourhoodInfo.name} (${neighbourhoodInfo.number})`);
+        summaryIncome.text(`$${d3.format(",")(neighbourhoodInfo.average_income)}`);
+        summaryCommuter.text(d3.format(".00%")(neighbourhoodInfo.bicycle_commuters));
+        summaryStations.text(neighbourhoodInfo.bikeshare_stations);
+        summaryRacks.text(neighbourhoodInfo.bike_parking_racks);
+        summaryCollisions.text(neighbourhoodInfo.collisions);
+        summaryThefts.text(neighbourhoodInfo.thefts);
     }
 
     addDots() {
@@ -186,7 +207,7 @@ export class SingleNeighbourhoodVis {
             .append("path")
             .attr('d', d => vis.lanePath({ type: 'LineString', coordinates: d }))
             .attr("class", "single-lanes")
-            .attr('stroke', '#41ab5d')
+            .attr('stroke', '#006d2c')
             .attr("stroke-width", 0.5)
             .attr('fill', 'none');
     }
