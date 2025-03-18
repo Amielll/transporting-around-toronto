@@ -1,8 +1,10 @@
 import * as d3 from 'd3';
 
-export class BarVis {
-    constructor(parentElement, stationData, eventHandler){
+export class HorizontalBarVis {
+    constructor(parentElement, title, margin, stationData, eventHandler){
         this.parentElement = parentElement;
+        this.title = title;
+        this.margin = margin;
         this.stationData = stationData;
         this.eventHandler = eventHandler;
         this.initVis();
