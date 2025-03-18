@@ -40,6 +40,13 @@ export class TorBikeshareController {
             this.barVis.onSelectionChange(event.detail);
             this.updateSummary(event.detail);
         });
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const selectElement = document.getElementById('bikeshare-station-metric');
+            selectElement.addEventListener('change', (e) => {
+                this.barVis.wrangleData(e.target.value);
+            });
+        });
     }
 
     updateSummary(station) {

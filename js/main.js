@@ -58,12 +58,6 @@ function initProject(allDataArray) {
         montrealStationData, montrealTripData, montrealMapData);
     singleNeighbourhoodVis = new SingleNeighbourhoodVis('nb-vis', stationInfo, tripData, mapData, demographicData, bikeRackData, bikeLaneData);
     neighbourhoodSelect = new NeighbourhoodSelect('nb-selector', mapData, singleNeighbourhoodVis);
-
-
-    window.addEventListener("load", document.getElementById('bikeshare-station-metric').addEventListener('change', function(e) {
-        console.log('Selected option:', e.target.value);
-        bikeshareBarVis.wrangleData(e.target.value);
-    }), false);
 }
 
 function processStationData(stationInfo, stationStatus, tripData) {
