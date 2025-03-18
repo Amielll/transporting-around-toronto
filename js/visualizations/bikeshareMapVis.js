@@ -2,6 +2,13 @@ import {BaseMapVis} from "./baseMapVis.js";
 import * as d3 from "d3";
 
 export class BikeshareMapVis extends BaseMapVis {
+
+    constructor(parentElement, title, margin, stationData, geoData, eventHandler) {
+        super(parentElement, title, margin, geoData, eventHandler);
+        this.stationData = stationData;
+        this.initVis();
+    }
+
     initVis() {
         let vis = this;
         super.initVis();

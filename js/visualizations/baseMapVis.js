@@ -2,14 +2,12 @@ import * as d3 from "d3";
 
 export class BaseMapVis {
 
-    constructor(parentElement, title, margin, stationData, geoData, eventHandler) {
+    constructor(parentElement, title, margin, geoData, eventHandler) {
         this.parentElement = parentElement;
         this.title = title;
         this.margin = margin;
-        this.stationData = stationData;
         this.geoData = geoData;
         this.eventHandler = eventHandler;
-        this.initVis();
     }
 
     initVis() {
