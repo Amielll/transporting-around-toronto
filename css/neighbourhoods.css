@@ -56,3 +56,22 @@
 .nb-stat {
     margin-bottom: 0px;
 }
+
+
+.form-check #toggle-bike-share-single:checked{
+    background-color: red;
+    border-color: red;
+
+}
+
+.form-check #toggle-bike-rack-single:checked{
+    background-color: orange;
+    border-color: orange;
+    
+}
+
+.form-check #toggle-bike-path-single:checked{
+    background-color: #41ab5d;
+    border-color: #41ab5d;
+
+}

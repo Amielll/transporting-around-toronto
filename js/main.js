@@ -37,6 +37,7 @@ export function toggleDots(type, state){
 
 d3.select("#toggle-bike-rack-single").on("change", () => toggleDots("bikerack", d3.select("#toggle-bike-rack-single").property("checked")));
 d3.select("#toggle-bike-share-single").on("change", () => toggleDots("bikeshare", d3.select("#toggle-bike-share-single").property("checked")));
+d3.select("#toggle-bike-path-single").on("change", () => toggleDots("lanes", d3.select("#toggle-bike-path-single").property("checked")));
 
 function initProject(allDataArray) {
     let stationInfo = allDataArray[0];
