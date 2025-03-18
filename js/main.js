@@ -2,13 +2,10 @@ import * as d3 from "d3";
 
 import { SingleNeighbourhoodVis } from "./singleNeighbourhoodVis.js";
 import { NeighbourhoodSelect } from './singleNeighbourhoodSelect.js';
-import { BikeshareMapVis } from './bikeshareMapVis.js';
-import { BarVis } from './barVis.js';
 import { MontrealBikeshareMapVis } from './montrealMapVis.js';
+import { TorBikeshareController } from "./controllers/torBikeshareController.js";
 
-
-let bikeshareMapVis, bikeshareBarVis, montrealBikeshareMapVis, neighbourhoodSelect, singleNeighbourhoodVis;
-let selectedCategory = 'totalVolume';
+let montrealBikeshareMapVis, neighbourhoodSelect, singleNeighbourhoodVis;
 
 
 // TODO: Combine the main.js / neighbourhoodsMain.js load data/init visualization stuff into a single file
@@ -55,30 +52,13 @@ function initProject(allDataArray) {
 
     let stationData = processStationData(stationInfo, stationStatus, tripData);
 
-    let eventHandler = {
-        bind: (eventName, handler) => {
-            document.body.addEventListener(eventName, handler);
-        },
-        trigger: (eventName, extraParameters) => {
-            document.body.dispatchEvent(new CustomEvent(eventName, {
-                detail: extraParameters
-            }));
-        }
-    }
+    let torBikeshareController = new TorBikeshareController(stationData, mapData);
 
-    bikeshareMapVis = new BikeshareMapVis('bikeshare-station-map-vis', stationData, mapData, eventHandler);
-    bikeshareBarVis = new BarVis('bikeshare-station-bar-vis', stationData, eventHandler);
     montrealBikeshareMapVis = new MontrealBikeshareMapVis('montreal-bikeshare-map-area',
         montrealStationData, montrealTripData, montrealMapData);
     singleNeighbourhoodVis = new SingleNeighbourhoodVis('nb-vis', stationInfo, tripData, mapData, demographicData, bikeRackData, bikeLaneData);
     neighbourhoodSelect = new NeighbourhoodSelect('nb-selector', mapData, singleNeighbourhoodVis);
 
-    eventHandler.bind("selectionChanged", function(event) {
-        console.log(event);
-        bikeshareBarVis.onSelectionChange(event.detail);
-        bikeshareMapVis.onSelectionChange(event.detail);
-        updateSummary(event.detail);
-    });
 
     window.addEventListener("load", document.getElementById('bikeshare-station-metric').addEventListener('change', function(e) {
         console.log('Selected option:', e.target.value);
@@ -118,19 +98,4 @@ function processStationData(stationInfo, stationStatus, tripData) {
     });
 
     return stationData;
-}
-
-function updateSummary(station) {
-    let summary = d3.select("#bikeshare-station-summary");
-    let summaryName = d3.select("#bikeshare-summary-station-name");
-    let summaryID = d3.select("#bikeshare-summary-station-id");
-    let summaryNeighbourhood = d3.select("#bikeshare-summary-station-neighbourhood");
-    let summaryLocation = d3.select("#bikeshare-summary-station-location");
-    summary.style("display", "block");
-    summaryName.text(station.name);
-    summaryID.text(station.id);
-    summaryNeighbourhood.text(station.neighbourhood);
-    summaryLocation.text(station.latitude + ', ' + station.longitude);
-    summaryLocation.attr("href", `https://www.google.com/maps/place/${station.latitude},${station.longitude}`);
-    summaryLocation.attr("target", "_blank");
 }
