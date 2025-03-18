@@ -18,17 +18,7 @@ document.addEventListener('keyup', function(event) {
         if (curr_page + 1 <= 6)
             changePage(curr_page + 1);
     } else if (event.key === "ArrowUp"){
-        if (curr_page - 1 >= 0)
-            changePage(curr_page - 1);
-    } 
-});
-
-document.addEventListener('keyup', function(event) {
-    if (event.key === "ArrowDown"){
-        if (curr_page + 1 <= 6)
-            changePage(curr_page + 1);
-    } else if (event.key === "ArrowUp"){
-        if (curr_page - 1 >= 0)
+        if (curr_page - 1 >= 1)
             changePage(curr_page - 1);
     } 
 });
