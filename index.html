@@ -18,10 +18,11 @@
     <div class="row" style="height: 100vh; width: 97vw">
         <div class="col" style="height: 100vh; width: 100%">
             <!-- Neighbourhood Choropleth Visualization -->
-            <div id="section-1">
+             
+            <div style="height: 100vh; width: 100%" id="section-1">
                 <div id="neighbourhoods-choropleth" style="height: 100vh; width: 100%">
                     <div class="row d-flex align-items-center" style="height: 10vh; width: 100%">
-                        <h2 id="neighbourhoods-title">Analyzing Toronto's Neighbourhoods</h2>
+                        <h2 id="neighbourhoods-title">Comparing Toronto's Neighbourhoods</h2>
                     </div>
                     <div class="row justify-content-md-center">
                         <div class="col-auto align-items-right" id="neighbourhoods1-dropdown">
@@ -33,12 +34,21 @@
                                 <option value="collisions">Bike Collisions</option>
                                 <option value="thefts">Bike Thefts</option>
                             </select>
-                        </div>
-                        <div class="col-auto">
-                            <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" role="switch" id="vis-toggle">
+                        </div>           
+                        <div class="col-auto" style="margin-top: -4px">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="toggle-bike-share" checked>
+                                <label class="form-check-label" for="toggle-bike-share">
+                                View Bikeshare Stations
+                                </label>
                             </div>
-                        </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="toggle-bike-rack" checked>
+                                <label class="form-check-label" for="toggle-bike-rack">
+                                View Bike Racks
+                                </label>
+                            </div>
+                        </div> 
                         <div class="col-auto">
                             <select class="form-select" id="data-type2">
                                 <option value="average_income">Average Annual Income</option>
@@ -48,33 +58,18 @@
                                 <option value="collisions">Bike Collisions</option>
                                 <option value="thefts">Bike Thefts</option>
                             </select>
-                        </div>           
-                        <div class="col-auto" style="margin-top: -4px">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="toggle-bike-share">
-                                <label class="form-check-label" for="toggle-bike-share">
-                                View Bikeshare Stations
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="toggle-bike-rack">
-                                <label class="form-check-label" for="toggle-bike-rack">
-                                View Bike Racks
-                                </label>
-                            </div>
-                        </div> 
+                        </div>
                     </div>
                     <div class="row"
                         style="height: 80vh; padding-top: 0; padding-bottom: 1vh">
-                            <div id="map-div" style="height: 80vh; width: 100%; position:absolute;"></div>
-                            <div id="map-div2" style="height: 80vh; width: 100%; position:absolute; visibility:hidden;"></div>
+                            <div id="map-div" style="height: 80vh; width: 100%" class="col"></div>
+                            <div id="map-div2" style="height: 80vh; width: 100%" class="col"></div>
                     </div>
                 </div>
             </div>
             
-
             <!-- Bike Share Station Map -->
-            <div id="section-2" style="height: 100vh; width: 100%">
+            <div style="height: 100vh; width: 100%" id="section-2">
                 <div class="row" style="height: 10vh; width: 100%; padding-top: 2vh; text-align: center;">
                     <h2 id="bikeshare-station-title">Toronto's Bike Share Stations</h2>
                 </div>
@@ -190,11 +185,15 @@
                 </div>
             </div>
 
-            <div id="section-4">
+            <div style="height: 100vh; width: 100%" id="section-4">
+                <div id="montreal-bikeshare-map-area" style="margin-top: 5vh; height: 100vh; width: 100%"></div>
+            </div>
+
+            <div style="height: 100vh; width: 100%" id="section-5">
                 <div id="montreal-bikeshare-map-area" style="margin-top: 5vh; height: 100vh; width: 100%"></div>
             </div>
                 
-            <div style="height: 100vh; width: 100%" id="section-5"> 
+            <div style="height: 100vh; width: 100%" id="section-6"> 
                 <p>Insights for Toronto</p>
 
                 <ul>
@@ -204,7 +203,7 @@
                 </ul>
             </div>
                 
-            <div style="height: 100vh; width: 100%" id="section-6">
+            <div style="height: 100vh; width: 100%" id="section-7">
                 <p>Insights for Toronto vs Montreal</p>
                 <ul>
                     <li>Toronto has a higher bikeshare station coverage (by percentage of city area) than Montreal's.</li>

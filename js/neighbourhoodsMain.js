@@ -44,7 +44,7 @@ function changeOpacity(){
 
 export function toggleDots(type, state){
     if (state == true){
-        d3.selectAll(`.${type}`).style("opacity", 0.5);
+        d3.selectAll(`.${type}`).style("opacity", 0.4);
     } else {
         d3.selectAll(`.${type}`).style("opacity", 0);
     }

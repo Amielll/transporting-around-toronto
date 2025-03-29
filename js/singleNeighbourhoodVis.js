@@ -84,11 +84,15 @@ export class SingleNeighbourhoodVis {
             .attr("class", "neighbourhood-single")
             .attr('stroke-width', '0.5px')
             .attr('stroke', 'black')
-            .attr('fill', '#ddd');
+            .attr('fill', '#ddd')
+            .on('click', function(event, d){
+                vis.updateZoom(d.properties, event);
+            });
 
         vis.addDots()
 
         vis.zoomFunction = function(event) {
+            console.log(event);
             vis.map.attr("transform", event.transform);
             vis.map.attr("stroke-width", 1 / event.transform.k);
         }
@@ -111,13 +115,22 @@ export class SingleNeighbourhoodVis {
 
         d3.select(`#single-nb-${vis.currentNB.AREA_LONG_CODE}`).transition().style("fill", "#6a9bc3");
         
-        vis.svg.transition().duration(750).call(
+        // vis.svg.transition().duration(750).call(
+        //     vis.zoom.transform,
+        //     d3.zoomIdentity
+        //         .translate(vis.width / 2, vis.height / 2)
+        //         .scale(Math.min(8, 0.9 / Math.max((x1 - x0) / vis.width, (y1 - y0) / vis.height)))
+        //         .translate(-(x0 + x1) / 2, -(y0 + y1) / 2),
+        //     d3.pointer(event, vis.svg.node())
+        // );
+
+        let scale = Math.min(8, 0.9 / Math.max((x1 - x0) / vis.width, (y1 - y0) / vis.height));
+        let translateX = vis.width / 2 - scale * (x0 + x1) / 2;
+        let translateY = vis.height / 2 - scale * (y0 + y1) / 2;
+
+        vis.mapContainer.transition().duration(750).call(
             vis.zoom.transform,
-            d3.zoomIdentity
-                .translate(vis.width / 2, vis.height / 2)
-                .scale(Math.min(8, 0.9 / Math.max((x1 - x0) / vis.width, (y1 - y0) / vis.height)))
-                .translate(-(x0 + x1) / 2, -(y0 + y1) / 2),
-            d3.pointer(event, vis.svg.node())
+            d3.zoomIdentity.translate(translateX, translateY).scale(scale)
         );
 
         d3.select("#single-neighbourhood-name")

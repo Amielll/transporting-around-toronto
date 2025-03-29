@@ -38,7 +38,21 @@ export class MapVis {
         
         this.valueData = JSON.parse(JSON.stringify(this.valueData));
         this.stationData = stationData;
-        this.rackData = rackData;
+        this.bikeRackData = rackData;
+
+        
+        let bikeRackPoints = [];
+
+        this.bikeRackData.features.forEach((d) => {
+            bikeRackPoints.push({
+                ...d.properties,
+                Longitude: d.geometry.coordinates[0][0],
+                Latitude: d.geometry.coordinates[0][1],
+
+            })
+        })
+
+        this.bikeRackData = bikeRackPoints;
 
         // define colors
         this.variable = variable;
@@ -101,10 +115,8 @@ export class MapVis {
             .attr("class", "legend-axis")
             .attr('transform', `translate(${(vis.width/6) + 25}, ${vis.height/12})`)
 
-        if (vis.id == 2){
-            vis.legend.attr('transform', `translate(${5*vis.width/6}, ${8*vis.height/12})`)
-            vis.legendAxis.attr('transform', `translate(${5*vis.width/6 - 5}, ${8*vis.height/12})`)
-        }
+        vis.legend.attr('transform', `translate(${vis.width - 25}, ${8*vis.height/12})`)
+        vis.legendAxis.attr('transform', `translate(${vis.width - 30}, ${8*vis.height/12})`)
 
 
         vis.wrangleData(this.variable);
@@ -149,29 +161,55 @@ export class MapVis {
             .merge(vis.rect)
             .attr("width",20)
             .attr("height", 20)
-            .attr("y", function(d,i) { return i % 10 * 20  })
+            .style("stroke-width", 0.5)
+            .style("stroke", "black")
+            .attr("y", function(d,i) { return 140 - (i % 10 * 20)  })
             .attr("x", function(d,i) { return 0})
             .attr("fill", function(d) { return vis.colorScale(d); })
         
-        vis.text = vis.legendAxis.selectAll("text").data(vis.range)
-            .enter();
+        vis.text = vis.legendAxis.selectAll(".axis-label")
+            .data(vis.range);
+
+        vis.commaFormat = d3.format(",");
         
-        vis.text.append("text")
+        vis.text
+            .enter()
+            .append("text")
+            .attr("class", "axis-label")
             .merge(vis.text)
-            .attr("y", (d, i) => i*20 + 15)
+            .attr("y", (d, i) => 140 - (i*20 - 15))
             .attr("x", 0)
             .attr("text-anchor", () => {
-                if (vis.id == 1){
-                    return "start";
-                }
-                else{
-                    return "end";
-                }
-
+                return("end");
             })
             .text((d, i) => {
-                return "will fill in later";
-            })
+                const colours = vis.colorScale.range();
+                
+                let tickValues = vis.colorScale.invertExtent(colours[i]);
+
+                let start = tickValues[0]
+                let end = tickValues[1]
+
+                if (Number.isInteger(end)){
+                    if (i < colours.length - 1){
+                        end -= 1;
+                    }
+                    start = Math.round(start);
+                    end = Math.round(end);
+
+                    if (vis.variable === "average_income") {
+                        return(`$${vis.commaFormat(start)}-${vis.commaFormat(end)}`);
+                    }  
+                    return(`${vis.commaFormat(start)}-${vis.commaFormat(end)}`);
+                } else {
+                    end -= 0.001;
+                    if (start == 0){
+                        return(`${start}-${end.toFixed(3)}`);
+                    }
+                    return(`${start.toFixed(3)}-${end.toFixed(3)}`);
+                }
+                
+            });
 
         let variable1 = d3.select("#data-type1").property("value");
         vis.neighbourhoods
@@ -226,23 +264,37 @@ export class MapVis {
                 return vis.projection([d.Longitude, d.Latitude])[0]
             })
             .attr("cy", d => vis.projection([d.Longitude, d.Latitude])[1])
-            .attr("r", 4)
+            .attr("r", 3)
             .attr("fill", "red")
             .attr("stroke", "grey")
             .attr("stroke-width", 1)
-            .style("opacity", 0);
+            .style("opacity", 0.4);
         
-        
-        
-        vis.bikerack = vis.svg.selectAll("path.bikerack")
-            .data(vis.rackData.features)
-            .enter()
-            .append("path")
-            .attr("d",vis.path)
+        vis.bikerack = vis.svg.selectAll("circle.bikerack")
+            .data(vis.bikeRackData);
+
+        vis.bikerack.enter()
+            .append("circle")
             .attr("class", "bikerack")
+            .attr("cx", d => {
+                return vis.projection([d.Longitude, d.Latitude])[0]
+            })
+            .attr("cy", d => vis.projection([d.Longitude, d.Latitude])[1])
+            .attr("r", 3)
             .attr("fill", "orange")
             .attr("stroke", "grey")
             .attr("stroke-width", 1)
-            .style("opacity", 0);
+            .style("opacity", 0.4);
+        
+        // vis.bikerack = vis.svg.selectAll("path.bikerack")
+        //     .data(vis.rackData.features)
+        //     .enter()
+        //     .append("path")
+        //     .attr("d",vis.path)
+        //     .attr("class", "bikerack")
+        //     .attr("fill", "orange")
+        //     .attr("stroke", "grey")
+        //     .attr("stroke-width", 1)
+        //     .style("opacity", 0.5);
     }
 }
