@@ -31,7 +31,8 @@ export class TorBikeshareController {
         const barMargin = { top: 20, right: 40, bottom: 20, left: 200 };
 
         // Initialize visualizations
-        this.mapVis = new BikeshareMapVis(mapParent, mapTitle, mapMargin, this.stationData, this.geoData, this.eventHandler);
+        // TODO: Update so we don't bind incoming data to the controller
+        this.mapVis = new BikeshareMapVis(mapParent, this.geoData, this.eventHandler, this.stationData);
         this.barVis = new HorizontalBarVis(barParent, barTitle, barMargin, this.stationData, this.eventHandler);
 
         // Register visualizations in event handler (needs to be arrow function so that 'this' refers to controller)
