@@ -1,30 +1,23 @@
-import * as d3 from "d3";
-
-import { MontrealBikeshareMapVis } from './montrealMapVis.js';
-import { TorBikeshareController } from "./controllers/torBikeshareController.js";
+import {TorBikeshareController} from "./controllers/torBikeshareController.js";
 import {DataManager} from "./util/dataManager.js";
 import {SingleNeighbourhoodController} from "./controllers/singleNeighbourhoodController.js";
-
-let montrealBikeshareMapVis;
+import {MtlBikeshareController} from "./controllers/mtlBikeshareController.js";
 
 async function main() {
+    // load data
     let dataManager = new DataManager();
     await dataManager.loadData();
 
-    let montrealStationData = dataManager.data.mtlStationData;
-    let montrealTripData = dataManager.data.mtlTripData;
-    let montrealMapData = dataManager.data.mtlMapData;
-
+    // initialize controllers
     let torBikeshareController = new TorBikeshareController();
     let singleNeighbourhoodController = new SingleNeighbourhoodController();
-
+    let mtlBikeshareController = new MtlBikeshareController();
     torBikeshareController.initController();
     singleNeighbourhoodController.initController();
-
-    montrealBikeshareMapVis = new MontrealBikeshareMapVis('montreal-bikeshare-map-area',
-        montrealStationData, montrealTripData, montrealMapData);
+    mtlBikeshareController.initController();
 }
 
+// main entrypoint for the project
 main()
     .then(() => console.log("Project loaded"))
     .catch((error) => console.error(error));
