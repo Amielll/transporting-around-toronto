@@ -1,15 +1,33 @@
-@font-face {
-  font-family: 'Nimbus Sans Extd';
-  src: url("fonts/nimbus-sans-extd-black.otf") format('opentype');
-}
+@import url('https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&family=Lexend+Exa:wght@100..900&display=swap');
 
 html, body {
   max-width: 100%;
+  font-family: 'Jost';
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-family:'Nimbus Sans Extd';
-  letter-spacing: 2px;
+h1, h2, h3, h4, h5, h6, .title {
+  font-weight: 700;
+  font-family: 'Lexend Exa';
+}
+
+.axis-label {
+  font-weight: 300;
+}
+
+.text {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#main-title-1 {
+  font-size: 11vw;
+  text-align: center;
+}
+
+#main-title-2 {
+  font-size: 4.5vw;
+  text-align: center;
 }
 
 #bikeshare-station-summary {
@@ -25,30 +43,45 @@ h1, h2, h3, h4, h5, h6 {
   height: 100%
 }
 
-ul {
+/* ul {
   list-style-type: disc !important;
   padding-left:1em !important;
   margin-left:1em;
+} */
+
+.circle-button{
+  color: grey;
 }
 
-
-#scroller{
-  position: fixed;
-  right:0;
-  height:100vh;
-  width:3vw;
-  top: 80%;
+#scroller-buttons li::marker {
+  font-size: 1.5em;
 }
 
 #scroller-buttons {
-  vertical-align: middle;
+  margin: 0;
+  padding: 0;
+  position: fixed;
+  right: 0.5%;
+  /* list-style: none; */
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
 }
 
-.circle-button{
-  border:1px solid black; 
-  border-radius: 50px;   
-  background-color: white;
-  width: 1.5vh;
-  height: 1.5vh;
-  margin-bottom: 1.5vh;
+.pic-column{
+  height: 100%;
+  width: 100%;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.contributor-img{
+  background-color: grey; 
+  aspect-ratio: 1/1; 
+  width: 70%;
+}
+
+.selected {
+  color: black
 }

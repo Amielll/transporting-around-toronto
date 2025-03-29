@@ -80,7 +80,6 @@ export class MapVis {
             .attr('class', 'title')
             .attr('id', 'map-title')
             .append('text')
-            .attr('class', 'map-title-text')
             .attr('id', 'map-title-text' + vis.id)
             .text(titles[vis.variable])
             .attr('transform', `translate(${vis.width / 2}, 40)`)
@@ -198,15 +197,15 @@ export class MapVis {
                     end = Math.round(end);
 
                     if (vis.variable === "average_income") {
-                        return(`$${vis.commaFormat(start)}-${vis.commaFormat(end)}`);
+                        return(`$${vis.commaFormat(start)} — ${vis.commaFormat(end)}`);
                     }  
-                    return(`${vis.commaFormat(start)}-${vis.commaFormat(end)}`);
+                    return(`${vis.commaFormat(start)} — ${vis.commaFormat(end)}`);
                 } else {
                     end -= 0.001;
                     if (start == 0){
-                        return(`${start}-${end.toFixed(3)}`);
+                        return(`${start} — ${end.toFixed(3)}`);
                     }
-                    return(`${start.toFixed(3)}-${end.toFixed(3)}`);
+                    return(`${start.toFixed(3)} — ${end.toFixed(3)}`);
                 }
                 
             });
