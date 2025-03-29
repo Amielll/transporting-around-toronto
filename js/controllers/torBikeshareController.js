@@ -2,10 +2,11 @@ import { BikeshareMapVis } from "../visualizations/bikeshareMapVis.js";
 import { HorizontalBarVis } from "../visualizations/horizontalBarVis.js";
 
 import * as d3 from "d3";
+import {DataManager} from "../util/dataManager.js";
 
 export class TorBikeshareController {
 
-    constructor(stationData, geoData) {
+    constructor() {
         this.eventHandler = {
             bind: (eventName, handler) => {
                 document.body.addEventListener(eventName, handler);
@@ -16,9 +17,6 @@ export class TorBikeshareController {
                 }));
             }
         }
-        this.stationData = stationData;
-        this.geoData = geoData;
-        this.initController();
     }
 
     initController() {
@@ -31,9 +29,9 @@ export class TorBikeshareController {
         const barMargin = { top: 20, right: 40, bottom: 20, left: 200 };
 
         // Initialize visualizations
-        // TODO: Update so we don't bind incoming data to the controller
-        this.mapVis = new BikeshareMapVis(mapParent, this.geoData, this.eventHandler, this.stationData);
-        this.barVis = new HorizontalBarVis(barParent, barTitle, barMargin, this.stationData, this.eventHandler);
+        let dm = new DataManager();
+        this.mapVis = new BikeshareMapVis(mapParent, dm.data.torMapData, this.eventHandler, dm.data.torStationData);
+        this.barVis = new HorizontalBarVis(barParent, barTitle, barMargin, dm.data.torStationData, this.eventHandler);
 
         // Register visualizations in event handler (needs to be arrow function so that 'this' refers to controller)
         this.eventHandler.bind("selectionChanged",(event) => {
