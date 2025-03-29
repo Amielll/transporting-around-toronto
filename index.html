@@ -15,22 +15,9 @@
 
 <body>
 <div id="app" class="container-fluid" style="width:100%">
-    <ul id="scroller-buttons">
-        <li class="circle-button selected"></li>
-        <li class="circle-button"></li>
-        <li class="circle-button"></li>
-        <li class="circle-button"></li>
-        <li class="circle-button"></li>
-        <li class="circle-button"></li>
-        <li class="circle-button"></li>
-        <li class="circle-button"></li>
-        <li class="circle-button"></li>
-        <li class="circle-button"></li>
-        <li class="circle-button"></li>
-        <li class="circle-button"></li>
-        <li class="circle-button"></li>
-        <li class="circle-button"></li>
-    </ul>
+    <ul id="scroller-buttons"></ul>
+
+
     <div class="row" style="height: 100%; width: 98%">
         <div class="col" style="height: 100%; width: 100%">
             <div style="height: 100%; width: 100%" id="section-header" class="text page-section">
@@ -40,12 +27,55 @@
                 </div>
             </div>
 
+            <div style="height: 100%; width: 100%" id="section-x" class="text page-section">
+                <p>By population, Toronto is the biggest city in Canada. something something let's compare with Montreal and Vancouver.</p>
+            </div>  
+
+            <!-- Montreal Choropleth Vis -->
+            <div style="height: 100%; width: 100%" class="city-demographics text page-section">
+
+            </div>  
+
+            <div style="height: 100%; width: 100%" class="city-demographics vis page-section">
+                <p>mtl choropleth</p>
+                <div id="montreal-choropleth-map-area" style="margin-top: 5vh; height: 100%; width: 100%"></div>
+            </div>
+            
+            <!-- Montreal Bikeshare Vis -->
+            <div style="height: 100%; width: 100%" class="city-bikeshare text page-section">
+                <p>bikeshare text</p>
+            </div>
+
+            <div style="height: 100%; width: 100%" class="city-bikeshare vis page-section">
+                <p>mtl bikeshare</p>
+                <div id="montreal-bikeshare-map-area" style="margin-top: 5vh; height: 100%; width: 100%"></div>
+            </div>                           
+
+
+            <!-- City Stats Comparison Vis -->
+            <div style="height: 100%; width: 100%" class="city-stats text page-section">
+
+            </div>
+            <div style="height: 100%; width: 100%" class="city-stats vis page-section"> 
+                <p>city stats comparison :D</p>
+            </div>
+
+            <!-- city comparison insights -->
+            <div style="height: 100%; width: 100%" class="insights text page-section"> 
+                <p>Insights for Toronto vs Montreal</p>
+                <ul>
+                    <li>Toronto has a higher bikeshare station coverage (by percentage of city area) than Montreal's.</li>
+                </ul>
+
+                <p>Main message: Toronto has sizable biking infrastructure, but it's ultimately lacking.</p>
+            </div>                  
+
             <!-- Neighbourhood Choropleth Visualization -->
-            <div style="height: 100%; width: 100%" id="section-1" class="text page-section">
+            <div style="height: 100%; width: 100%" class="neighbourhood-demographics text page-section">
 
             </div>
 
-            <div style="height: 100%; width: 100%" id="section-2" class="vis page-section">
+            <div style="height: 100%; width: 100%" class="neighbourhood-demographics vis page-section">
                 <div id="neighbourhoods-choropleth" style="height: 100%; width: 100%">
                     <div class="row d-flex align-items-center" style="height: 10vh; width: 100%">
                         <h2 id="neighbourhoods-title">Comparing Toronto's Neighbourhoods</h2>
@@ -94,13 +124,20 @@
                 </div>
             </div>
             
+            <!-- Neighbourhood Scatterplot Visualization -->
+            <div style="height: 100%; width: 100%" class="neighbourhood-scatterplot text page-section">
+            </div>
+
+            <div style="height: 100%; width: 100%" class="neighbourhood-scatterplot vis page-section">
+            </div>
+            
 
             <!-- Bike Share Station Map -->
-            <div style="height: 100%; width: 100%" id="section-3" class="text page-section">
+            <div style="height: 100%; width: 100%" class="neighbourhood-bikeshare page-section">
 
             </div>
 
-            <div style="height: 100%; width: 100%" id="section-4" class="vis page-section">
+            <div style="height: 100%; width: 100%" class="neighbourhood-bikeshare vis page-section">
                 <div class="row" style="height: 10vh; width: 100%; padding-top: 2vh; text-align: center;">
                     <h2 id="bikeshare-station-title">Toronto's Bike Share Stations</h2>
                 </div>
@@ -143,11 +180,11 @@
 
             
             <!-- Single Neighbourhood Vis -->
-            <div style="height: 100%; width: 100%" id="section-5" class="text page-section">
+            <div style="height: 100%; width: 100%" class="neighbourhood-specific text page-section">
 
             </div>
             
-            <div style="height: 100%; width: 100%" id="section-6" class="vis page-section">
+            <div style="height: 100%; width: 100%" class="neighbourhood-specific vis page-section">
                 <div class="row d-flex align-items-center" style="width: 100%; padding-top: 2vh;">
                     <h2 id="single-neighbourhood-name" style="text-align: center;">Detailed Neighbourhood View</h2>
                 </div>
@@ -223,7 +260,7 @@
 
 
             <!-- Toronto Insights -->
-            <div style="height: 100%; width: 100%" id="section-7" class="text page-section">
+            <div style="height: 100%; width: 100%" class="insights text page-section">
                 <p>Insights for Toronto</p>
 
                 <ul>
@@ -233,48 +270,7 @@
                 </ul>
             </div>
             
-
-            <!-- Montreal Choropleth Vis -->
-            <div style="height: 100%; width: 100%" id="section-8" class="text page-section">
-
-            </div>  
-
-            <div style="height: 100%; width: 100%" id="section-9" class="vis page-section">
-                <p>mtl choropleth</p>
-                <div id="montreal-choropleth-map-area" style="margin-top: 5vh; height: 100%; width: 100%"></div>
-            </div>
-            
-
-            <!-- Montreal Bikeshare Vis -->
-            <div style="height: 100%; width: 100%" id="section-10" class="text page-section">
-
-            </div>
-
-            <div style="height: 100%; width: 100%" id="section-11" class="vis page-section">
-                <p>mtl bikeshare</p>
-                <div id="montreal-bikeshare-map-area" style="margin-top: 5vh; height: 100%; width: 100%"></div>
-            </div>                           
-
-
-            <!-- City Stats Comparison Vis -->
-            <div style="height: 100%; width: 100%" id="section-12" class="text page-section">
-
-            </div>
-            <div style="height: 100%; width: 100%" id="section-13" class="vis page-section"> 
-                <p>city stats comparison :D</p>
-            </div>
-
-            <!-- city comparison insights -->
-            <div style="height: 100%; width: 100%" id="section-14" class="text page-section"> 
-                <p>Insights for Toronto vs Montreal</p>
-                <ul>
-                    <li>Toronto has a higher bikeshare station coverage (by percentage of city area) than Montreal's.</li>
-                </ul>
-
-                <p>Main message: Toronto has sizable biking infrastructure, but it's ultimately lacking.</p>
-            </div>                                  
-            
-            <div style="height: 100%; width: 100%" id="section-14" class="text row page-section"> 
+            <div style="height: 100%; width: 100%" class="credits text row page-section"> 
                 <h2>Made by:</h2>
                 <div class="col pic-column">
                     <div class="row contributor-img"></div>

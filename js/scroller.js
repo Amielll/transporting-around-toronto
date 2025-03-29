@@ -1,7 +1,22 @@
-const circleButtons = document.querySelectorAll('.circle-button');
+import * as d3 from "d3";
+
 const sections = document.querySelectorAll('.page-section');
 const totalHeight = document.documentElement.scrollHeight;
 
+
+const buttonNav = d3.select("#scroller-buttons");
+sections.forEach((section, index) => {
+    let button = buttonNav.append("li")
+
+    if (index == 0){
+        button.attr("class", "circle-button selected")
+    } else {
+        button.attr("class", "circle-button")
+    }
+}) 
+
+
+const circleButtons = document.querySelectorAll('.circle-button');
 
 circleButtons.forEach((button, index) => {
     button.addEventListener('click', function() {
