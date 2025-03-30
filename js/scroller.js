@@ -46,7 +46,7 @@ window.addEventListener('scroll', function(){
         circleButtons[0].classList.add('selected');
     } else {
         sections.forEach((section, index) => {
-            let nextSectionTop = (index < sections.length) ? sections[index + 1].offsetTop - windowHeight / 2 : totalHeight;
+            let nextSectionTop = (index < sections.length - 1) ? sections[index + 1].offsetTop - windowHeight / 2 : totalHeight;
             if (scrollTop >= section.offsetTop - windowHeight / 2 && scrollTop < nextSectionTop) {
                 circleButtons[index].classList.add('selected'); 
             }

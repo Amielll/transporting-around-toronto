@@ -26,6 +26,7 @@ export class DataManager {
             d3.csv(`${this.path}/neighbourhoods.csv`),
             d3.json(`${this.path}/bike_racks_data.geojson`),
             d3.json(`${this.path}/cycling-network - 4326.geojson`),
+            d3.csv(`${this.path}/bna-city-ratings.csv`)
         ]);
 
 
@@ -41,6 +42,7 @@ export class DataManager {
             torNeighbourhoodData : this.processNeighbourhoodData(allData[7]),
             torBikeRackData : this.processBikeRackData(allData[8]),
             torBikeLaneData : allData[9],
+            bnaScores : this.processScoresData(allData[10]),
         }
 
         this.loaded = true;
@@ -105,6 +107,36 @@ export class DataManager {
             neighbourhoodData[d.number] = d;
         });
         return neighbourhoodData;
+    }
+    
+    processScoresData(data){
+        let cleanedData = {
+            "Total": [],
+            "People": [],
+            "Opportunity": [],
+            "Core Services" : [],
+            "Recreation" : [],
+            "Retail" : [],
+            "Transit" : [],
+        }
+
+        data.forEach((city) => {
+            Object.keys(city).forEach((key) => { 
+                if (Object.keys(cleanedData).includes(key))
+                    cleanedData[key].push({"value": +city[key], "city": city.City})
+            })
+            // let cleanedCity = {}
+            // Object.keys(city).forEach((key) => {
+            //     if (key === "City")
+            //         cleanedCity[key] = city[key]
+            //     else 
+            //         cleanedCity[key] = +city[key]
+            // })
+            // cleanedData[city.City] = cleanedCity;
+
+        })
+
+        return cleanedData;
     }
 
 }
