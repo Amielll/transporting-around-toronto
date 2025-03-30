@@ -68,3 +68,22 @@ export class CityComparisonBikeshareController {
     // }
 
 }
+
+export function changeCompOpacity(){
+    let compToggle = d3.select("#toggle-city-comp").property("checked");
+
+    let visible1, visible2;
+    if (compToggle == false) {
+        visible1 = "visible";
+        visible2 = "hidden";
+    } else {
+        visible1 = "hidden";
+        visible2 = "visible";
+    } 
+
+    d3.select("#mon-bikeshare-comparison-vis")
+        .style("visibility", visible1);
+
+    d3.select("#van-bikeshare-comparison-vis")
+        .style("visibility", visible2);
+}

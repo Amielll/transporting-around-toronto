@@ -3,8 +3,8 @@ import * as d3 from "d3";
 import { SingleNeighbourhoodVis } from "./singleNeighbourhoodVis.js";
 import { NeighbourhoodSelect } from './singleNeighbourhoodSelect.js';
 import { TorBikeshareController } from "./controllers/torBikeshareController.js";
-import { CityComparisonBikeshareController } from "./controllers/cityComparisonBikeshareController.js";
-import { processMontrealStationData, torDOMInfo, monDOMInfo } from "./montrealDataProcess.js";
+import { CityComparisonBikeshareController, changeCompOpacity } from "./controllers/cityComparisonBikeshareController.js";
+import { processMontrealStationData, processVancouverStationData, torDOMInfo, monDOMInfo, vanDOMInfo } from "./citiesDataProcess.js";
 
 let montrealBikeshareMapVis, neighbourhoodSelect, singleNeighbourhoodVis;
 
@@ -21,6 +21,9 @@ let bikesharePromises = [
     d3.csv("data/neighbourhoods.csv"),
     d3.json("data/bike_racks_data.geojson"),
     d3.json("data/cycling-network - 4326.geojson"),
+    d3.json("data/vancouver_station_information_cleaned.json"),
+    d3.json('data/vancouver_neighbourhoods.geojson'),
+    d3.csv('data/vancouver_trips.csv')
 ];
 
 Promise.all(bikesharePromises)
@@ -39,6 +42,8 @@ d3.select("#toggle-bike-rack-single").on("change", () => toggleDots("bikerack", 
 d3.select("#toggle-bike-share-single").on("change", () => toggleDots("bikeshare", d3.select("#toggle-bike-share-single").property("checked")));
 d3.select("#toggle-bike-path-single").on("change", () => toggleDots("lanes", d3.select("#toggle-bike-path-single").property("checked")));
 
+d3.select("#city-comp-toggle").on("change", () => changeOpacity());
+
 function initProject(allDataArray) {
     let stationInfo = allDataArray[0];
     let stationStatus = allDataArray[1];
@@ -50,14 +55,19 @@ function initProject(allDataArray) {
     let demographicData = allDataArray[7];
     let bikeRackData = allDataArray[8];
     let bikeLaneData = allDataArray[9];
+    let vancouverStationData = allDataArray[10];
+    let vancouverMapData = allDataArray[11];
+    let vancouverTripData = allDataArray[12];
 
     let stationData = processStationData(stationInfo, stationStatus, tripData);
 
     let torBikeshareController = new TorBikeshareController(stationData, mapData);
 
+    let vanStationData = processVancouverStationData(vancouverStationData, null, vancouverTripData);
     let monStationData = processMontrealStationData(montrealStationData, null, montrealTripData);
     let torCompBikeshareController = new CityComparisonBikeshareController(torDOMInfo(), stationData, mapData);
-    let monBikeshareController = new CityComparisonBikeshareController(monDOMInfo(), monStationData, montrealMapData);
+    let monCompBikeshareController = new CityComparisonBikeshareController(monDOMInfo(), monStationData, montrealMapData);
+    let vanCompBikeshareController = new CityComparisonBikeshareController(vanDOMInfo(), vanStationData, vancouverMapData);
 }
 
 function processStationData(stationInfo, stationStatus, tripData) {
