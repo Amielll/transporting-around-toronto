@@ -2,8 +2,9 @@ import * as d3 from "d3";
 
 import { SingleNeighbourhoodVis } from "./singleNeighbourhoodVis.js";
 import { NeighbourhoodSelect } from './singleNeighbourhoodSelect.js';
-import { MontrealBikeshareMapVis } from './montrealMapVis.js';
 import { TorBikeshareController } from "./controllers/torBikeshareController.js";
+import { CityComparisonBikeshareController } from "./controllers/cityComparisonBikeshareController.js";
+import { processMontrealStationData, torDOMInfo, monDOMInfo } from "./montrealDataProcess.js";
 
 let montrealBikeshareMapVis, neighbourhoodSelect, singleNeighbourhoodVis;
 
@@ -15,7 +16,7 @@ let bikesharePromises = [
     d3.csv("data/bike_share_trips_2024-01.csv"),
     d3.json('data/Neighbourhoods.geojson'),
     d3.json("data/montreal_station_information_cleaned.json"),
-    d3.csv("data/Montreal Trip Counts.csv"),
+    d3.csv("data/Montreal Bikeshare Trips.csv"),
     d3.json('data/montreal-neighbourhoods.geojson'),
     d3.csv("data/neighbourhoods.csv"),
     d3.json("data/bike_racks_data.geojson"),
@@ -54,10 +55,9 @@ function initProject(allDataArray) {
 
     let torBikeshareController = new TorBikeshareController(stationData, mapData);
 
-    montrealBikeshareMapVis = new MontrealBikeshareMapVis('montreal-bikeshare-map-area',
-        montrealStationData, montrealTripData, montrealMapData);
-    singleNeighbourhoodVis = new SingleNeighbourhoodVis('nb-vis', stationInfo, tripData, mapData, demographicData, bikeRackData, bikeLaneData);
-    neighbourhoodSelect = new NeighbourhoodSelect('nb-selector', mapData, singleNeighbourhoodVis);
+    let monStationData = processMontrealStationData(montrealStationData, null, montrealTripData);
+    let torCompBikeshareController = new CityComparisonBikeshareController(torDOMInfo(), stationData, mapData);
+    let monBikeshareController = new CityComparisonBikeshareController(monDOMInfo(), monStationData, montrealMapData);
 }
 
 function processStationData(stationInfo, stationStatus, tripData) {

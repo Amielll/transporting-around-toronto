@@ -1,6 +1,6 @@
 // Start application by loading the data
 import * as d3 from "d3";
-import { MapVis } from "./neighbourhoodsMapVis.js";
+import { MapVis } from "../neighbourhoodsMapVis.js";
 
 let valueData, geoData, bikeshareData, bikeRackData, choroplethVis1, choroplethVis2;
 

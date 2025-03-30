@@ -189,8 +189,60 @@
                 <div id="montreal-bikeshare-map-area" style="margin-top: 5vh; height: 100vh; width: 100%"></div>
             </div>
 
-            <div style="height: 100vh; width: 100%" id="section-5">
+            <!-- <div style="height: 100vh; width: 100%" id="section-5">
                 <div id="montreal-bikeshare-map-area" style="margin-top: 5vh; height: 100vh; width: 100%"></div>
+            </div> -->
+
+            <div style="height: 100vh; width: 100%" id="section-5`">
+                <div class="row" style="height: 10vh; width: 100%; padding-top: 2vh; text-align: center;">
+                    <h2 id="mon-bikeshare-station-title">Bike Share Stations: City Comparison</h2>
+                </div>
+                <!-- <div class="row justify-content-center" style="height: 10vh; width: 100%; padding: 0; text-align: center;">
+                    <select class="custom-select align-self-center" style="width: 50%" id="mon-bikeshare-station-metric">
+                        <option value="totalVolume" selected>Total Volume</option>
+                        <option value="avgDuration">Average Trip Duration</option>
+                    </select>
+                </div> -->
+                <div class="row" style="width: 100%">
+                    <div class="col-1" style="width: 50%;"></div>
+                    <div class="col-1" style="margin: auto">
+                        Toggle City to Compare:
+                        <label class="switch">
+                            <input type="checkbox">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="row" style="width: 100%">
+                    <div class="col" id="tor-bikeshare-comparison-vis" style="height: 60vh;"></div>
+                    <div class="col" id="mon-bikeshare-comparison-vis" style="height: 60vh;"></div>
+                    <!-- <div class="col-4">
+                        <div id="mon-bikeshare-station-summary">
+                            <h5 style="text-align: center">Summary</h5>
+                            <table class="table table-borderless">
+                                <tbody>
+                                <tr>
+                                    <td>Station:</td>
+                                    <th scope="row" id="mon-bikeshare-summary-station-name"></th>
+                                </tr>
+                                <tr>
+                                    <td>ID:</td>
+                                    <th scope="row" id="mon-bikeshare-summary-station-id"></th>
+                                </tr>
+                                <tr>
+                                    <td>Neighbourhood:</td>
+                                    <th scope="row" id="mon-bikeshare-summary-station-neighbourhood"></th>
+                                </tr>
+                                <tr>
+                                    <td>Location:</td>
+                                    <th scope="row"><a href="#" id="mon-bikeshare-summary-station-location"></a></th>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div id="mon-bikeshare-station-bar-vis" style="height: 50%"></div>
+                    </div> -->
+                </div>
             </div>
                 
             <div style="height: 100vh; width: 100%" id="section-6"> 
