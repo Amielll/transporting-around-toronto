@@ -1,40 +1,17 @@
 import * as d3 from "d3";
 
 export class SingleNeighbourhoodVis {
-    constructor(parentElement, stationData, tripData, geoData, demographicData, bikeRackData, bikeLaneData) {
+    constructor(parentElement, stationData, geoData, neighbourhoodData, bikeRackData, bikeLaneData) {
         this.parentElement = parentElement;
         this.stationData = stationData;
-        this.tripData = tripData;
         this.geoData = geoData;
-        this.demographicData = demographicData;
+        this.neighbourhoodData = neighbourhoodData;
         this.bikeRackData = bikeRackData;
         this.bikeLaneData = bikeLaneData;
 
-        this.neighbourhoodData = new Object;
-        this.demographicData.forEach(d => {
-            Object.keys(d).forEach(key => {
-                if (key !== "name" && key !== "number")
-                    d[key] = +d[key];
-            })
-            this.neighbourhoodData[d.number] = d;
-        });
-
-        let bikeRackPoints = [];
-
-        this.bikeRackData.features.forEach((d) => {
-            bikeRackPoints.push({
-                ...d.properties,
-                Longitude: d.geometry.coordinates[0][0],
-                Latitude: d.geometry.coordinates[0][1],
-
-            })
-        })
-
-        this.bikeRackData = bikeRackPoints;
-
         this.currentNB = null;
 
-        this.initVis()
+        this.initVis();
     }
 
     initVis() {

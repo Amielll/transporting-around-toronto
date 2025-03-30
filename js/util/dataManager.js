@@ -38,8 +38,8 @@ export class DataManager {
             mtlStationData : allData[4],
             mtlTripData : allData[5],
             mtlMapData : allData[6],
-            torDemographicData : allData[7],
-            torBikeRackData : allData[8],
+            torNeighbourhoodData : this.processNeighbourhoodData(allData[7]),
+            torBikeRackData : this.processBikeRackData(allData[8]),
             torBikeLaneData : allData[9],
         }
 
@@ -78,6 +78,33 @@ export class DataManager {
         });
 
         return stationData;
+    }
+
+    processBikeRackData(bikeRackData) {
+        let bikeRackPoints = [];
+
+        bikeRackData.features.forEach((d) => {
+            bikeRackPoints.push({
+                ...d.properties,
+                Longitude: d.geometry.coordinates[0][0],
+                Latitude: d.geometry.coordinates[0][1],
+
+            })
+        });
+
+        return bikeRackPoints;
+    }
+
+    processNeighbourhoodData(demographicData) {
+        let neighbourhoodData = {};
+        demographicData.forEach(d => {
+            Object.keys(d).forEach(key => {
+                if (key !== "name" && key !== "number")
+                    d[key] = +d[key];
+            })
+            neighbourhoodData[d.number] = d;
+        });
+        return neighbourhoodData;
     }
 
 }

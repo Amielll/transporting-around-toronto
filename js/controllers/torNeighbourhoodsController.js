@@ -9,16 +9,24 @@ export class TorNeighbourhoodsController {
 
     initController() {
         let dm = new DataManager();
-        let { torDemographicData, torMapData, torStationInfo, torBikeRackData } = dm.data;
-        let choroplethVis1 = new MapVis("map-div", torDemographicData, torMapData, torStationInfo, torBikeRackData, "average_income", "blue", 1);
-        let choroplethVis2 = new MapVis("map-div2", torDemographicData, torMapData, torStationInfo, torBikeRackData, "bicycle_commuters", "green", 2);
+        let { torNeighbourhoodData, torMapData, torStationInfo, torBikeRackData } = dm.data;
+        let choroplethVis1 = new MapVis("map-div", torNeighbourhoodData, torMapData, torStationInfo, torBikeRackData, "average_income", "blue", 1);
+        let choroplethVis2 = new MapVis("map-div2", torNeighbourhoodData, torMapData, torStationInfo, torBikeRackData, "bicycle_commuters", "green", 2);
 
         this.choropleths = [choroplethVis1, choroplethVis2];
+        this.setupListeners();
+    }
+
+    setupListeners() {
         d3.select("#data-type1").on("change", () => this.updateChoropleth(1));
         d3.select("#data-type2").on("change", () => this.updateChoropleth(2));
         d3.select("#vis-toggle").on("change", () => this.changeOpacity());
-        d3.select("#toggle-bike-rack").on("change", () => this.toggleDots("bikerack", d3.select("#toggle-bike-rack").property("checked")));
-        d3.select("#toggle-bike-share").on("change", () => this.toggleDots("bikeshare", d3.select("#toggle-bike-share").property("checked")));
+        d3.select("#toggle-bike-rack").on("change", () => {
+            this.toggleDots("bikerack", d3.select("#toggle-bike-rack").property("checked"))
+        });
+        d3.select("#toggle-bike-share").on("change", () => {
+            this.toggleDots("bikeshare", d3.select("#toggle-bike-share").property("checked"))
+        });
     }
 
     changeOpacity(){
