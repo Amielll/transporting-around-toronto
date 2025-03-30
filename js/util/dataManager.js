@@ -39,8 +39,8 @@ export class DataManager {
             mtlTripData : allData[5],
             mtlMapData : allData[6],
             torDemographicData : allData[7],
-            torBikeLaneData : allData[9],
             torBikeRackData : allData[8],
+            torBikeLaneData : allData[9],
         }
 
         this.loaded = true;
