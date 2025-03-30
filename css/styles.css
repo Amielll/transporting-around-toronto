@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&family=Lexend+Exa:wght@100..900&display=swap');
 
-html, body {
+html, body, text {
   max-width: 100%;
   font-family: 'Jost';
 }
@@ -52,10 +52,12 @@ h1, h2, h3, h4, h5, h6, .title {
 
 .circle-button{
   color: grey;
+  margin: 0 0;
 }
 
 #scroller-buttons li::marker {
   font-size: 1.5em;
+  margin: 0 0;
 }
 
 #scroller-buttons {
@@ -85,4 +87,8 @@ h1, h2, h3, h4, h5, h6, .title {
 
 .selected {
   color: black
+}
+
+.bars-label {
+  font-size: 1.5em;
 }

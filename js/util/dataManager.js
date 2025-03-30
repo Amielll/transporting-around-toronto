@@ -29,6 +29,7 @@ export class DataManager {
             d3.json("data/vancouver_station_information_cleaned.json"),
             d3.json('data/vancouver_neighbourhoods.geojson'),
             d3.csv('data/vancouver_trips.csv')
+            d3.csv(`${this.path}/bna-city-ratings.csv`)
         ]);
 
 
@@ -49,6 +50,7 @@ export class DataManager {
             vanMapData: allData[11],
             vanTripData: allData[12],
             vanStationData: this.processVancouverStationData(allData[10], {}, allData[12]),
+            bnaScores : this.processScoresData(allData[13]),
         }
 
         this.loaded = true;
@@ -113,6 +115,27 @@ export class DataManager {
             neighbourhoodData[d.number] = d;
         });
         return neighbourhoodData;
+    }
+    
+    processScoresData(data){
+        let cleanedData = {
+            "Total": [],
+            "People": [],
+            "Opportunity": [],
+            "Core Services" : [],
+            "Recreation" : [],
+            "Retail" : [],
+            "Transit" : [],
+        }
+
+        data.forEach((city) => {
+            Object.keys(city).forEach((key) => { 
+                if (Object.keys(cleanedData).includes(key))
+                    cleanedData[key].push({"value": +city[key], "city": city.City})
+            })
+        })
+
+        return cleanedData;
     }
 
     // TODO: These functions don't have to exist if we ensure the station data entries share the same names
