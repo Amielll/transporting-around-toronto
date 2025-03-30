@@ -15,6 +15,7 @@ export class BaseMapVis {
             },
             mapFill: "#ddd",
             mapStroke: "#333",
+            mapStrokeWidth: "1px",
             mapYOffset: 40, // So that map/clipping region and title have some space in between
             title: "Map Visualization",
             ...config
@@ -59,12 +60,18 @@ export class BaseMapVis {
             .attr("class", "neighbourhoods");
 
         // Draw the map
-        vis.map.selectAll("path")
+        vis.neighbourhoods = vis.map
+            .selectAll("path")
             .data(vis.geoData.features)
             .enter()
             .append("path")
             .attr("d", vis.path)
+            .attr("id", (d) => {
+                return vis.parentElement + d.properties.AREA_NAME
+            })
+            .attr("class", "neighbourhood")
             .attr("fill", cfg.mapFill)
+            .attr('stroke-width', cfg.mapStrokeWidth)
             .attr("stroke", cfg.mapStroke);
     }
 
