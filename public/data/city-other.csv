@@ -1,0 +1,12 @@
+﻿City,2024_cycling_budget,2024_total_budget,bike_km,area_km2,population,population_density,bikeshare_stations,bikeshare_bikes
+Toronto,28.9,17.1,830,631.1,"2,794,356","4,427.80",800,9000
+Montreal,30,7,1065,498.29,"2,004,265","4,022.30",900,11000
+Vancouver,38.8,2,337,115,"662,248","5,749.90",600,2000
+,,,,,,,,
+,,,,,,,,
+,vancouver budget is for metro van,,,,,,,
+,,,,,,,,
+,,,,,,,,
+tor,https://www.toronto.ca/legdocs/mmis/2024/bu/bgrd/backgroundfile-241987.pdf,https://www.toronto.ca/wp-content/uploads/2024/05/9569-2024-City-of-Toronto-Budget-Summary.pdf,"https://www12.statcan.gc.ca/census-recensement/2021/dp-pd/prof/details/page.cfm?Lang=E&SearchText=toronto&DGUIDlist=2021A00053520005&GENDERlist=1,2,3&STATISTIClist=1,4&HEADERlist=0",,,,,
+mtl,https://www.ctvnews.ca/montreal/article/montreal-continues-to-expand-improve-bike-lane-network-with-30m-in-projects-for-2024/,"https://montreal.ca/articles/budget-2024-et-pdi-2024-2033-de-montreal-59532#:~:text=Un%20budget%20%C3%A9quilibr%C3%A9%20de%206,Ville%20pour%20un%20exercice%20financier.","https://www12.statcan.gc.ca/census-recensement/2021/dp-pd/prof/details/page.cfm?Lang=E&SearchText=toronto&DGUIDlist=2021A00053520005&GENDERlist=1,2,3&STATISTIClist=1,4&HEADERlist=0",,,,,
+van,https://www.translink.ca/news/2024/may/translink%20invests%20in%20cycling%20paths%20walkways%20and%20roads,https://vancouver.ca/files/cov/2024-budget-highlights.pdf,"https://www12.statcan.gc.ca/census-recensement/2021/dp-pd/prof/details/page.cfm?Lang=E&SearchText=vancouver&DGUIDlist=2021A00055915022&GENDERlist=1,2,3&STATISTIClist=1,4&HEADERlist=0",,,,,

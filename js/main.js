@@ -3,6 +3,7 @@ import {DataManager} from "./util/dataManager.js";
 import {SingleNeighbourhoodController} from "./controllers/singleNeighbourhoodController.js";
 import {MtlBikeshareController} from "./controllers/mtlBikeshareController.js";
 import {TorNeighbourhoodsController} from "./controllers/torNeighbourhoodsController.js";
+import { CitiesScoreController } from "./controllers/citiesScoreController.js";
 
 async function main() {
     // load data
@@ -14,10 +15,13 @@ async function main() {
     let torBikeshareController = new TorBikeshareController();
     let singleNeighbourhoodController = new SingleNeighbourhoodController();
     let mtlBikeshareController = new MtlBikeshareController();
+    let citiesScoreController = new CitiesScoreController();
     torNeighbourhoodsController.initController();
     torBikeshareController.initController();
     singleNeighbourhoodController.initController();
     mtlBikeshareController.initController();
+    citiesScoreController.initController();
+    
 }
 
 // main entrypoint for the project
