@@ -23,43 +23,20 @@ let colours = {
 
 export class MapVis {
 
-    constructor(parentElement, valueData, geoData, stationData, rackData, variable, colour, id) {
+    constructor(parentElement, neighbourhoodData, geoData, stationData, rackData, variable, colour, id) {
         this.parentElement = parentElement;
         this.geoData = geoData;
-        this.valueData = valueData;
-        this.neighbourhoodData = new Object;
-        this.valueData.forEach(d => {
-            Object.keys(d).forEach(key => {
-                if (key !== "name" && key !== "number")
-                    d[key] = +d[key];
-            })
-            this.neighbourhoodData[d.number] = d;
-        });
-        
-        this.valueData = JSON.parse(JSON.stringify(this.valueData));
+        this.neighbourhoodData = neighbourhoodData;
         this.stationData = stationData;
         this.bikeRackData = rackData;
 
-        
-        let bikeRackPoints = [];
-
-        this.bikeRackData.features.forEach((d) => {
-            bikeRackPoints.push({
-                ...d.properties,
-                Longitude: d.geometry.coordinates[0][0],
-                Latitude: d.geometry.coordinates[0][1],
-
-            })
-        })
-
-        this.bikeRackData = bikeRackPoints;
-
+        // TODO: should be part of a config object
         // define colors
         this.variable = variable;
         this.opacity = 0;
         this.colour = colour;
         this.id = id;
-        this.initVis()
+        this.initVis();
     }
 
     initVis() {
@@ -80,7 +57,6 @@ export class MapVis {
             .attr('class', 'title')
             .attr('id', 'map-title')
             .append('text')
-            .attr('class', 'map-title-text')
             .attr('id', 'map-title-text' + vis.id)
             .text(titles[vis.variable])
             .attr('transform', `translate(${vis.width / 2}, 40)`)
@@ -129,7 +105,7 @@ export class MapVis {
 
         d3.select("#map-title-text" + vis.id).text(titles[vis.variable]);
 
-        vis.values = Object.values(vis.valueData).map(d => d[vis.variable])
+        vis.values = Object.values(vis.neighbourhoodData).map(d => d[vis.variable])
 
         vis.colorScale = d3.scaleQuantize()
         .domain([d3.min(vis.values), d3.max(vis.values)])
@@ -198,15 +174,15 @@ export class MapVis {
                     end = Math.round(end);
 
                     if (vis.variable === "average_income") {
-                        return(`$${vis.commaFormat(start)}-${vis.commaFormat(end)}`);
+                        return(`$${vis.commaFormat(start)} — ${vis.commaFormat(end)}`);
                     }  
-                    return(`${vis.commaFormat(start)}-${vis.commaFormat(end)}`);
+                    return(`${vis.commaFormat(start)} — ${vis.commaFormat(end)}`);
                 } else {
                     end -= 0.001;
                     if (start == 0){
-                        return(`${start}-${end.toFixed(3)}`);
+                        return(`${start} — ${end.toFixed(3)}`);
                     }
-                    return(`${start.toFixed(3)}-${end.toFixed(3)}`);
+                    return(`${start.toFixed(3)} — ${end.toFixed(3)}`);
                 }
                 
             });

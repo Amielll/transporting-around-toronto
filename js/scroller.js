@@ -1,34 +1,55 @@
 import * as d3 from "d3";
 
-let curr_page = 1;
+const sections = document.querySelectorAll('.page-section');
+const totalHeight = document.documentElement.scrollHeight;
 
-d3.selectAll(".circle-button").on("click", (event) => {
-    let sectionNumber = event.srcElement.id.replace("button-", "");
-    changePage(sectionNumber);
-});
 
-document.addEventListener("keydown", function(e) {
-    if(["Space","ArrowUp","ArrowDown","ArrowLeft","ArrowRight"].indexOf(e.code) > -1) {
-        e.preventDefault();
+const buttonNav = d3.select("#scroller-buttons");
+sections.forEach((section, index) => {
+    let button = buttonNav.append("li")
+
+    if (index == 0){
+        button.attr("class", "circle-button selected")
+    } else {
+        button.attr("class", "circle-button")
     }
-}, false);
+}) 
 
-document.addEventListener('keyup', function(event) {
-    if (event.key === "ArrowDown"){
-        if (curr_page + 1 <= 6)
-            changePage(curr_page + 1);
-    } else if (event.key === "ArrowUp"){
-        if (curr_page - 1 >= 1)
-            changePage(curr_page - 1);
-    } 
+
+const circleButtons = document.querySelectorAll('.circle-button');
+
+circleButtons.forEach((button, index) => {
+    button.addEventListener('click', function() {
+        let targetTop;
+        targetTop = Math.max(0, sections[index].offsetTop);
+
+        window.scrollTo({
+            top: targetTop,
+            behavior: 'smooth'
+        });
+    });
 });
 
-function changePage(sectionNumber){
-    d3.selectAll(".circle-button").style("background-color", "white");
-    d3.select(`#button-${sectionNumber}`).style("background-color", "black");
-
-    let section = document.getElementById(`section-${sectionNumber}`);
-    section.scrollIntoView()
-
-    curr_page = sectionNumber;
+function unselectButtons() {
+    circleButtons.forEach(button => {
+        button.classList.remove('selected');
+    });
 }
+
+window.addEventListener('scroll', function(){
+    const windowHeight = window.innerHeight;
+    const scrollTop = window.scrollY;
+
+    unselectButtons();
+
+    if (scrollTop <= sections[0].offsetTop - windowHeight / 2) {
+        circleButtons[0].classList.add('selected');
+    } else {
+        sections.forEach((section, index) => {
+            let nextSectionTop = (index < sections.length) ? sections[index + 1].offsetTop - windowHeight / 2 : totalHeight;
+            if (scrollTop >= section.offsetTop - windowHeight / 2 && scrollTop < nextSectionTop) {
+                circleButtons[index].classList.add('selected'); 
+            }
+        });
+    }
+});

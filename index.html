@@ -14,13 +14,130 @@
 </head>
 
 <body>
-<div id="app" class="container-fluid" style="width:100vw">
-    <div class="row" style="height: 100vh; width: 97vw">
-        <div class="col" style="height: 100vh; width: 100%">
+<div id="app" class="container-fluid" style="width:100%">
+    <ul id="scroller-buttons"></ul>
+
+
+    <div class="row" style="height: 100%; width: 98%">
+        <div class="col" style="height: 100%; width: 100%">
+            <div style="height: 100%; width: 100%" id="section-header" class="text page-section">
+                <div id="title-page" style="width: 60%;">
+                    <h1 id="main-title-1">BIKING </h1>
+                    <h1 id="main-title-2">AROUND TORONTO</h1>
+                </div>
+            </div>
+
+            <div style="height: 100%; width: 100%" id="section-x" class="text page-section">
+                <p>By population, Toronto is the biggest city in Canada. something something let's compare with Montreal and Vancouver.</p>
+            </div>  
+
+            <!-- Montreal Choropleth Vis -->
+            <div style="height: 100%; width: 100%" class="city-demographics text page-section">
+                <p>First, let's compare each city's demographics. <br/>
+                In particular, let's also look at the distribution of each variable within the city--are certain neighbourhoods significantly better than others for biking?</p>
+            </div>  
+
+            <div style="height: 100%; width: 100%" class="city-demographics vis page-section">
+                <p>mtl choropleth</p>
+                <div id="montreal-choropleth-map-area" style="margin-top: 5vh; height: 100%; width: 100%"></div>
+            </div>
+            
+            <!-- Montreal Bikeshare Vis -->
+            <div style="height: 100%; width: 100%" class="city-bikeshare text page-section">
+                <p>bikeshare text</p>
+            </div>
+          
+           <!-- TODO: REMOVE THIS GHOST CODE????? -->
+            <!-- <div style="height: 100vh; width: 100%" id="section-5">
+                <div id="montreal-bikeshare-map-area" style="margin-top: 5vh; height: 100vh; width: 100%"></div>
+            </div> -->
+
+            <div style="height: 100%; width: 100%" class="city-bikeshare vis page-section">
+                <div class="row" style="height: 10vh; width: 100%; padding-top: 2vh; text-align: center;">
+                    <h2 id="mon-bikeshare-station-title">Bike Share Stations: City Comparison</h2>
+                </div>
+                <!-- <div class="row justify-content-center" style="height: 10vh; width: 100%; padding: 0; text-align: center;">
+                    <select class="custom-select align-self-center" style="width: 50%" id="mon-bikeshare-station-metric">
+                        <option value="totalVolume" selected>Total Volume</option>
+                        <option value="avgDuration">Average Trip Duration</option>
+                    </select>
+                </div> -->
+                <div class="row" style="width: 100%">
+                    <div class="col-1" style="width: 50%;"></div>
+                    <div class="col-1" style="margin: auto">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="toggle-city-comp" checked>
+                            <label class="form-check-label" for="toggle-city-comp">
+                            Toggle City for Comparison
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="width: 100%">
+                    <div class="col" id="tor-bikeshare-comparison-vis" style="height: 60vh; width: 50%;"></div>
+                    <div class="col" id="mon-bikeshare-comparison-vis" style="height: 60vh;"></div>
+                    <div class="col" id="van-bikeshare-comparison-vis" style="height: 60vh;"></div>
+                    <!-- <div class="col-4">
+                        <div id="mon-bikeshare-station-summary">
+                            <h5 style="text-align: center">Summary</h5>
+                            <table class="table table-borderless">
+                                <tbody>
+                                <tr>
+                                    <td>Station:</td>
+                                    <th scope="row" id="mon-bikeshare-summary-station-name"></th>
+                                </tr>
+                                <tr>
+                                    <td>ID:</td>
+                                    <th scope="row" id="mon-bikeshare-summary-station-id"></th>
+                                </tr>
+                                <tr>
+                                    <td>Neighbourhood:</td>
+                                    <th scope="row" id="mon-bikeshare-summary-station-neighbourhood"></th>
+                                </tr>
+                                <tr>
+                                    <td>Location:</td>
+                                    <th scope="row"><a href="#" id="mon-bikeshare-summary-station-location"></a></th>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div id="mon-bikeshare-station-bar-vis" style="height: 50%"></div>
+                    </div> -->
+                </div>
+            </div>
+   
+            <!-- City Stats Comparison Vis -->
+            <div style="height: 100%; width: 100%" class="city-stats text page-section">
+                <p>Now that we've done some of our exploring, let's see what the experts in the field are saying. <br/>
+                According to People For Bikes’ Bicycle Network Analysis (BNA) scoring system, Toronto ranks 262th out of 2390 North American cities. This is behind other major Canadian cities, Montreal with 71 and Vancouver with 66. 
+                
+                <br/>
+                BNA scores act as an indicator for how well a city's bike network connects people with places they want to go. This score is calculated based on 6 metrics,
+                    People, Opportunity, Core Services, Recreation, Retail, and Transit. Let's dig deeper into what each of these metrics are, and how our major Canadian cities shape up. 
+                </p>
+
+            </div>
+            <div style="height: 100%; width: 100%" class="city-stats vis page-section"> 
+                <p>city stats comparison :D</p>
+            </div>
+
+            <!-- city comparison insights -->
+            <div style="height: 100%; width: 100%" class="insights page-section"> 
+                <p>Insights for Toronto vs Montreal</p>
+                <ul>
+                    <li>Toronto has a higher bikeshare station coverage (by percentage of city area) than Montreal's.</li>
+                </ul>
+
+                <p>Main message: Toronto has sizable biking infrastructure, but it's ultimately lacking.</p>
+            </div>                  
+
             <!-- Neighbourhood Choropleth Visualization -->
-             
-            <div style="height: 100vh; width: 100%" id="section-1">
-                <div id="neighbourhoods-choropleth" style="height: 100vh; width: 100%">
+            <div style="height: 100%; width: 100%" class="neighbourhood-demographics text page-section">
+
+            </div>
+
+            <div style="height: 100%; width: 100%" class="neighbourhood-demographics vis page-section">
+                <div id="neighbourhoods-choropleth" style="height: 100%; width: 100%">
                     <div class="row d-flex align-items-center" style="height: 10vh; width: 100%">
                         <h2 id="neighbourhoods-title">Comparing Toronto's Neighbourhoods</h2>
                     </div>
@@ -68,8 +185,20 @@
                 </div>
             </div>
             
+            <!-- Neighbourhood Scatterplot Visualization -->
+            <div style="height: 100%; width: 100%" class="neighbourhood-scatterplot text page-section">
+            </div>
+
+            <div style="height: 100%; width: 100%" class="neighbourhood-scatterplot vis page-section">
+            </div>
+            
+
             <!-- Bike Share Station Map -->
-            <div style="height: 100vh; width: 100%" id="section-2">
+            <div style="height: 100%; width: 100%" class="neighbourhood-bikeshare page-section">
+
+            </div>
+
+            <div style="height: 100%; width: 100%" class="neighbourhood-bikeshare vis page-section">
                 <div class="row" style="height: 10vh; width: 100%; padding-top: 2vh; text-align: center;">
                     <h2 id="bikeshare-station-title">Toronto's Bike Share Stations</h2>
                 </div>
@@ -109,9 +238,14 @@
                     </div>
                 </div>
             </div>
-            <!-- Single Neighbourhood Vis -->
+
             
-            <div style="height: 100vh; width: 100%" id="section-3">
+            <!-- Single Neighbourhood Vis -->
+            <div style="height: 100%; width: 100%" class="neighbourhood-specific text page-section">
+                <p>Let's deep dive into each individual neighbourhood.</p>
+            </div>
+            
+            <div style="height: 100%; width: 100%" class="neighbourhood-specific vis page-section">
                 <div class="row d-flex align-items-center" style="width: 100%; padding-top: 2vh;">
                     <h2 id="single-neighbourhood-name" style="text-align: center;">Detailed Neighbourhood View</h2>
                 </div>
@@ -184,70 +318,8 @@
                     </div>
                 </div>
             </div>
-
-            <div style="height: 100vh; width: 100%" id="section-4">
-                <div id="montreal-bikeshare-map-area" style="margin-top: 5vh; height: 100vh; width: 100%"></div>
-            </div>
-
-            <!-- <div style="height: 100vh; width: 100%" id="section-5">
-                <div id="montreal-bikeshare-map-area" style="margin-top: 5vh; height: 100vh; width: 100%"></div>
-            </div> -->
-
-            <div style="height: 100vh; width: 100%" id="section-5`">
-                <div class="row" style="height: 10vh; width: 100%; padding-top: 2vh; text-align: center;">
-                    <h2 id="mon-bikeshare-station-title">Bike Share Stations: City Comparison</h2>
-                </div>
-                <!-- <div class="row justify-content-center" style="height: 10vh; width: 100%; padding: 0; text-align: center;">
-                    <select class="custom-select align-self-center" style="width: 50%" id="mon-bikeshare-station-metric">
-                        <option value="totalVolume" selected>Total Volume</option>
-                        <option value="avgDuration">Average Trip Duration</option>
-                    </select>
-                </div> -->
-                <div class="row" style="width: 100%">
-                    <div class="col-1" style="width: 50%;"></div>
-                    <div class="col-1" style="margin: auto">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="toggle-city-comp" checked>
-                            <label class="form-check-label" for="toggle-city-comp">
-                            Toggle City for Comparison
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <div class="row" style="width: 100%">
-                    <div class="col" id="tor-bikeshare-comparison-vis" style="height: 60vh; width: 50%;"></div>
-                    <div class="col" id="mon-bikeshare-comparison-vis" style="height: 60vh;"></div>
-                    <div class="col" id="van-bikeshare-comparison-vis" style="height: 60vh;"></div>
-                    <!-- <div class="col-4">
-                        <div id="mon-bikeshare-station-summary">
-                            <h5 style="text-align: center">Summary</h5>
-                            <table class="table table-borderless">
-                                <tbody>
-                                <tr>
-                                    <td>Station:</td>
-                                    <th scope="row" id="mon-bikeshare-summary-station-name"></th>
-                                </tr>
-                                <tr>
-                                    <td>ID:</td>
-                                    <th scope="row" id="mon-bikeshare-summary-station-id"></th>
-                                </tr>
-                                <tr>
-                                    <td>Neighbourhood:</td>
-                                    <th scope="row" id="mon-bikeshare-summary-station-neighbourhood"></th>
-                                </tr>
-                                <tr>
-                                    <td>Location:</td>
-                                    <th scope="row"><a href="#" id="mon-bikeshare-summary-station-location"></a></th>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div id="mon-bikeshare-station-bar-vis" style="height: 50%"></div>
-                    </div> -->
-                </div>
-            </div>
-                
-            <div style="height: 100vh; width: 100%" id="section-6"> 
+            <!-- Toronto Insights -->
+            <div style="height: 100%; width: 100%" class="insights page-section">
                 <p>Insights for Toronto</p>
 
                 <ul>
@@ -256,34 +328,29 @@
                     <li>Bike theft rate is correlated with bikeshare station density in a neighbourhood.</li>
                 </ul>
             </div>
-                
-            <div style="height: 100vh; width: 100%" id="section-7">
-                <p>Insights for Toronto vs Montreal</p>
-                <ul>
-                    <li>Toronto has a higher bikeshare station coverage (by percentage of city area) than Montreal's.</li>
-                </ul>
-
-                <p>Main message: Toronto has sizable biking infrastructure, but it's ultimately lacking.</p>
-            </div>
-
-        </div>  
-        <div id="scroller" class="col-auto">
-            <div id="scroller-buttons">
-                <div class="circle-button" style="background-color: black;" id="button-1"></div>
-                <div class="circle-button" id="button-2"></div>
-                <div class="circle-button" id="button-3"></div>
-                <div class="circle-button" id="button-4"></div>
-                <div class="circle-button" id="button-5"></div>
-                <div class="circle-button" id="button-6"></div>
-            </div>
-        </div>
             
+            <div style="height: 100%; width: 100%" class="credits row page-section"> 
+                <h2>Made by:</h2>
+                <div class="col pic-column">
+                    <div class="row contributor-img"></div>
+                    <div class="row contributor-name">Amiel Nurja</div>
+                </div>
+                <div class="col pic-column">
+                    <div class="row contributor-img"></div>
+                    <div class="row contributor-name">Dihan Niloy</div>
+                </div>
+                <div class="col pic-column">
+                    <div class="row contributor-img"></div>
+                    <div class="row contributor-name">Mieko Yao</div>
+                </div>
+            </div> 
+
+        </div>              
     </div>
 </div>
 
 
 <script src="js/scroller.js" type="module"></script>
-<script src="js/neighbourhoodsMain.js" type="module"></script>
 <script src="js/main.js" type="module"></script>
 </body>
 </html>
