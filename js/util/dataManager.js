@@ -125,15 +125,6 @@ export class DataManager {
                 if (Object.keys(cleanedData).includes(key))
                     cleanedData[key].push({"value": +city[key], "city": city.City})
             })
-            // let cleanedCity = {}
-            // Object.keys(city).forEach((key) => {
-            //     if (key === "City")
-            //         cleanedCity[key] = city[key]
-            //     else 
-            //         cleanedCity[key] = +city[key]
-            // })
-            // cleanedData[city.City] = cleanedCity;
-
         })
 
         return cleanedData;

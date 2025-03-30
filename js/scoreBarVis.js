@@ -118,11 +118,14 @@ export class ScoreBarVis {
 
         let scoreParts = Object.keys(vis.scoreData);
 
+        // add the bars & labels for every score category
         scoreParts.forEach((category, index) => {
             // category = category.replace(/\s+/g, '');
             let categoryTrimmed = category.replace(" ", "");
 
             if (category !== "Total"){
+
+                // group for whole category
                 let categoryGroup = vis.svg.append("g")
                     .attr("class", `category-group ${categoryTrimmed}-category-group`)
                     .style("pointer-events", "bounding-box")
@@ -162,6 +165,7 @@ export class ScoreBarVis {
                         .attr("y", 20 * lineNum)
                 })
 
+                // group for the city bars
                 let barGroup = categoryGroup.append("g")
                     .attr("class", `bar-group ${categoryTrimmed}-group`)
                     .attr("transform", `translate(${vis.width / 4}, 0)`);
@@ -193,6 +197,7 @@ export class ScoreBarVis {
                         }
                     })
 
+                // add the labels to the bars that appear on click
                 let barLabels = barGroup.selectAll(`.score-label-${categoryTrimmed}`)
                     .data(vis.scoreData[category])
 
