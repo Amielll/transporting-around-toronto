@@ -2,10 +2,11 @@ import { BikeshareMapVis } from "../montrealVisualizations/bikeshareMapVis.js";
 import { HorizontalBarVis } from "../montrealVisualizations/horizontalBarVis.js";
 
 import * as d3 from "d3";
+import {DataManager} from "../util/dataManager.js";
 
 export class CityComparisonBikeshareController {
 
-    constructor(DOMInfo, stationData, geoData) {
+    constructor() {
         this.eventHandler = {
             bind: (eventName, handler) => {
                 document.body.addEventListener(eventName, handler);
@@ -16,23 +17,37 @@ export class CityComparisonBikeshareController {
                 }));
             }
         }
-        this.DOMInfo = DOMInfo;
-        this.stationData = stationData;
-        this.geoData = geoData;
         this.initController();
     }
 
     initController() {
-        const mapParent = this.DOMInfo.mapParent;
-        const mapTitle = this.DOMInfo.mapTitle;
         const mapMargin = { top: 20, right: 20, bottom: 20, left: 20 };
-
-        const barParent = this.DOMInfo.barParent;
-        const barTitle = this.DOMInfo.barTitle;
-        const barMargin = { top: 20, right: 40, bottom: 20, left: 200 };
+        const torConfig = {
+            selectionChangeEventName: "mtlSelectionChanged",
+            mapParent : 'tor-bikeshare-comparison-vis',
+            mapTitle : 'Toronto Bike Share Stations',
+            cityName : 'Toronto',
+        };
+        const mtlConfig = {
+            selectionChangeEventName : "mtlSelectionChanged",
+            mapParent : 'mtl-bikeshare-comparison-vis',
+            mapTitle : 'Montreal Bike Share Stations',
+            cityName : 'Montreal',
+        };
+        const vanConfig = {
+            mapParent : 'van-bikeshare-comparison-vis',
+            mapTitle : 'Vancouver Bike Share Stations',
+            cityName : 'Vancouver',
+        };
 
         // Initialize visualizations
-        this.mapVis = new BikeshareMapVis(mapParent, mapTitle, mapMargin, this.stationData, this.geoData, this.eventHandler);
+        let dm = new DataManager();
+        let {torStationData, torMapData, mtlStationData, mtlMapData, vanStationData, vanMapData } = dm.data;
+        console.log('data', torStationData, torMapData, mtlStationData, mtlMapData, vanStationData, vanMapData);
+        this.torMapVis = new BikeshareMapVis(torConfig.mapParent, torConfig.title, mapMargin, torStationData, torMapData, torConfig, this.eventHandler);
+        this.mtlMapVis = new BikeshareMapVis(mtlConfig.mapParent, mtlConfig.title, mapMargin, mtlStationData, mtlMapData, mtlConfig, this.eventHandler);
+        this.vanMapVis = new BikeshareMapVis(vanConfig.mapParent, vanConfig.title, mapMargin, vanStationData, vanMapData, vanConfig, this.eventHandler);
+
         // this.barVis = new HorizontalBarVis(barParent, barTitle, barMargin, this.stationData, this.eventHandler);
 
         // const stationChangeEventName = this.DOMInfo.selectionChangeEventName;

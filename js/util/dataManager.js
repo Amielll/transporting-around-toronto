@@ -26,6 +26,9 @@ export class DataManager {
             d3.csv(`${this.path}/neighbourhoods.csv`),
             d3.json(`${this.path}/bike_racks_data.geojson`),
             d3.json(`${this.path}/cycling-network - 4326.geojson`),
+            d3.json("data/vancouver_station_information_cleaned.json"),
+            d3.json('data/vancouver_neighbourhoods.geojson'),
+            d3.csv('data/vancouver_trips.csv')
         ]);
 
 
@@ -35,12 +38,17 @@ export class DataManager {
             torTripData : allData[2],
             torStationData: this.processStationData(allData[0], allData[1], allData[2]),
             torMapData : allData[3],
-            mtlStationData : allData[4],
+            mtlStationInfo : allData[4],
             mtlTripData : allData[5],
             mtlMapData : allData[6],
+            mtlStationData: this.processMontrealStationData(allData[4], {}, allData[5]),
             torNeighbourhoodData : this.processNeighbourhoodData(allData[7]),
             torBikeRackData : this.processBikeRackData(allData[8]),
             torBikeLaneData : allData[9],
+            vanStationInfo: allData[10],
+            vanMapData: allData[11],
+            vanTripData: allData[12],
+            vanStationData: this.processVancouverStationData(allData[10], {}, allData[12]),
         }
 
         this.loaded = true;
@@ -107,4 +115,72 @@ export class DataManager {
         return neighbourhoodData;
     }
 
+    // TODO: These functions don't have to exist if we ensure the station data entries share the same names
+    processMontrealStationData(stationInfo, stationStatus, tripData) {
+        let stationData = []
+
+        stationInfo.forEach((station) => {
+            let stationDataEntry = {};
+            stationDataEntry.id = `${station["station_id"]}`;
+            stationDataEntry.name = station["name"];
+            stationDataEntry.latitude = station["lat"];
+            stationDataEntry.longitude = station["lon"];
+            stationDataEntry.statusSamples = []
+            // if (stationDataEntry.id in stationStatus) {
+            //     stationDataEntry.statusSamples = stationStatus[stationDataEntry.id]["samples"];
+            // }
+
+            let filteredStartTrips = tripData.filter(tripDataEntry => tripDataEntry["Start Station Name"] === stationDataEntry.name);
+            let filteredEndTrips = tripData.filter(tripDataEntry => tripDataEntry["End Station Name"] === stationDataEntry.name);
+
+            stationDataEntry.asStartingCount = filteredStartTrips.reduce((runningSum, trip) => runningSum + +trip['Count'], 0);
+            stationDataEntry.asDestCount = filteredEndTrips.reduce((runningSum, trip) => runningSum + +trip['Count'], 0);
+            stationDataEntry.totalVolume = stationDataEntry.asStartingCount + stationDataEntry.asDestCount;
+
+            let totalDurationAsStart = filteredStartTrips.reduce((runningSum, trip) => runningSum + +trip['Total Duration'], 0);
+            let totalDurationAsDest = filteredEndTrips.reduce((runningSum, trip) => runningSum + +trip['Total Duration'], 0);
+            let totalDuration = totalDurationAsStart + totalDurationAsDest;
+
+            stationDataEntry.avgDurationAsStart = totalDurationAsStart / stationDataEntry.asStartingCount;
+            stationDataEntry.avgDurationAsDest = totalDurationAsStart / stationDataEntry.asDestCount;
+            stationDataEntry.avgDuration = totalDuration / stationDataEntry.totalVolume;
+            stationData.push(stationDataEntry);
+        });
+
+        return stationData;
+    }
+
+    processVancouverStationData(stationInfo, stationStatus, tripData) {
+        let stationData = []
+
+        stationInfo.forEach((station) => {
+            let stationDataEntry = {};
+            stationDataEntry.id = `${station["station_id"]}`;
+            stationDataEntry.name = station["name"];
+            stationDataEntry.latitude = station["lat"];
+            stationDataEntry.longitude = station["lon"];
+            stationDataEntry.statusSamples = []
+            // if (stationDataEntry.id in stationStatus) {
+            //     stationDataEntry.statusSamples = stationStatus[stationDataEntry.id]["samples"];
+            // }
+
+            let filteredStartTrips = tripData.filter(tripDataEntry => tripDataEntry["Start Station Id"] === stationDataEntry.name);
+            let filteredEndTrips = tripData.filter(tripDataEntry => tripDataEntry["End Station Id"] === stationDataEntry.name);
+
+            stationDataEntry.asStartingCount = filteredStartTrips.reduce((runningSum, trip) => runningSum + +trip['Count'], 0);
+            stationDataEntry.asDestCount = filteredEndTrips.reduce((runningSum, trip) => runningSum + +trip['Count'], 0);
+            stationDataEntry.totalVolume = stationDataEntry.asStartingCount + stationDataEntry.asDestCount;
+
+            let totalDurationAsStart = filteredStartTrips.reduce((runningSum, trip) => runningSum + +trip['Total Duration'], 0);
+            let totalDurationAsDest = filteredEndTrips.reduce((runningSum, trip) => runningSum + +trip['Total Duration'], 0);
+            let totalDuration = totalDurationAsStart + totalDurationAsDest;
+
+            stationDataEntry.avgDurationAsStart = totalDurationAsStart / stationDataEntry.asStartingCount;
+            stationDataEntry.avgDurationAsDest = totalDurationAsStart / stationDataEntry.asDestCount;
+            stationDataEntry.avgDuration = totalDuration / stationDataEntry.totalVolume;
+            stationData.push(stationDataEntry);
+        });
+
+        return stationData;
+    }
 }
