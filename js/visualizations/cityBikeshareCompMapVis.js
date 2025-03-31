@@ -14,6 +14,8 @@ export class CityCompBikeshareMapVis extends BaseMapVis {
         let vis = this;
         super.initVis();
 
+        this.updateTitle();
+
         // Represent stations as dots on the map
         vis.stationDots = vis.map.selectAll("circle")
             .data(vis.stationData, d => d.id);
@@ -92,7 +94,27 @@ export class CityCompBikeshareMapVis extends BaseMapVis {
         vis.mapContainer.call(vis.zoom);
 
         // Next step in vis pipeline
-        vis.wrangleData();
+        // Can't get this to work for Montreal.
+        // vis.wrangleData();
+    }
+
+    updateTitle() {
+        // Update visualization title based on which city this is.
+        let cityName;
+
+        // Determine city name based on the first three characters of the parent element.
+        switch(this.parentElement.slice(0,3)) {
+            case "tor":
+                cityName = "Toronto";
+                break;
+            case "mtl":
+                cityName = "Montreal";
+                break;
+            case "van":
+                cityName = "Vancouver";
+                break;
+        }
+        this.config.title = `${cityName} Bikeshare Stations`;
     }
 
     wrangleData() {
