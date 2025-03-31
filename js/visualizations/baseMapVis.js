@@ -44,14 +44,14 @@ export class BaseMapVis {
         // Define the clipping region
         vis.svg.append("defs")
             .append("clipPath")
-            .attr("id", `${vis.parentElement}-map-clip)`) // use the parent element of this vis for unique id
+            .attr("id", `${vis.parentElement}-map-clip`) // use the parent element of this vis for unique id
             .append("rect")
             .attr("width", vis.width + cfg.margin.left + cfg.margin.right)
             .attr("height", vis.height + cfg.margin.top + cfg.margin.bottom);
 
         // Create a projection that fits the GeoJSON data
         vis.projection = d3.geoMercator()
-            .fitSize([vis.width, vis.height], vis.geoData);
+            .fitSize([vis.width, vis.height - cfg.titleMargin], vis.geoData);
         vis.path = d3.geoPath().projection(vis.projection);
 
         // Set up map group
