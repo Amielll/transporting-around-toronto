@@ -28,13 +28,21 @@
             </div>
 
             <div style="height: 100%; width: 100%" id="section-x" class="text page-section">
-                <p>By population, Toronto is the biggest city in Canada. something something let's compare with Montreal and Vancouver.</p>
+                <p>By population, Toronto is the biggest census metropolitan area in Canada. Montreal and Vancouver are the second, and third largest, respectively. <br>
+                    <br/>
+                    Does this ranking stay the same when comparing the cities across other variables? <br>
+                    <br/>
+                    In particular, how does Toronto's biking scene stack up compared to Montreal and Vancouver?
+                </p>
             </div>  
 
             <!-- Montreal Choropleth Vis -->
             <div style="height: 100%; width: 100%" class="city-demographics text page-section">
                 <p>First, let's compare each city's demographics. <br/>
-                In particular, let's also look at the distribution of each variable within the city--are certain neighbourhoods significantly better than others for biking?</p>
+                <br/>
+                Specifically, let's examine the demographic variables that might have an impact on biking in a city.<br>
+                <br/>
+                In particular, let's also look at the distribution of each variable within the city—are certain neighbourhoods significantly better than others for biking?</p>
             </div>  
 
             <div style="height: 100%; width: 100%" class="city-demographics vis page-section">
@@ -44,7 +52,14 @@
             
             <!-- Montreal Bikeshare Vis -->
             <div style="height: 100%; width: 100%" class="city-bikeshare text page-section">
-                <p>bikeshare text</p>
+                <p>Public bike sharing programs are a major aspect to many urban cities' biking infrastructure. Toronto has Bike Share Toronto, Montreal has BIXI, and Vancouver has Mobi. <br>
+                    <br>
+                    All 3 cities' bike sharing programs operate with a docking model, where stations are placed around the city at which users rent and return bikes. <br>
+                    <br>
+                    Since users are able rent a bike from one dock and return it to any other dock, a major component to the usability of a bike share network is station coverage and distribution.<br>
+                    <!-- <br>
+                    How do these bikeshare systems compare in terms of station coverage and distribution? <br> -->
+                    </p>
             </div>
 
             <div style="height: 100%; width: 100%" class="city-bikeshare vis page-section">
@@ -54,11 +69,13 @@
 
             <!-- City Stats Comparison Vis -->
             <div style="height: 100%; width: 100%" class="city-stats text page-section">
-                <p>Now that we've done some of our exploring, let's see what the experts in the field are saying. <br/>
-                According to People For Bikes’ Bicycle Network Analysis (BNA) scoring system, Toronto ranks 262th out of 2390 North American cities. This is behind other major Canadian cities, Montreal with 71 and Vancouver with 66. 
-                
-                <br/>
-                BNA scores act as an indicator for how well a city's bike network connects people with places they want to go. This score is calculated based on 6 metrics,
+                <p>Now that we've done some of our own investigating, let's see what the experts in the field are saying. <br/>
+                    <br>
+                    People for Bikes is an organization dedicated to promoting bicycling as a safe and accessible mode of transportation. As a part of this work, they conduct research and provide industry insights into cities around the world and how their bike networks compare to one another. Every year, People for Bikes releases a city ranking, where each city is given a Bicycle Network Analysis (BNA) score.<br>
+                    <br>
+                    According to the 2024 BNA scores, Toronto ranks 262th out of 2390 North American cities with a score of 47. This is behind other major Canadian cities, Montreal with 71 and Vancouver with 66. <br>
+                    <br/>
+                    BNA scores act as an indicator for how well a city's bike network connects people with places they want to go. This score is calculated based on 6 metrics,
                     People, Opportunity, Core Services, Recreation, Retail, and Transit. Let's dig deeper into what each of these metrics are, and how our major Canadian cities shape up. 
                 </p>
 
@@ -71,18 +88,26 @@
             </div>
 
             <!-- city comparison insights -->
-            <div style="height: 100%; width: 100%" class="insights page-section"> 
+            <div style="height: 100%; width: 100%" class="insights page-section row"> 
                 <p>Insights for Toronto vs Montreal</p>
-                <ul>
-                    <li>Toronto has a higher bikeshare station coverage (by percentage of city area) than Montreal's.</li>
-                </ul>
+                <div class="col"></div>
+                <div class="col-7">
+                    <ul class="insights-list">
+                        <li>Toronto has a higher bikeshare station coverage (by percentage of city area) than Montreal's.</li>
+                    </ul>
+                </div>
+                <div class="col"></div>
 
                 <p>Main message: Toronto has sizable biking infrastructure, but it's ultimately lacking.</p>
             </div>                  
 
             <!-- Neighbourhood Choropleth Visualization -->
             <div style="height: 100%; width: 100%" class="neighbourhood-demographics text page-section">
-
+                <p>
+                    While Toronto's bike scene on average may be worse than Montreal and Vancouver's, it definitely exists and there are spots within the city where the biking experience is better than others.<br>
+                    <br>
+                    Let's revisit some of the demographic variables that might have an impact on biking in an area, and explore how Toronto's neighbourhoods differ, and how the distributions of variables may compare to one another.<br>
+                </p>
             </div>
 
             <div style="height: 100%; width: 100%" class="neighbourhood-demographics vis page-section">
@@ -136,6 +161,11 @@
             
             <!-- Neighbourhood Scatterplot Visualization -->
             <div style="height: 100%; width: 100%" class="neighbourhood-scatterplot text page-section">
+                <p>
+                    From the choropleth maps, you may have observed some trends. <br>
+                    <br>
+                    Let's see how strong these trends are by removing the geographical aspect to our data and plotting every neighbourhood as a dot on a scatterplot. 
+                </p>
             </div>
 
             <div style="height: 100%; width: 100%" class="neighbourhood-scatterplot vis page-section">
@@ -144,7 +174,11 @@
 
             <!-- Bike Share Station Map -->
             <div style="height: 100%; width: 100%" class="neighbourhood-bikeshare text page-section">
-
+                <p>
+                    Now let's examine Toronto's bikeshare stations more in depth. <br>
+                    <br>
+                    Where are they located? Which ones are used most? 
+                </p>
             </div>
 
             <div style="height: 100%; width: 100%" class="neighbourhood-bikeshare vis page-section">
@@ -199,7 +233,7 @@
                     <h2 id="single-neighbourhood-name" style="text-align: center;">Detailed Neighbourhood View</h2>
                 </div>
                 <div class="row" id="single-neighbourhood" style="height: 90vh; width:100%; padding-top: 0; padding-left: 1vh; padding-bottom: 1vh">
-                    <div class="col-6" id="nb-vis"></div>
+                    <div class="col-7" id="nb-vis"></div>
                     <div class="col">
                         <div class="row">
                             <div class="col" id="nb-selector"
@@ -270,14 +304,18 @@
 
 
             <!-- Toronto Insights -->
-            <div style="height: 100%; width: 100%" class="insights page-section">
+            <div style="height: 100%; width: 100%" class="insights page-section row">
                 <p>Insights for Toronto</p>
+                <div class="col"></div>
+                <div class="col-7">
+                    <ul class="insights-list">
+                        <li>Most bike commuters are downtown, but not in neighbourhoods with high bikeshare station density.</li>
+                        <li>Bike parking racks are scarce in most neighbourhoods.</li>
+                        <li>Bike theft rate is correlated with bikeshare station density in a neighbourhood.</li>
+                    </ul>
+                </div>
+                <div class="col"></div>
 
-                <ul>
-                    <li>Most bike commuters are downtown, but not in neighbourhoods with high bikeshare station density.</li>
-                    <li>Bike parking racks are scarce in most neighbourhoods.</li>
-                    <li>Bike theft rate is correlated with bikeshare station density in a neighbourhood.</li>
-                </ul>
             </div>
             
             <div style="height: 100%; width: 100%" class="credits row page-section"> 

@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&family=Lexend+Exa:wght@100..900&display=swap');
 
-html, body, text {
+html, body, .tick {
   max-width: 100%;
   font-family: 'Jost';
 }
@@ -19,6 +19,16 @@ h1, h2, h3, h4, h5, h6, .title {
   justify-content: center;
   align-items: center;
   text-align: center;
+}
+
+.insights {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.insights-list {
+  text-align: left;
 }
 
 #main-title-1 {
@@ -91,4 +101,8 @@ h1, h2, h3, h4, h5, h6, .title {
 
 .bars-label {
   font-size: 1.5em;
+}
+
+table {
+  border-collapse: collapse;
 }
