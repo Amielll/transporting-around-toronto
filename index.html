@@ -52,14 +52,18 @@
             
             <!-- Montreal Bikeshare Vis -->
             <div style="height: 100%; width: 100%" class="city-bikeshare text page-section">
-                <p>Public bike sharing programs are a major aspect to many urban cities' biking infrastructure. Toronto has Bike Share Toronto, Montreal has BIXI, and Vancouver has Mobi. <br>
-                    <br>
-                    All 3 cities' bike sharing programs operate with a docking model, where stations are placed around the city at which users rent and return bikes. <br>
-                    <br>
-                    Since users are able rent a bike from one dock and return it to any other dock, a major component to the usability of a bike share network is station coverage and distribution.<br>
-                    <!-- <br>
-                    How do these bikeshare systems compare in terms of station coverage and distribution? <br> -->
+                <div class="col"></div>
+                <div class="col-9">
+                    <p>Public bike sharing programs are a major aspect to many urban cities' biking infrastructure. Toronto has Bike Share Toronto, Montreal has BIXI, and Vancouver has Mobi. <br>
+                        <br>
+                        All 3 cities' bike sharing programs operate with a docking model, where stations are placed around the city at which users rent and return bikes. <br>
+                        <br>
+                        Since users are able rent a bike from one dock and return it to any other dock, major components of the <b>usability</b> of a bike share network are <b>station coverage</b> and <b>distribution</b>.<br>
+                        <!-- <br>
+                        How do these bikeshare systems compare in terms of station coverage and distribution? <br> -->
                     </p>
+                </div>
+                <div class="col"></div>
             </div>
 
             <div style="height: 100%; width: 100%" class="city-bikeshare vis page-section">
@@ -92,16 +96,19 @@
 
             <!-- City Stats Comparison Vis -->
             <div style="height: 100%; width: 100%" class="city-stats text page-section">
-                <p>Now that we've done some of our own investigating, let's see what the experts in the field are saying. <br/>
-                    <br>
-                    People for Bikes is an organization dedicated to promoting bicycling as a safe and accessible mode of transportation. As a part of this work, they conduct research and provide industry insights into cities around the world and how their bike networks compare to one another. Every year, People for Bikes releases a city ranking, where each city is given a Bicycle Network Analysis (BNA) score.<br>
-                    <br>
-                    According to the 2024 BNA scores, Toronto ranks 262th out of 2390 North American cities with a score of 47. This is behind other major Canadian cities, Montreal with 71 and Vancouver with 66. <br>
-                    <br/>
-                    BNA scores act as an indicator for how well a city's bike network connects people with places they want to go. This score is calculated based on 6 metrics,
-                    People, Opportunity, Core Services, Recreation, Retail, and Transit. Let's dig deeper into what each of these metrics are, and how our major Canadian cities shape up. 
-                </p>
-
+                <div class="col"></div>
+                <div class="col-9">
+                    <p>Now that we've done some of our own investigating, let's see what the experts in the field are saying. <br/>
+                        <br>
+                        People for Bikes is an organization dedicated to promoting bicycling as a safe and accessible mode of transportation. Every year, People for Bikes releases a city ranking, where each city is given a Bicycle Network Analysis (BNA) score.<br>
+                        <br>
+                        According to the 2024 BNA scores, Toronto ranks <b>262th out of 2390</b> North American cities with a score of <b>47</b>. This is behind other major Canadian cities, Montreal with 71 and Vancouver with 66. <br>
+                        <br/>
+                        BNA scores act as an indicator for how well a city's bike network connects people with places they want to go. This score is calculated based on 6 metrics,
+                        People, Opportunity, Core Services, Recreation, Retail, and Transit. Let's dig deeper into what each of these metrics are, and how our major Canadian cities shape up. 
+                    </p>
+                </div>
+                <div class="col"></div>
             </div>
             <div style="height: 100%; width: 100%; text-align: center;" class="city-stats vis page-section row"> 
                 <h2 style="margin-top: 1%;">Bicycle Network Analysis Score Breakdowns</h2>
@@ -126,11 +133,15 @@
 
             <!-- Neighbourhood Choropleth Visualization -->
             <div style="height: 100%; width: 100%" class="neighbourhood-demographics text page-section">
-                <p>
-                    While Toronto's bike scene on average may be worse than Montreal and Vancouver's, it definitely exists and there are spots within the city where the biking experience is better than others.<br>
-                    <br>
-                    Let's revisit some of the demographic variables that might have an impact on biking in an area, and explore how Toronto's neighbourhoods differ, and how the distributions of variables may compare to one another.<br>
-                </p>
+                <div class="col"></div>
+                <div class="col-9">
+                    <p>
+                        While Toronto's bike scene on average may be worse than Montreal and Vancouver's, it definitely exists. There are spots within the city where the biking experience is better than others.<br>
+                        <br>
+                        Let's revisit some of the demographic variables that might have an impact on biking in an area. We will explore how Toronto's neighbourhoods differ, and how the distributions of variables may compare to one another.<br>
+                    </p>
+                </div>
+                <div class="col"></div>
             </div>
 
             <div style="height: 100%; width: 100%" class="neighbourhood-demographics vis page-section">
@@ -176,8 +187,8 @@
                     </div>
                     <div class="row"
                         style="height: 80vh; padding-top: 0; padding-bottom: 1vh">
-                            <div id="map-div" style="height: 80vh; width: 100%" class="col"></div>
-                            <div id="map-div2" style="height: 80vh; width: 100%" class="col"></div>
+                            <div id="map-div" style="height: 80vh;" class="col-6"></div>
+                            <div id="map-div2" style="height: 80vh;" class="col-6"></div>
                     </div>
                 </div>
             </div>
@@ -195,66 +206,18 @@
             </div>
             
 
-            <!-- Bike Share Station Map -->
-            <div style="height: 100%; width: 100%" class="neighbourhood-bikeshare text page-section">
-                <p>
-                    Now let's examine Toronto's bikeshare stations more in depth. <br>
-                    <br>
-                    Where are they located? Which ones are used most? 
-                </p>
-            </div>
-
-            <div style="height: 100%; width: 100%" class="neighbourhood-bikeshare vis page-section">
-                <div class="row" style="height: 10vh; width: 100%; padding-top: 2vh; text-align: center;">
-                    <h2 id="bikeshare-station-title">Toronto's Bike Share Stations</h2>
-                </div>
-                <div class="row justify-content-center" style="height: 10vh; width: 100%; padding: 0; text-align: center;">
-                    <select class="custom-select align-self-center" style="width: 50%" id="bikeshare-station-metric">
-                        <option value="totalVolume" selected>Total Volume</option>
-                        <option value="avgDuration">Average Trip Duration</option>
-                    </select>
-                </div>
-                <div class="row" style="width: 100%">
-                    <div class="col-8" id="bikeshare-station-map-vis" style="height: 80vh;"></div>
-                    <div class="col-4">
-                        <div id="bikeshare-station-summary">
-                            <h5 style="text-align: center">Summary</h5>
-                            <table class="table table-borderless">
-                                <tbody>
-                                <tr>
-                                    <td>Station:</td>
-                                    <th scope="row" id="bikeshare-summary-station-name"></th>
-                                </tr>
-                                <tr>
-                                    <td>ID:</td>
-                                    <th scope="row" id="bikeshare-summary-station-id"></th>
-                                </tr>
-                                <tr>
-                                    <td>Neighbourhood:</td>
-                                    <th scope="row" id="bikeshare-summary-station-neighbourhood"></th>
-                                </tr>
-                                <tr>
-                                    <td>Location:</td>
-                                    <th scope="row"><a href="#" id="bikeshare-summary-station-location"></a></th>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div id="bikeshare-station-bar-vis" style="height: 50%"></div>
-                    </div>
-                </div>
-            </div>
-
-            
             <!-- Single Neighbourhood Vis -->
             <div style="height: 100%; width: 100%" class="neighbourhood-specific text page-section">
-                <p>Let's deep dive into each individual neighbourhood.</p>
+                <p>Let's deep dive into individual neighbourhoods. <br>
+                    <br>
+                    Which ones have more bike infrastructure? Which have less?</p>
             </div>
             
             <div style="height: 100%; width: 100%" class="neighbourhood-specific vis page-section">
                 <div class="row d-flex align-items-center" style="width: 100%; padding-top: 2vh;">
                     <h2 id="single-neighbourhood-name" style="text-align: center;">Detailed Neighbourhood View</h2>
                 </div>
+                <div style="font-size: 1rem; margin-bottom: 0; padding-bottom: 0; text-align: center; height: fit-content;">Using the minimap on the right, click on a neighbourhood to zoom in on it!</div>
                 <div class="row" id="single-neighbourhood" style="height: 90vh; width:100%; padding-top: 0; padding-left: 1vh; padding-bottom: 1vh">
                     <div class="col-7" id="nb-vis"></div>
                     <div class="col">
@@ -325,7 +288,57 @@
                 </div>
             </div>
 
+            <!-- Bike Share Station Map -->
+            <div style="height: 100%; width: 100%" class="neighbourhood-bikeshare text page-section">
+                <p>
+                    Lastly, let's examine Toronto's bikeshare stations more in depth. <br>
+                    <br>
+                    Where are they located? Which ones are used most? 
+                </p>
+            </div>
 
+            <div style="height: 100%; width: 100%" class="neighbourhood-bikeshare vis page-section">
+                <div class="row" style="height: 10vh; width: 100%; padding-top: 2vh; text-align: center;">
+                    <h2 id="bikeshare-station-title">Toronto's Bike Share Stations</h2>
+                </div>
+                <div class="row justify-content-center" style="height: 10vh; width: 100%; padding: 0; text-align: center;">
+                    <select class="custom-select align-self-center" style="width: 50%" id="bikeshare-station-metric">
+                        <option value="totalVolume" selected>Total Volume</option>
+                        <option value="avgDuration">Average Trip Duration</option>
+                    </select>
+                </div>
+                <div class="row" style="width: 100%">
+                    <div class="col-8" id="bikeshare-station-map-vis" style="height: 80vh;"></div>
+                    <div class="col-4">
+                        <div id="bikeshare-station-summary">
+                            <h5 style="text-align: center">Summary</h5>
+                            <table class="table table-borderless">
+                                <tbody>
+                                <tr>
+                                    <td>Station:</td>
+                                    <th scope="row" id="bikeshare-summary-station-name"></th>
+                                </tr>
+                                <tr>
+                                    <td>ID:</td>
+                                    <th scope="row" id="bikeshare-summary-station-id"></th>
+                                </tr>
+                                <tr>
+                                    <td>Neighbourhood:</td>
+                                    <th scope="row" id="bikeshare-summary-station-neighbourhood"></th>
+                                </tr>
+                                <tr>
+                                    <td>Location:</td>
+                                    <th scope="row"><a href="#" id="bikeshare-summary-station-location"></a></th>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div id="bikeshare-station-bar-vis" style="height: 50%"></div>
+                    </div>
+                </div>
+            </div>
+
+            
             <!-- Toronto Insights -->
             <div style="height: 100%; width: 100%" class="insights page-section row">
                 <p>Insights for Toronto</p>
@@ -342,23 +355,28 @@
             </div>
             
             <div style="height: 100%; width: 100%" class="credits row page-section"> 
-                <h2>Made by:</h2>
+                <h2 style="margin-top: 15%;">Made by:</h2>
                 <div class="col pic-column">
-                    <div class="row contributor-img"></div>
-                    <div class="row contributor-name">Amiel Nurja</div>
+                    <img class="contributor-img" src="imgs/bike-svgrepo-com.svg">
+                    <p class="contributor-name">Amiel Nurja</p>
                 </div>
                 <div class="col pic-column">
-                    <div class="row contributor-img"></div>
-                    <div class="row contributor-name">Dihan Niloy</div>
+                    <img class="contributor-img" src="imgs/bike-svgrepo-com.svg">
+                    <p class="contributor-name">Dihan Niloy</p>
                 </div>
                 <div class="col pic-column">
-                    <div class="row contributor-img"></div>
-                    <div class="row contributor-name">Mieko Yao</div>
+                    <img class="contributor-img" src="imgs/bike-svgrepo-com.svg">
+                    <p class="contributor-name">Mieko Yao</p>
                 </div>
             </div> 
 
-        </div>              
-    </div>
+            <div style="height: 100%; width: 100%" class="credits page-section"> 
+                <h2>Sources</h2>
+            </div>
+            
+        </div> 
+
+    </div>  
 </div>
 
 

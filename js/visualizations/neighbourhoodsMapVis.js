@@ -2,15 +2,7 @@
 *          MapVis          *
 * * * * * * * * * * * * * */
 import * as d3 from "d3";
-
-let titles = {
-    "average_income": "Average Annual Income (2021)",
-    "bicycle_commuters": "Bike Commuter Proportion (2021)",
-    "bikeshare_stations": "Number of Bikeshare Stations (2025)",
-    "bike_parking_racks": "Number of Bike Parking Racks (2025)",
-    "collisions": "Bike Collisions (2009-2023)",
-    "thefts": "Bike Thefts (2009-2023)"
-}
+import {BaseMapVis} from "./baseMapVis.js";
 
 let colours = {
     "green":  d3.schemeGreens,
@@ -21,68 +13,35 @@ let colours = {
     "orange": d3.schemeOranges
 }
 
-export class MapVis {
+export class NeighbourhoodsMapVis extends BaseMapVis {
 
-    constructor(parentElement, neighbourhoodData, geoData, stationData, rackData, variable, colour, id) {
-        this.parentElement = parentElement;
-        this.geoData = geoData;
+    constructor(parentElement, geoData, neighbourhoodData, stationData, rackData, config={})  {
+        super(parentElement, geoData, null, config);
         this.neighbourhoodData = neighbourhoodData;
         this.stationData = stationData;
         this.bikeRackData = rackData;
-
-        // TODO: should be part of a config object
-        // define colors
-        this.variable = variable;
-        this.opacity = 0;
-        this.colour = colour;
-        this.id = id;
+        this.selectedVariable = this.config.defaultVar;
+        this.titles = {
+            "average_income": "Average Annual Income (2021)",
+            "bicycle_commuters": "Bike Commuter Proportion (2021)",
+            "bikeshare_stations": "Number of Bikeshare Stations (2025)",
+            "bike_parking_racks": "Number of Bike Parking Racks (2025)",
+            "collisions": "Bike Collisions (2009-2023)",
+            "thefts": "Bike Thefts (2009-2023)"
+        }
         this.initVis();
     }
 
     initVis() {
         let vis = this;
+        super.initVis();
 
-        vis.margin = {top: 10, right: 20, bottom: 10, left: 20};
-        vis.width = document.getElementById(vis.parentElement).getBoundingClientRect().width - vis.margin.left - vis.margin.right;
-        vis.height = document.getElementById(vis.parentElement).getBoundingClientRect().height - vis.margin.top - vis.margin.bottom;
-
-        // init drawing area
-        vis.svg = d3.select("#" + vis.parentElement).append("svg")
-            .attr("width", vis.width)
-            .attr("height", vis.height)
-            .attr('transform', `translate (${vis.margin.left}, ${vis.margin.top})`);
-
-        // add title
-        vis.svg.append('g')
-            .attr('class', 'title')
-            .attr('id', 'map-title')
-            .append('text')
-            .attr('id', 'map-title-text' + vis.id)
-            .text(titles[vis.variable])
-            .attr('transform', `translate(${vis.width / 2}, 40)`)
-            .attr('text-anchor', 'middle');
-
-
-        vis.projection = d3.geoMercator().fitSize([vis.width,vis.height],vis.geoData)
-        vis.path = d3.geoPath(vis.projection);
-        
-        vis.neighbourhoods = vis.svg.selectAll(".neighbourhood")
-            .data(vis.geoData.features)
-            .enter()
-            .append("path")
-            .attr("d", vis.path)
-            .attr("id", (d) => {
-                return d.properties.AREA_NAME
-            })
-            .attr("class", "neighbourhood")
-            .attr('stroke-width', '1px')
-            .attr('stroke', 'lightgrey');
-        
+        // tooltip
         vis.tooltip = d3.select("body").append('div')
             .attr('class', "tooltip")
-            .attr('id', 'mapTooltip')
+            .attr('id', vis.parentElement + 'MapTooltip')
 
-        
+        // legend
         vis.legend = vis.svg.append("g")
             .attr('class', 'legend')
             .attr('transform', `translate(${vis.width/6}, ${vis.height/12})`)
@@ -94,22 +53,19 @@ export class MapVis {
         vis.legend.attr('transform', `translate(${vis.width - 25}, ${8*vis.height/12})`)
         vis.legendAxis.attr('transform', `translate(${vis.width - 30}, ${8*vis.height/12})`)
 
-
-        vis.wrangleData(this.variable);
-
+        vis.wrangleData(vis.selectedVariable);
     }
 
     wrangleData(newVar) {
         let vis = this;
-        vis.variable = newVar;
+        let cfg = vis.config;
+        vis.selectedVariable = newVar;
 
-        d3.select("#map-title-text" + vis.id).text(titles[vis.variable]);
-
-        vis.values = Object.values(vis.neighbourhoodData).map(d => d[vis.variable])
+        vis.values = Object.values(vis.neighbourhoodData).map(d => d[vis.selectedVariable])
 
         vis.colorScale = d3.scaleQuantize()
         .domain([d3.min(vis.values), d3.max(vis.values)])
-        .range(colours[this.colour][8]);
+        .range(colours[cfg.colour][8]);
 
         // do the changing categories -> change values, change colorscale, change fill of neighbourhoods
 
@@ -119,14 +75,8 @@ export class MapVis {
     updateVis() {
         let vis = this;
 
-        // let values = Object.values(vis.countryInfo).map(d => d.value)
+        vis.updateTitle(vis.titles[vis.selectedVariable]);
 
-        // vis.legendScale = d3.scaleQuantize()
-        //     .domain([d3.min(values), d3.max(values)])
-        //     .range(vis.colors);
-
-		// vis.legendAxis = d3.axisLeft(vis.legendScale)
-        //     .ticks(4);
         vis.range = d3.range(d3.min(vis.values), d3.max(vis.values), (d3.max(vis.values) - d3.min(vis.values)) / 8);
 
         vis.rect = vis.legend.selectAll("rect")
@@ -166,14 +116,14 @@ export class MapVis {
                 let start = tickValues[0]
                 let end = tickValues[1]
 
-                if (Number.isInteger(end)){
+                if (start >= 1 || end >= 1){
                     if (i < colours.length - 1){
                         end -= 1;
                     }
                     start = Math.round(start);
                     end = Math.round(end);
 
-                    if (vis.variable === "average_income") {
+                    if (vis.selectedVariable === "average_income") {
                         return(`$${vis.commaFormat(start)} — ${vis.commaFormat(end)}`);
                     }  
                     return(`${vis.commaFormat(start)} — ${vis.commaFormat(end)}`);
@@ -188,9 +138,10 @@ export class MapVis {
             });
 
         let variable1 = d3.select("#data-type1").property("value");
+        let variable2 = d3.select("#data-type2").property("value");
         vis.neighbourhoods
             .style("fill", function (d) {
-                var id = vis.neighbourhoodData[d.properties.AREA_LONG_CODE][vis.variable];
+                var id = vis.neighbourhoodData[d.properties.AREA_LONG_CODE][vis.selectedVariable];
                 return vis.colorScale(id);
             })
             .on('mouseover', function(event, d){
@@ -203,11 +154,9 @@ export class MapVis {
                     .style("top", event.pageY + "px")
                     .html(`
                         <div style="border: thin solid grey; border-radius: 5px; background: lightgrey; padding: 20px 20px 5px 20px;">
-                            <h6>Neighbourhood: ${d.properties.AREA_NAME}</h6>     
-                            ${vis.opacity != 100 && vis.opacity != 0 ? 
-                                `<p>${titles[variable1]}: ${vis.neighbourhoodData[d.properties.AREA_LONG_CODE][variable1]}</p>` 
-                                : ""}              
-                            <p>${titles[vis.variable]}: ${vis.neighbourhoodData[d.properties.AREA_LONG_CODE][vis.variable]}</p>    
+                            <h6>Neighbourhood: ${d.properties.AREA_NAME}</h6>
+                            <p>${vis.titles[variable1]}: ${vis.neighbourhoodData[d.properties.AREA_LONG_CODE][variable1]}</p>         
+                            <p>${vis.titles[variable2]}: ${vis.neighbourhoodData[d.properties.AREA_LONG_CODE][variable2]}</p>    
                         </div>`);
             }).on('mouseout', function(event, d){
                 d3.select(this)
@@ -221,9 +170,7 @@ export class MapVis {
                     .html(``);
             });
         
-        this.addDots();
-        
-		// // vis.svg.select(".legend-axis").call(vis.legendAxis);
+        vis.addDots();
     }
 
     addDots() {
@@ -240,11 +187,11 @@ export class MapVis {
                 return vis.projection([d.Longitude, d.Latitude])[0]
             })
             .attr("cy", d => vis.projection([d.Longitude, d.Latitude])[1])
-            .attr("r", 3)
-            .attr("fill", "red")
+            .attr("r", 2)
+            .attr("fill", "#CB0B7B")
             .attr("stroke", "grey")
             .attr("stroke-width", 1)
-            .style("opacity", 0.4);
+            .style("opacity", 0.6);
         
         vis.bikerack = vis.svg.selectAll("circle.bikerack")
             .data(vis.bikeRackData);
@@ -256,21 +203,10 @@ export class MapVis {
                 return vis.projection([d.Longitude, d.Latitude])[0]
             })
             .attr("cy", d => vis.projection([d.Longitude, d.Latitude])[1])
-            .attr("r", 3)
-            .attr("fill", "orange")
+            .attr("r", 2)
+            .attr("fill", "#672A9C")
             .attr("stroke", "grey")
             .attr("stroke-width", 1)
-            .style("opacity", 0.4);
-        
-        // vis.bikerack = vis.svg.selectAll("path.bikerack")
-        //     .data(vis.rackData.features)
-        //     .enter()
-        //     .append("path")
-        //     .attr("d",vis.path)
-        //     .attr("class", "bikerack")
-        //     .attr("fill", "orange")
-        //     .attr("stroke", "grey")
-        //     .attr("stroke-width", 1)
-        //     .style("opacity", 0.5);
+            .style("opacity", 0.6);
     }
 }

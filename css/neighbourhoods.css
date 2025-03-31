@@ -36,14 +36,14 @@
 }
 
 .form-check #toggle-bike-share:checked{
-    background-color: red;
-    border-color: red;
+    background-color: #CB0B7B;
+    border-color: #CB0B7B;
 
 }
 
 .form-check #toggle-bike-rack:checked{
-    background-color: orange;
-    border-color: orange;
+    background-color: #672A9C;
+    border-color: #672A9C;
     
 }
 
@@ -59,20 +59,20 @@
 
 
 .form-check #toggle-bike-share-single:checked{
-    background-color: red;
-    border-color: red;
+    background-color: #CB0B7B;
+    border-color: #CB0B7B;
 
 }
 
 .form-check #toggle-bike-rack-single:checked{
-    background-color: orange;
-    border-color: orange;
+    background-color: #672A9C;
+    border-color: #672A9C;
     
 }
 
 .form-check #toggle-bike-path-single:checked{
-    background-color: #006d2c;
-    border-color: #006d2c;
+    background-color: #096a09;
+    border-color: #096a09;
 
 }
 

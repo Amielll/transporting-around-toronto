@@ -41,6 +41,7 @@ export class NeighbourhoodSelect {
             .attr("id", (d) => {
                 return `neighbourhood-${d.properties.AREA_LONG_CODE}`
             })
+            .attr("fill", "#242e24")
             .attr("class", "neighbourhood")
             .attr('stroke-width', '1px')
             .attr('stroke', 'lightgrey');
@@ -80,23 +81,23 @@ export class NeighbourhoodSelect {
 
         vis.neighbourhoods
             .on('mouseover', function(event, d){
-                vis.neighbourhoods.attr('fill', 'black');
+                vis.neighbourhoods.attr('fill', '#242e24');
                 if (vis.selectedNB !== null){
-                    d3.select(`#neighbourhood-${vis.selectedNB.AREA_LONG_CODE}`).attr('fill', '#6a9bc3');
+                    d3.select(`#neighbourhood-${vis.selectedNB.AREA_LONG_CODE}`).attr('fill', '#F67E04');
                 }
                 d3.select(this)
-                    .attr('fill', '#a2c0d9');
+                    .attr('fill', '#f1a354');
             })
             .on('mouseout', function(event, d){
-                vis.neighbourhoods.attr('fill', 'black');
+                vis.neighbourhoods.attr('fill', '#242e24');
                 if (vis.selectedNB !== null){
-                    d3.select(`#neighbourhood-${vis.selectedNB.AREA_LONG_CODE}`).attr('fill', '#6a9bc3');
+                    d3.select(`#neighbourhood-${vis.selectedNB.AREA_LONG_CODE}`).attr('fill', '#F67E04');
                 }
             })
             .on('click', function(event, d){
-                vis.neighbourhoods.attr('fill', 'black');
+                vis.neighbourhoods.attr('fill', '#242e24');
                 d3.select(this)
-                    .attr('fill', '#6a9bc3');
+                    .attr('fill', '#F67E04');
                 vis.selectedNB = d.properties;
                 vis.controlledVis.updateZoom(d.properties, event);
             })

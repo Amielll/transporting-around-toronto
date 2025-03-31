@@ -25,15 +25,6 @@ export class CityCompBikeshareMapVis extends BaseMapVis {
             .range([3, 0.5])
             .clamp(true);
 
-        // Add title
-        vis.svg.append("g")
-            .attr("class", "title")
-            .attr("id",  `${vis.parentElement}MapTitle`)
-            .append("text")
-            .text(vis.config.title)
-            .attr('transform', `translate(${vis.width / 2}, 20)`)
-            .attr("text-anchor", "middle");
-        
         vis.tooltip = d3.select("body").append('div')
                     .attr('class', "tooltip")
                     .attr('id', 'cityCompTooltip')
@@ -92,6 +83,8 @@ export class CityCompBikeshareMapVis extends BaseMapVis {
             .on("zoom", vis.zoomFunction);
 
         vis.mapContainer.call(vis.zoom);
+
+        vis.updateTitle(vis.config.title);
 
         // Next step in vis pipeline
         // Can't get this to work for Montreal.

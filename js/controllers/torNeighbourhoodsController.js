@@ -1,5 +1,5 @@
 import * as d3 from "d3";
-import {MapVis} from "../neighbourhoodsMapVis.js";
+import {NeighbourhoodsMapVis} from "../visualizations/neighbourhoodsMapVis.js";
 import {DataManager} from "../util/dataManager.js";
 
 export class TorNeighbourhoodsController {
@@ -10,8 +10,36 @@ export class TorNeighbourhoodsController {
     initController() {
         let dm = new DataManager();
         let { torNeighbourhoodData, torMapData, torStationInfo, torBikeRackData } = dm.data;
-        let choroplethVis1 = new MapVis("map-div", torNeighbourhoodData, torMapData, torStationInfo, torBikeRackData, "average_income", "blue", 1);
-        let choroplethVis2 = new MapVis("map-div2", torNeighbourhoodData, torMapData, torStationInfo, torBikeRackData, "bicycle_commuters", "green", 2);
+        let config1 = {
+            id: 1,
+            colour: "blue",
+            defaultVar: "average_income",
+            margin: {
+                top: 20,
+                right: 20,
+                bottom: 10,
+                left: 20,
+            },
+            titleMargin: 0,
+            mapStroke: "lightgrey"
+        };
+        let config2 = {
+            id: 2,
+            colour: "green",
+            defaultVar: "bicycle_commuters",
+            margin: {
+                top: 20,
+                right: 20,
+                bottom: 10,
+                left: 20,
+            },
+            titleMargin: 0,
+            mapStroke: "lightgrey"
+        };
+        let choroplethVis1 = new NeighbourhoodsMapVis("map-div",
+            torMapData, torNeighbourhoodData, torStationInfo, torBikeRackData, config1);
+        let choroplethVis2 = new NeighbourhoodsMapVis("map-div2",
+            torMapData, torNeighbourhoodData, torStationInfo, torBikeRackData, config2);
 
         this.choropleths = [choroplethVis1, choroplethVis2];
         this.setupListeners();
@@ -67,7 +95,7 @@ export class TorNeighbourhoodsController {
 
     toggleDots(type, state){
         if (state == true){
-            d3.selectAll(`.${type}`).style("opacity", 0.4);
+            d3.selectAll(`.${type}`).style("opacity", 0.6);
         } else {
             d3.selectAll(`.${type}`).style("opacity", 0);
         }
