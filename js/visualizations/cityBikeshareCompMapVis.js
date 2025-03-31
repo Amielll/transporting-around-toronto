@@ -52,7 +52,7 @@ export class CityCompBikeshareMapVis extends BaseMapVis {
             .on('mouseover', function(event, d){
                 console.log(d);
                 d3.select(this)
-                    .attr('stroke-width', '3px')
+                    .attr('fill', '#23415a')
                     .attr('stroke', 'black');
                 vis.tooltip
                     .style("opacity", 1)
@@ -66,8 +66,8 @@ export class CityCompBikeshareMapVis extends BaseMapVis {
             })
             .on('mouseout', function(event, d){
                             d3.select(this)
-                                .attr('stroke-width', '1px')
-                                .attr('stroke', 'lightgrey');
+                                .attr('fill', 'steelblue')
+                                .attr('stroke', 'white');
             
                             vis.tooltip
                                 .style("opacity", 0)
