@@ -1,9 +1,10 @@
 import {BaseMapVis} from "./baseMapVis.js";
 import * as d3 from "d3";
 
-export class BikeshareMapVis extends BaseMapVis {
+export class CityCompBikeshareMapVis extends BaseMapVis {
 
-    constructor(parentElement, geoData, eventHandler, stationData, config={}) {
+    constructor(parentElement, geoData, stationData, eventHandler, config={}) {
+        // eventHandler not used in this class.
         super(parentElement, geoData, eventHandler, config);
         this.stationData = stationData;
         this.initVis();
@@ -22,6 +23,10 @@ export class BikeshareMapVis extends BaseMapVis {
             .range([3, 0.5])
             .clamp(true);
 
+        vis.tooltip = d3.select("body").append('div')
+                    .attr('class', "tooltip")
+                    .attr('id', 'cityCompTooltip')
+
         // Draw station dots and set up click listener
         vis.stationDots.enter()
             .append("circle")
@@ -33,7 +38,32 @@ export class BikeshareMapVis extends BaseMapVis {
             .attr("stroke", "#fff")
             .attr("cursor", "pointer")
             .attr("stroke-width", vis.radiusScale(1) / 4)
-            .on("click", (event, d) => vis.eventHandler.trigger("selectionChanged", d));
+            .on('mouseover', function(event, d){
+                console.log(d);
+                d3.select(this)
+                    .attr('stroke-width', '3px')
+                    .attr('stroke', 'black');
+                vis.tooltip
+                    .style("opacity", 1)
+                    .style("left", event.pageX + 20 + "px")
+                    .style("top", event.pageY + "px")
+                    .html(`
+                        <div style="border: thin solid grey; border-radius: 5px; background: lightgrey; padding: 20px 20px 5px 20px;">
+                            <h6> Station: ${d.name} </h6>
+                            Capacity: ${d.capacity}
+                        </div>`);
+            })
+            .on('mouseout', function(event, d){
+                            d3.select(this)
+                                .attr('stroke-width', '1px')
+                                .attr('stroke', 'lightgrey');
+            
+                            vis.tooltip
+                                .style("opacity", 0)
+                                .style("left", 0)
+                                .style("top", 0)
+                                .html(``);
+                        });
 
         // Zoom/pan functionality
         vis.zoomFunction = function(event) {
@@ -47,10 +77,12 @@ export class BikeshareMapVis extends BaseMapVis {
 
         vis.zoom = d3.zoom()
             .scaleExtent([1,8])
-            .translateExtent([[0,0], [vis.width, vis.height]])
+            .translateExtent([[0,0], [vis.width, vis.height - vis.config.mapYOffset]])
             .on("zoom", vis.zoomFunction);
 
         vis.mapContainer.call(vis.zoom);
+
+        vis.updateTitle(vis.config.title);
 
         // Next step in vis pipeline
         vis.wrangleData();
@@ -73,23 +105,13 @@ export class BikeshareMapVis extends BaseMapVis {
         super.updateVis(); // map path update
     }
 
-    onSelectionChange(selectedStation) {
-        let vis = this;
-
-        vis.map.selectAll("circle.station")
-            .transition().duration(750)
-            .attr("fill", d => d.id === selectedStation.id ? "red" : "steelblue");
-
-        vis.updateZoom(selectedStation);
-    }
-
     updateZoom(d) {
         let vis = this;
         const [x, y] = vis.projection([d.longitude, d.latitude]);
         const scale = 8;
 
         const translateX = vis.width / 2 - scale * x;
-        const translateY = vis.height / 2 - scale * y;
+        const translateY = (vis.height - vis.config.mapYOffset) / 2 - scale * y;
 
         // Apply the new transform with a smooth transition
         vis.mapContainer.transition().duration(750).call(
