@@ -3,11 +3,23 @@
 html, body, .tick {
   max-width: 100%;
   font-family: 'Jost';
+  background-color: #D2E0D3;
+  color: #242e24;
+}
+
+p {
+  font-size: 1.15rem;
+}
+
+td, th {
+  padding-top: 0.1rem;
+  padding-bottom: 0.1rem;
 }
 
 h1, h2, h3, h4, h5, h6, .title {
   font-weight: 700;
   font-family: 'Lexend Exa';
+  color: #242e24;
 }
 
 .axis-label {
@@ -20,6 +32,7 @@ h1, h2, h3, h4, h5, h6, .title {
   align-items: center;
   text-align: center;
 }
+
 
 .insights {
   justify-content: center;
@@ -89,13 +102,20 @@ h1, h2, h3, h4, h5, h6, .title {
 }
 
 .contributor-img{
-  background-color: grey; 
   aspect-ratio: 1/1; 
-  width: 70%;
+  width: 50%;
+  margin: auto;
+  filter: invert(12%) sepia(16%) saturate(843%) hue-rotate(71deg) brightness(97%) contrast(86%);
+  display: flex;
+}
+
+.contributor-name {
+  text-align: center;
+  font-size: 1.5rem;
 }
 
 .selected {
-  color: black
+  color: #242e24
 }
 
 .bars-label {

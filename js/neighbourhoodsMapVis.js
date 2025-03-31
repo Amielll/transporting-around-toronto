@@ -240,11 +240,11 @@ export class MapVis {
                 return vis.projection([d.Longitude, d.Latitude])[0]
             })
             .attr("cy", d => vis.projection([d.Longitude, d.Latitude])[1])
-            .attr("r", 3)
-            .attr("fill", "red")
+            .attr("r", 2)
+            .attr("fill", "#CB0B7B")
             .attr("stroke", "grey")
             .attr("stroke-width", 1)
-            .style("opacity", 0.4);
+            .style("opacity", 0.6);
         
         vis.bikerack = vis.svg.selectAll("circle.bikerack")
             .data(vis.bikeRackData);
@@ -256,11 +256,11 @@ export class MapVis {
                 return vis.projection([d.Longitude, d.Latitude])[0]
             })
             .attr("cy", d => vis.projection([d.Longitude, d.Latitude])[1])
-            .attr("r", 3)
-            .attr("fill", "orange")
+            .attr("r", 2)
+            .attr("fill", "#672A9C")
             .attr("stroke", "grey")
             .attr("stroke-width", 1)
-            .style("opacity", 0.4);
+            .style("opacity", 0.6);
         
         // vis.bikerack = vis.svg.selectAll("path.bikerack")
         //     .data(vis.rackData.features)

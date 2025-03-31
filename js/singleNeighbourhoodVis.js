@@ -17,7 +17,7 @@ export class SingleNeighbourhoodVis {
     initVis() {
         let vis = this;
 
-        vis.margin = {top: 10, right: 20, bottom: 10, left: 20};
+        vis.margin = {top: 10, right: 20, bottom: 30, left: 20};
         vis.width = document.getElementById(vis.parentElement).getBoundingClientRect().width - vis.margin.left - vis.margin.right;
         vis.height = document.getElementById(vis.parentElement).getBoundingClientRect().height - vis.margin.top - vis.margin.bottom;
 
@@ -27,7 +27,7 @@ export class SingleNeighbourhoodVis {
             .attr("height", vis.height)
             .attr('transform', `translate (${vis.margin.left}, ${vis.margin.top})`);
 
-        vis.mapYOffset = 40; // So that map/clipping region and title have some space in between
+        vis.mapYOffset = 0; // So that map/clipping region and title have some space in between
 
         // Define the clipping region
         vis.svg.append("defs")
@@ -60,8 +60,8 @@ export class SingleNeighbourhoodVis {
             })
             .attr("class", "neighbourhood-single")
             .attr('stroke-width', '0.5px')
-            .attr('stroke', 'black')
-            .attr('fill', '#ddd')
+            .attr('stroke', '#242e24')
+            .attr('fill', '#eef0ee')
             .on('click', function(event, d){
                 vis.updateZoom(d.properties, event);
             });
@@ -88,9 +88,9 @@ export class SingleNeighbourhoodVis {
         const [[x0, y0], [x1, y1]] = vis.path.bounds(feature);
 
         
-        d3.selectAll(`.neighbourhood-single`).style('fill', '#ddd');
+        d3.selectAll(`.neighbourhood-single`).style('fill', '#eef0ee');
 
-        d3.select(`#single-nb-${vis.currentNB.AREA_LONG_CODE}`).transition().style("fill", "#6a9bc3");
+        d3.select(`#single-nb-${vis.currentNB.AREA_LONG_CODE}`).transition().style("fill", "#F67E04");
         
         // vis.svg.transition().duration(750).call(
         //     vis.zoom.transform,
@@ -165,11 +165,11 @@ export class SingleNeighbourhoodVis {
                 return vis.projection([d.Longitude, d.Latitude])[0]
             })
             .attr("cy", d => vis.projection([d.Longitude, d.Latitude])[1])
-            .attr("r", 1)
-            .attr("fill", "red")
+            .attr("r", .85)
+            .attr("fill", "#CB0B7B")
             .attr("stroke", "grey")
             .attr("stroke-width", 0.25)
-            .style("opacity", .7);
+            .style("opacity", 1);
         
 
         vis.bikerack = vis.map.selectAll("circle.single-bikerack")
@@ -182,11 +182,11 @@ export class SingleNeighbourhoodVis {
                 return vis.projection([d.Longitude, d.Latitude])[0]
             })
             .attr("cy", d => vis.projection([d.Longitude, d.Latitude])[1])
-            .attr("r", 1)
-            .attr("fill", "orange")
+            .attr("r", .85)
+            .attr("fill", "#672A9C")
             .attr("stroke", "grey")
             .attr("stroke-width", 0.25)
-            .style("opacity", .7);
+            .style("opacity", 1);
 
 
         vis.lanePath = d3.geoPath().projection(vis.projection);
@@ -197,7 +197,7 @@ export class SingleNeighbourhoodVis {
             .append("path")
             .attr('d', d => vis.lanePath({ type: 'LineString', coordinates: d }))
             .attr("class", "single-lanes")
-            .attr('stroke', '#006d2c')
+            .attr('stroke', '#096a09')
             .attr("stroke-width", 0.5)
             .attr('fill', 'none');
     }
