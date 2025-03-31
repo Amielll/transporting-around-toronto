@@ -95,7 +95,7 @@ export class TorNeighbourhoodsController {
 
     toggleDots(type, state){
         if (state == true){
-            d3.selectAll(`.${type}`).style("opacity", 0.4);
+            d3.selectAll(`.${type}`).style("opacity", 0.6);
         } else {
             d3.selectAll(`.${type}`).style("opacity", 0);
         }
