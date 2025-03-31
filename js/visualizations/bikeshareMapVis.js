@@ -22,15 +22,6 @@ export class BikeshareMapVis extends BaseMapVis {
             .range([3, 0.5])
             .clamp(true);
 
-        // Add title
-        vis.svg.append("g")
-            .attr("class", "title")
-            .attr("id",  `${vis.parentElement}MapTitle`)
-            .append("text")
-            .text(vis.config.title)
-            .attr('transform', `translate(${vis.width / 2}, 20)`)
-            .attr("text-anchor", "middle");
-
         // Draw station dots and set up click listener
         vis.stationDots.enter()
             .append("circle")
@@ -56,7 +47,7 @@ export class BikeshareMapVis extends BaseMapVis {
 
         vis.zoom = d3.zoom()
             .scaleExtent([1,8])
-            .translateExtent([[0,0], [vis.width, vis.height - vis.config.mapYOffset]])
+            .translateExtent([[0,0], [vis.width, vis.height]])
             .on("zoom", vis.zoomFunction);
 
         vis.mapContainer.call(vis.zoom);
@@ -98,7 +89,7 @@ export class BikeshareMapVis extends BaseMapVis {
         const scale = 8;
 
         const translateX = vis.width / 2 - scale * x;
-        const translateY = (vis.height - vis.config.mapYOffset) / 2 - scale * y;
+        const translateY = vis.height / 2 - scale * y;
 
         // Apply the new transform with a smooth transition
         vis.mapContainer.transition().duration(750).call(
