@@ -4,15 +4,6 @@
 import * as d3 from "d3";
 import {BaseMapVis} from "./baseMapVis.js";
 
-let titles = {
-    "average_income": "Average Annual Income (2021)",
-    "bicycle_commuters": "Bike Commuter Proportion (2021)",
-    "bikeshare_stations": "Number of Bikeshare Stations (2025)",
-    "bike_parking_racks": "Number of Bike Parking Racks (2025)",
-    "collisions": "Bike Collisions (2009-2023)",
-    "thefts": "Bike Thefts (2009-2023)"
-}
-
 let colours = {
     "green":  d3.schemeGreens,
     "purple": d3.schemePurples,
@@ -22,7 +13,7 @@ let colours = {
     "orange": d3.schemeOranges
 }
 
-export class TorNeighbourhoodsMapVis extends BaseMapVis {
+export class NeighbourhoodsMapVis extends BaseMapVis {
 
     constructor(parentElement, geoData, neighbourhoodData, stationData, rackData, config={})  {
         super(parentElement, geoData, null, config);
@@ -30,23 +21,20 @@ export class TorNeighbourhoodsMapVis extends BaseMapVis {
         this.stationData = stationData;
         this.bikeRackData = rackData;
         this.selectedVariable = this.config.defaultVar;
+        this.titles = {
+            "average_income": "Average Annual Income (2021)",
+            "bicycle_commuters": "Bike Commuter Proportion (2021)",
+            "bikeshare_stations": "Number of Bikeshare Stations (2025)",
+            "bike_parking_racks": "Number of Bike Parking Racks (2025)",
+            "collisions": "Bike Collisions (2009-2023)",
+            "thefts": "Bike Thefts (2009-2023)"
+        }
         this.initVis();
     }
 
     initVis() {
         let vis = this;
-        let cfg = vis.config;
         super.initVis();
-
-        // add title
-        vis.svg.append('g')
-            .attr('class', 'title')
-            .attr('id', 'map-title-group' + cfg.id)
-            .append('text')
-            .attr('id', 'map-title-text' + cfg.id)
-            .text(titles[vis.selectedVariable])
-            .attr('transform', `translate(${vis.width / 2}, 40)`)
-            .attr('text-anchor', 'middle');
 
         // tooltip
         vis.tooltip = d3.select("body").append('div')
@@ -65,7 +53,6 @@ export class TorNeighbourhoodsMapVis extends BaseMapVis {
         vis.legend.attr('transform', `translate(${vis.width - 25}, ${8*vis.height/12})`)
         vis.legendAxis.attr('transform', `translate(${vis.width - 30}, ${8*vis.height/12})`)
 
-
         vis.wrangleData(vis.selectedVariable);
     }
 
@@ -73,8 +60,6 @@ export class TorNeighbourhoodsMapVis extends BaseMapVis {
         let vis = this;
         let cfg = vis.config;
         vis.selectedVariable = newVar;
-
-        d3.select("#map-title-text" + cfg.id).text(titles[vis.selectedVariable]);
 
         vis.values = Object.values(vis.neighbourhoodData).map(d => d[vis.selectedVariable])
 
@@ -89,6 +74,8 @@ export class TorNeighbourhoodsMapVis extends BaseMapVis {
 
     updateVis() {
         let vis = this;
+
+        vis.updateTitle(vis.titles[vis.selectedVariable]);
 
         vis.range = d3.range(d3.min(vis.values), d3.max(vis.values), (d3.max(vis.values) - d3.min(vis.values)) / 8);
 
@@ -167,8 +154,8 @@ export class TorNeighbourhoodsMapVis extends BaseMapVis {
                     .html(`
                         <div style="border: thin solid grey; border-radius: 5px; background: lightgrey; padding: 20px 20px 5px 20px;">
                             <h6>Neighbourhood: ${d.properties.AREA_NAME}</h6>
-                            <p>${titles[variable1]}: ${vis.neighbourhoodData[d.properties.AREA_LONG_CODE][variable1]}</p>         
-                            <p>${titles[vis.selectedVariable]}: ${vis.neighbourhoodData[d.properties.AREA_LONG_CODE][vis.selectedVariable]}</p>    
+                            <p>${vis.titles[variable1]}: ${vis.neighbourhoodData[d.properties.AREA_LONG_CODE][variable1]}</p>         
+                            <p>${vis.titles[vis.selectedVariable]}: ${vis.neighbourhoodData[d.properties.AREA_LONG_CODE][vis.selectedVariable]}</p>    
                         </div>`);
             }).on('mouseout', function(event, d){
                 d3.select(this)
@@ -182,7 +169,7 @@ export class TorNeighbourhoodsMapVis extends BaseMapVis {
                     .html(``);
             });
         
-        this.addDots();
+        vis.addDots();
     }
 
     addDots() {

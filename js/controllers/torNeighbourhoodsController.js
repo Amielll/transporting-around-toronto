@@ -1,5 +1,5 @@
 import * as d3 from "d3";
-import {TorNeighbourhoodsMapVis} from "../visualizations/torNeighbourhoodsMapVis.js";
+import {NeighbourhoodsMapVis} from "../visualizations/neighbourhoodsMapVis.js";
 import {DataManager} from "../util/dataManager.js";
 
 export class TorNeighbourhoodsController {
@@ -15,11 +15,12 @@ export class TorNeighbourhoodsController {
             colour: "blue",
             defaultVar: "average_income",
             margin: {
-                top: 10,
+                top: 20,
                 right: 20,
                 bottom: 10,
                 left: 20,
             },
+            titleMargin: 0,
             mapStroke: "lightgrey"
         };
         let config2 = {
@@ -27,16 +28,17 @@ export class TorNeighbourhoodsController {
             colour: "green",
             defaultVar: "bicycle_commuters",
             margin: {
-                top: 10,
+                top: 20,
                 right: 20,
                 bottom: 10,
                 left: 20,
             },
+            titleMargin: 0,
             mapStroke: "lightgrey"
         };
-        let choroplethVis1 = new TorNeighbourhoodsMapVis("map-div",
+        let choroplethVis1 = new NeighbourhoodsMapVis("map-div",
             torMapData, torNeighbourhoodData, torStationInfo, torBikeRackData, config1);
-        let choroplethVis2 = new TorNeighbourhoodsMapVis("map-div2",
+        let choroplethVis2 = new NeighbourhoodsMapVis("map-div2",
             torMapData, torNeighbourhoodData, torStationInfo, torBikeRackData, config2);
 
         this.choropleths = [choroplethVis1, choroplethVis2];
