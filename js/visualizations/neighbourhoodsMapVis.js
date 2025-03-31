@@ -116,7 +116,7 @@ export class NeighbourhoodsMapVis extends BaseMapVis {
                 let start = tickValues[0]
                 let end = tickValues[1]
 
-                if (Number.isInteger(end)){
+                if (start >= 1 || end >= 1){
                     if (i < colours.length - 1){
                         end -= 1;
                     }
@@ -138,6 +138,7 @@ export class NeighbourhoodsMapVis extends BaseMapVis {
             });
 
         let variable1 = d3.select("#data-type1").property("value");
+        let variable2 = d3.select("#data-type2").property("value");
         vis.neighbourhoods
             .style("fill", function (d) {
                 var id = vis.neighbourhoodData[d.properties.AREA_LONG_CODE][vis.selectedVariable];
@@ -155,7 +156,7 @@ export class NeighbourhoodsMapVis extends BaseMapVis {
                         <div style="border: thin solid grey; border-radius: 5px; background: lightgrey; padding: 20px 20px 5px 20px;">
                             <h6>Neighbourhood: ${d.properties.AREA_NAME}</h6>
                             <p>${vis.titles[variable1]}: ${vis.neighbourhoodData[d.properties.AREA_LONG_CODE][variable1]}</p>         
-                            <p>${vis.titles[vis.selectedVariable]}: ${vis.neighbourhoodData[d.properties.AREA_LONG_CODE][vis.selectedVariable]}</p>    
+                            <p>${vis.titles[variable2]}: ${vis.neighbourhoodData[d.properties.AREA_LONG_CODE][variable2]}</p>    
                         </div>`);
             }).on('mouseout', function(event, d){
                 d3.select(this)
