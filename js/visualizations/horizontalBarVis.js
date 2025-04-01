@@ -7,6 +7,7 @@ export class HorizontalBarVis {
         this.margin = margin;
         this.stationData = stationData;
         this.eventHandler = eventHandler;
+        this.selectedStationId = null;
         this.initVis();
     }
 
@@ -59,7 +60,6 @@ export class HorizontalBarVis {
     wrangleData(selectedCategory) {
         let vis = this;
 
-
         vis.selectedCategory = selectedCategory;
         vis.stationData.sort((a, b) => b[vis.selectedCategory] - a[vis.selectedCategory]);
         vis.topTenData = vis.stationData.slice(0, 10);
@@ -70,7 +70,6 @@ export class HorizontalBarVis {
     updateVis() {
         let vis = this;
 
-        console.log(vis.topTenData);
         // horizontal bar chart: adjust the x-scale as before
         vis.xScale = d3.scaleLinear()
             .domain([0, d3.max(vis.topTenData, d => d[vis.selectedCategory])])
@@ -81,7 +80,7 @@ export class HorizontalBarVis {
         const barsHeight = vis.height - vis.titleHeight;
         vis.yScale = d3.scaleBand()
             .domain(vis.topTenData.map(d => d.name))
-            .range([barsHeight, 0])
+            .range([0, barsHeight])
             .padding(0.2);
 
         // Render the y-axis using the updated yScale
@@ -95,15 +94,12 @@ export class HorizontalBarVis {
 
         vis.bars.enter()
             .append("rect")
-            .on("mouseover", (event, d) => {
-                console.log(d);
-            })
             .on("click", (event, d) => {
                 vis.eventHandler.trigger("selectionChanged", d);
             })
             .merge(vis.bars)
             .transition().duration(750)
-            .attr("class", "bar")
+            .attr("class", d => d.id === vis.selectedStationId ? "bar selected" : "bar")
             .attr("y", d => vis.yScale(d.name))
             .attr("height", vis.yScale.bandwidth())
             .attr("x", 0)
@@ -111,18 +107,41 @@ export class HorizontalBarVis {
 
         vis.bars.exit().remove();
 
+        vis.labels = vis.barsGroup.selectAll(".bar-label")
+            .data(vis.topTenData, d => d.id);
+
+        vis.labels.enter()
+            .append("text")
+            .attr("class", "bar-label")
+            .merge(vis.labels)
+            .transition().duration(750)
+            .attr("x", d => vis.xScale(d[vis.selectedCategory]) + 5) // slightly to the right of the bar
+            .attr("y", d => vis.yScale(d.name) + vis.yScale.bandwidth() / 2 + 5) // vertical center + tweak
+            .text(d => d[vis.selectedCategory]);
+
+        vis.labels.exit().remove();
+
     }
 
     onSelectionChange(selectedStation) {
         let vis = this;
-        console.log('selection changed...', selectedStation);
-        if (vis.topTenData.find(station => station.id === selectedStation.id)) {
-            // bar is already there, just update the colour of the selected station
-            vis.barsGroup.selectAll(".bar")
-                .transition().duration(500)
-                .style("fill", d => d.id === selectedStation.id ? "red" : "steelblue");
+
+        if (selectedStation.id === vis.selectedStationId) {
+            // this was already selected, deselect
+            vis.selectedStationId = null;
         } else {
-            // TODO: Handle case where bar isn't there...
+            // set new selected station
+            vis.selectedStationId = selectedStation.id;
+        }
+
+        vis.updateVis();
+    }
+
+    getScales() {
+        // expose scales so selectBarVis can use same spacing as this one if desired
+        return {
+            xScale: this.xScale,
+            yScale: this.yScale,
         }
     }
 }
