@@ -282,14 +282,21 @@
                     <select class="custom-select align-self-center" style="width: 50%" id="bikeshare-station-variable">
                         <option value="totalVolume" selected>Total Volume</option>
                         <option value="avgDuration">Average Trip Duration</option>
+                        <option value="capacity">Total Dock Capacity</option>
+                        <option value="avgBikesAvailable">Average Number of Bikes Available</option>
+                        <option value="avgBikesDisabled">Average Number of Bikes Disabled</option>
+                        <option value="avgDocksDisabled">Average Number of Docks Disabled</option>
                     </select>
                 </div>
                 <div class="row" style="width: 100%">
-                    <div class="col-8" id="bikeshare-station-map-vis" style="height: 80vh;"></div>
-                    <div class="col-4">
+                    <div class="col-7" id="bikeshare-station-map-vis" style="height: 80vh;"></div>
+                    <div class="col-5">
                         <div id="bikeshare-station-bar-vis" style="height: 50%; width:100%"></div>
                         <div id="tor-bikeshare-selected-station" style="height: 10vh; width:100%"></div>
-                        <div id="bikeshare-station-summary">
+                        <div id="tor-bikeshare-instructions">
+                            Click on a station dot from the map or a bar from the graph to view more information about that station.
+                        </div>
+                        <div id="bikeshare-station-summary" style="display: none;">
                             <table class="table table-borderless">
                                 <tbody>
                                 <tr>

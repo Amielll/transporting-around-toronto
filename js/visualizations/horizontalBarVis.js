@@ -8,6 +8,15 @@ export class HorizontalBarVis {
         this.stationData = stationData;
         this.eventHandler = eventHandler;
         this.selectedStationId = null;
+        this.selectedVariable = 'totalVolume';
+        this.titles = {
+            totalVolume: 'Total Volume',
+            avgDuration: 'Average Trip Duration',
+            capacity: 'Total Capacity',
+            avgBikesAvailable: 'Average Bikes Available',
+            avgBikesDisabled: 'Average Bikes Disabled',
+            avgDocksDisabled: 'Average Docks Disabled'
+        }
         this.initVis();
     }
 
@@ -15,7 +24,7 @@ export class HorizontalBarVis {
         let vis = this;
 
         // Define margins and compute dimensions based on the parent element's size
-        vis.margin = { top: 20, right: 40, bottom: 20, left: 200 };
+        vis.margin = { top: 20, right: 100, bottom: 20, left: 200 };
         const container = document.getElementById(vis.parentElement).getBoundingClientRect();
         vis.width = container.width - vis.margin.left - vis.margin.right;
         vis.height = container.height - vis.margin.top - vis.margin.bottom;
@@ -31,14 +40,16 @@ export class HorizontalBarVis {
             .append('g')
             .attr('transform', `translate(${vis.margin.left}, ${vis.margin.top})`);
 
-        // add title
-        vis.svg.append('g')
-            .attr('class', 'title bar-title')
-            .append('text')
-            .text('Bike Share Station Top 10: Total Volume')
-            // Center the text horizontally and vertically within the title area
+        // Add title
+        vis.titleGroup = vis.svg.append("g")
+            .attr("class", "title")
+            .attr("id", `${vis.parentElement}-map-title`);
+
+        vis.titleText = vis.titleGroup.append("text")
             .attr('transform', `translate(${vis.width / 2}, ${vis.titleHeight / 2})`)
-            .attr('text-anchor', 'middle');
+            .attr("text-anchor", "middle")
+            .style("font-size", "16px")
+            .style("font-weight", "bold");
 
         // tooltip
         vis.tooltip = d3.select("body").append('div')
@@ -57,22 +68,22 @@ export class HorizontalBarVis {
         vis.wrangleData('totalVolume');
     }
 
-    wrangleData(selectedCategory) {
+    wrangleData(selectedVariable) {
         let vis = this;
 
-        vis.selectedCategory = selectedCategory;
-        vis.stationData.sort((a, b) => b[vis.selectedCategory] - a[vis.selectedCategory]);
+        vis.selectedVariable = selectedVariable;
+        vis.stationData.sort((a, b) => b[vis.selectedVariable] - a[vis.selectedVariable]);
         vis.topTenData = vis.stationData.slice(0, 10);
-
         this.updateVis();
     }
 
     updateVis() {
         let vis = this;
 
+        vis.updateTitle();
         // horizontal bar chart: adjust the x-scale as before
         vis.xScale = d3.scaleLinear()
-            .domain([0, d3.max(vis.topTenData, d => d[vis.selectedCategory])])
+            .domain([0, d3.max(vis.topTenData, d => d[vis.selectedVariable])])
             .range([0, vis.width]);
 
         // Adjust the y-scale to account for the reduced height for bars only.
@@ -103,7 +114,7 @@ export class HorizontalBarVis {
             .attr("y", d => vis.yScale(d.name))
             .attr("height", vis.yScale.bandwidth())
             .attr("x", 0)
-            .attr("width", d => vis.xScale(d[vis.selectedCategory]));
+            .attr("width", d => vis.xScale(d[vis.selectedVariable]));
 
         vis.bars.exit().remove();
 
@@ -115,9 +126,15 @@ export class HorizontalBarVis {
             .attr("class", "bar-label")
             .merge(vis.labels)
             .transition().duration(750)
-            .attr("x", d => vis.xScale(d[vis.selectedCategory]) + 5) // slightly to the right of the bar
+            .attr("x", d => vis.xScale(d[vis.selectedVariable]) + 5) // slightly to the right of the bar
             .attr("y", d => vis.yScale(d.name) + vis.yScale.bandwidth() / 2 + 5) // vertical center + tweak
-            .text(d => d[vis.selectedCategory]);
+            .text(d => {
+                if (vis.selectedVariable !== 'totalVolume' && vis.selectedVariable !== 'capacity') {
+                    return d3.format(".2f")(d[vis.selectedVariable]);
+                } else {
+                    return d[vis.selectedVariable];
+                }
+            });
 
         vis.labels.exit().remove();
 
@@ -143,5 +160,11 @@ export class HorizontalBarVis {
             xScale: this.xScale,
             yScale: this.yScale,
         }
+    }
+
+    updateTitle() {
+        let vis = this;
+        let title = vis.titles[vis.selectedVariable];
+        vis.titleText.text("Bike Share Stations : " + title);
     }
 }

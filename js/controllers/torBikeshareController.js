@@ -8,6 +8,7 @@ import {SelectBarVis} from "../visualizations/selectBarVis.js";
 export class TorBikeshareController {
 
     constructor() {
+        this.selectedStationId = null;
         this.eventHandler = {
             bind: (eventName, handler) => {
                 document.body.addEventListener(eventName, handler);
@@ -37,7 +38,7 @@ export class TorBikeshareController {
         this.barVis = new HorizontalBarVis(barParent, barTitle, barMargin, torStationData, this.eventHandler);
 
         let scales = this.barVis.getScales(); // same scales for bar alignment
-        this.selectBarVis = new SelectBarVis(selectParent, selectMargin, torStationData, scales, this.eventHandler);
+        this.selectBarVis = new SelectBarVis(selectParent, selectMargin, scales, this.eventHandler);
 
         // Register visualizations in event handler
         this.eventHandler.bind("selectionChanged",(event) => {
@@ -45,6 +46,7 @@ export class TorBikeshareController {
             this.barVis.onSelectionChange(event.detail);
             this.selectBarVis.onSelectionChange(event.detail);
             this.updateSummary(event.detail);
+            this.selectedStationId = event.detail.id;
         });
 
         const selectBoxId = '#bikeshare-station-variable';
@@ -63,6 +65,17 @@ export class TorBikeshareController {
         let summaryName = d3.select("#bikeshare-summary-station-name");
         let summaryNeighbourhood = d3.select("#bikeshare-summary-station-neighbourhood");
         let summaryLocation = d3.select("#bikeshare-summary-station-location");
+        let instructions = d3.select("#tor-bikeshare-instructions");
+
+        if (this.selectedStationId === station.id) {
+            // deselect this station, toggle back from summary -> instructions
+            summary.style("display", "none");
+            instructions.style("display", "block");
+            return;
+        }
+
+        instructions.style("display", "none");
+
         summary.style("display", "block");
         summaryName.text(station.name);
         summaryNeighbourhood.text(station.neighbourhood);

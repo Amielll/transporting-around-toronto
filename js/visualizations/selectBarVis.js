@@ -1,10 +1,9 @@
 import * as d3 from 'd3';
 
 export class SelectBarVis {
-    constructor(parentElement, margin, stationData, scales, eventHandler){
+    constructor(parentElement, margin, scales, eventHandler){
         this.parentElement = parentElement;
         this.margin = margin;
-        this.stationData = stationData;
         this.eventHandler = eventHandler;
         this.selectedStationData = [];
         this.selectedVariable = 'totalVolume';
@@ -56,6 +55,37 @@ export class SelectBarVis {
     updateVis() {
         let vis = this;
 
+
+        // If no station is selected, show 'None' instead of bar
+        if (vis.selectedStationData.length === 0) {
+            vis.barGroup.selectAll(".bar")
+                .transition()
+                .duration(500)
+                .attr("width", 0)
+                .remove();
+
+            vis.barGroup.selectAll(".bar-label")
+                .transition()
+                .duration(500)
+                .attr("opacity", 0)
+                .remove();
+
+            vis.barGroup.append("text")
+                .attr("class", "no-selection-label")
+                .attr("x", 0)
+                .attr("y", vis.barHeight / 2 + 5)
+                .attr("opacity", 0)
+                .text("None")
+                .transition()
+                .delay(500) // wait for bar fade-out
+                .duration(300)
+                .attr("opacity", 1);
+
+            return;
+        }
+
+        // If station is selected, remove 'None' if present and show bar
+        vis.barGroup.selectAll(".no-selection-label").remove();
         vis.bar = vis.barGroup.selectAll(".bar")
             .data(vis.selectedStationData, d => d.id);
 
@@ -84,7 +114,13 @@ export class SelectBarVis {
             .transition().duration(750)
             .attr("x", d => vis.xScale(d[vis.selectedVariable]) + 5) // slightly to the right of the bar
             .attr("y", d => vis.barHeight / 2 + 5) // vertical center + tweak
-            .text(d => d[vis.selectedVariable]);
+            .text(d => {
+                if (vis.selectedVariable !== 'totalVolume' && vis.selectedVariable !== 'capacity') {
+                    return d3.format(".2f")(d[vis.selectedVariable]);
+                } else {
+                    return d[vis.selectedVariable];
+                }
+            });
 
 
         vis.label.exit().remove();
