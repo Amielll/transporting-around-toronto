@@ -54,9 +54,9 @@ export class SelectBarVis {
 
     updateVis() {
         let vis = this;
+        vis.barGroup.selectAll(".no-selection-label").remove();
 
-
-        // If no station is selected, show 'None' instead of bar
+        // If no station is selected, show 'None' instead of bar/warning text
         if (vis.selectedStationData.length === 0) {
             vis.barGroup.selectAll(".bar")
                 .transition()
@@ -84,8 +84,36 @@ export class SelectBarVis {
             return;
         }
 
-        // If station is selected, remove 'None' if present and show bar
-        vis.barGroup.selectAll(".no-selection-label").remove();
+        // If selected station has no data for the selected variable, show warning text instead of trying to draw bar.
+        // e.g. station 7022 can be clicked on map, but has no status data
+        if (vis.selectedStationData[0][vis.selectedVariable] ===  null ||
+            vis.selectedStationData[0][vis.selectedVariable] === undefined) {
+            vis.barGroup.selectAll(".bar")
+                .transition()
+                .duration(500)
+                .attr("width", 0)
+                .remove();
+
+            vis.barGroup.selectAll(".bar-label")
+                .transition()
+                .duration(500)
+                .attr("opacity", 0)
+                .remove();
+
+            vis.barGroup.append("text")
+                .attr("class", "no-selection-label")
+                .attr("x", 0)
+                .attr("y", vis.barHeight / 2 + 5)
+                .attr("opacity", 0)
+                .text("No data for this station found")
+                .transition()
+                .delay(500) // wait for bar fade-out
+                .duration(300)
+                .attr("opacity", 1);
+
+            return;
+        }
+
         vis.bar = vis.barGroup.selectAll(".bar")
             .data(vis.selectedStationData, d => d.id);
 
