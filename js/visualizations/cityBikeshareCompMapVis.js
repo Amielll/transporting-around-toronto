@@ -7,6 +7,8 @@ export class CityCompBikeshareMapVis extends BaseMapVis {
         // eventHandler not used in this class.
         super(parentElement, geoData, eventHandler, config);
         this.stationData = stationData;
+
+        this.updateTitle();
         this.initVis();
     }
 
@@ -41,7 +43,6 @@ export class CityCompBikeshareMapVis extends BaseMapVis {
             .attr("cursor", "pointer")
             .attr("stroke-width", vis.radiusScale(1) / 4)
             .on('mouseover', function(event, d){
-                console.log(d);
                 d3.select(this)
                     .attr('fill', '#23415a')
                     .attr('stroke', 'black');
@@ -50,7 +51,7 @@ export class CityCompBikeshareMapVis extends BaseMapVis {
                     .style("left", event.pageX + 20 + "px")
                     .style("top", event.pageY + "px")
                     .html(`
-                        <div style="border: thin solid grey; border-radius: 5px; background: lightgrey; padding: 20px 20px 5px 20px;">
+                        <div style="border: thin solid grey; border-radius: 5px; background: lightgrey; padding: 20px 20px 20px 20px;">
                             <h6> Station: ${d.name} </h6>
                             Capacity: ${d.capacity}
                         </div>`);
@@ -84,11 +85,9 @@ export class CityCompBikeshareMapVis extends BaseMapVis {
 
         vis.mapContainer.call(vis.zoom);
 
-        vis.updateTitle(vis.config.title);
-
         // Next step in vis pipeline
         // Can't get this to work for Montreal.
-        // vis.wrangleData();
+        vis.wrangleData();
     }
 
     updateTitle() {
@@ -117,7 +116,18 @@ export class CityCompBikeshareMapVis extends BaseMapVis {
         vis.stationData.forEach(station => {
             const point = [station.longitude, station.latitude];
             const neighbourhoodFeature = vis.geoData.features.find(feature => d3.geoContains(feature, point));
-            station.neighbourhood = neighbourhoodFeature.properties.AREA_NAME;
+
+            switch(this.parentElement.slice(0,3)) {
+                case "tor":
+                    station.neighbourhood = neighbourhoodFeature?.properties.AREA_NAME;
+                    break;
+                case "mtl":
+                    station.neighbourhood = neighbourhoodFeature?.properties.CFSAUID;
+                    break;
+                case "van":
+                    station.neighbourhood = neighbourhoodFeature?.properties.name;
+                    break;
+            }
         });
 
         vis.updateVis();
