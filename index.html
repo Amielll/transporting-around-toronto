@@ -179,7 +179,28 @@
                 </p>
             </div>
 
-            <div style="height: 100%; width: 100%" class="neighbourhood-scatterplot vis page-section">
+            <div style="height: 100%; width: 100%" class="neighbourhood-scatterplot vis page-section container-fluid">
+                <select class="form-select" id="scatter-select-x">
+                    <option value="average_income" selected="selected">Average Annual Income</option>
+                    <option value="bicycle_commuters">Bike Commuter Proportion</option>
+                    <option value="bikeshare_stations">Bikeshare Stations</option>
+                    <option value="bike_parking_racks">Bike Parking Racks</option>
+                    <option value="collisions">Bike Collisions</option>
+                    <option value="thefts">Bike Thefts</option>
+                </select>
+                <select class="form-select" id="scatter-select-y">
+                    <option value="average_income">Average Annual Income</option>
+                    <option value="bicycle_commuters" selected="selected">Bike Commuter Proportion</option>
+                    <option value="bikeshare_stations">Bikeshare Stations</option>
+                    <option value="bike_parking_racks">Bike Parking Racks</option>
+                    <option value="collisions">Bike Collisions</option>
+                    <option value="thefts">Bike Thefts</option>
+                </select>
+                <div class="row">
+                    <div class="col-1"></div>
+                    <div class="col" id="neighbourhood-scatterplot-vis-area" style="height: 80vh; width:100%"></div>
+                    <div class="col-1"></div>
+                </div>
             </div>
             
 
