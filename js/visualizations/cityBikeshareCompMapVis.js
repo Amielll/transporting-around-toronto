@@ -7,12 +7,16 @@ export class CityCompBikeshareMapVis extends BaseMapVis {
         // eventHandler not used in this class.
         super(parentElement, geoData, eventHandler, config);
         this.stationData = stationData;
+
+        this.updateTitle();
         this.initVis();
     }
 
     initVis() {
         let vis = this;
         super.initVis();
+
+        this.updateTitle();
 
         // Represent stations as dots on the map
         vis.stationDots = vis.map.selectAll("circle")
@@ -39,24 +43,23 @@ export class CityCompBikeshareMapVis extends BaseMapVis {
             .attr("cursor", "pointer")
             .attr("stroke-width", vis.radiusScale(1) / 4)
             .on('mouseover', function(event, d){
-                console.log(d);
                 d3.select(this)
-                    .attr('stroke-width', '3px')
+                    .attr('fill', '#23415a')
                     .attr('stroke', 'black');
                 vis.tooltip
                     .style("opacity", 1)
                     .style("left", event.pageX + 20 + "px")
                     .style("top", event.pageY + "px")
                     .html(`
-                        <div style="border: thin solid grey; border-radius: 5px; background: lightgrey; padding: 20px 20px 5px 20px;">
+                        <div style="border: thin solid grey; border-radius: 5px; background: lightgrey; padding: 20px 20px 20px 20px;">
                             <h6> Station: ${d.name} </h6>
                             Capacity: ${d.capacity}
                         </div>`);
             })
             .on('mouseout', function(event, d){
                             d3.select(this)
-                                .attr('stroke-width', '1px')
-                                .attr('stroke', 'lightgrey');
+                                .attr('fill', 'steelblue')
+                                .attr('stroke', 'white');
             
                             vis.tooltip
                                 .style("opacity", 0)
@@ -82,10 +85,28 @@ export class CityCompBikeshareMapVis extends BaseMapVis {
 
         vis.mapContainer.call(vis.zoom);
 
-        vis.updateTitle(vis.config.title);
-
         // Next step in vis pipeline
+        // Can't get this to work for Montreal.
         vis.wrangleData();
+    }
+
+    updateTitle() {
+        // Update visualization title based on which city this is.
+        let cityName;
+
+        // Determine city name based on the first three characters of the parent element.
+        switch(this.parentElement.slice(0,3)) {
+            case "tor":
+                cityName = "Toronto";
+                break;
+            case "mtl":
+                cityName = "Montreal";
+                break;
+            case "van":
+                cityName = "Vancouver";
+                break;
+        }
+        this.config.title = `${cityName} Bikeshare Stations`;
     }
 
     wrangleData() {
@@ -95,7 +116,18 @@ export class CityCompBikeshareMapVis extends BaseMapVis {
         vis.stationData.forEach(station => {
             const point = [station.longitude, station.latitude];
             const neighbourhoodFeature = vis.geoData.features.find(feature => d3.geoContains(feature, point));
-            station.neighbourhood = neighbourhoodFeature.properties.AREA_NAME;
+
+            switch(this.parentElement.slice(0,3)) {
+                case "tor":
+                    station.neighbourhood = neighbourhoodFeature?.properties.AREA_NAME;
+                    break;
+                case "mtl":
+                    station.neighbourhood = neighbourhoodFeature?.properties.CFSAUID;
+                    break;
+                case "van":
+                    station.neighbourhood = neighbourhoodFeature?.properties.name;
+                    break;
+            }
         });
 
         vis.updateVis();
