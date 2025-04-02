@@ -23,6 +23,10 @@ export class TorBikeshareController {
 
     initController() {
         const mapParent = 'bikeshare-station-map-vis';
+        const mapConfig = {
+            title: '',
+            titleMargin: 0
+        }
 
         const barParent = 'bikeshare-station-bar-vis';
         const barTitle = 'Toronto Bike Share Top 10: Total Volume';
@@ -34,7 +38,7 @@ export class TorBikeshareController {
         // Initialize visualizations
         let dm = new DataManager();
         let {torMapData, torStationData} = dm.data;
-        this.mapVis = new BikeshareMapVis(mapParent, torMapData, this.eventHandler, torStationData);
+        this.mapVis = new BikeshareMapVis(mapParent, torMapData, this.eventHandler, torStationData, mapConfig);
         this.barVis = new HorizontalBarVis(barParent, barTitle, barMargin, torStationData, this.eventHandler);
 
         let scales = this.barVis.getScales(); // same scales for bar alignment
@@ -42,11 +46,11 @@ export class TorBikeshareController {
 
         // Register visualizations in event handler
         this.eventHandler.bind("selectionChanged",(event) => {
+            this.selectedStationId = (this.selectedStationId !== event.detail.id) ? event.detail.id : null;
             this.mapVis.onSelectionChange(event.detail);
             this.barVis.onSelectionChange(event.detail);
             this.selectBarVis.onSelectionChange(event.detail);
             this.updateSummary(event.detail);
-            this.selectedStationId = event.detail.id;
         });
 
         const selectBoxId = '#bikeshare-station-variable';
@@ -67,7 +71,7 @@ export class TorBikeshareController {
         let summaryLocation = d3.select("#bikeshare-summary-station-location");
         let instructions = d3.select("#tor-bikeshare-instructions");
 
-        if (this.selectedStationId === station.id) {
+        if (this.selectedStationId === null) {
             // deselect this station, toggle back from summary -> instructions
             summary.style("display", "none");
             instructions.style("display", "block");

@@ -10,13 +10,14 @@ export class HorizontalBarVis {
         this.selectedStationId = null;
         this.selectedVariable = 'totalVolume';
         this.titles = {
-            totalVolume: 'Total Volume',
-            avgDuration: 'Average Trip Duration',
-            capacity: 'Total Capacity',
-            avgBikesAvailable: 'Average Bikes Available',
-            avgBikesDisabled: 'Average Bikes Disabled',
-            avgDocksDisabled: 'Average Docks Disabled'
+            totalVolume: 'Volume of Trips at this Station (January 2024)',
+            avgDuration: 'Average Trip Duration (mins) (January 2024)',
+            capacity: 'Total Dock Capacity (March 2025)',
+            avgBikesAvailable: 'Average Bikes Available (March 2025)',
+            avgBikesDisabled: 'Average Bikes Disabled (March 2025)',
+            avgDocksDisabled: 'Average Docks Disabled (March 2025)'
         }
+
         this.initVis();
     }
 
@@ -80,7 +81,9 @@ export class HorizontalBarVis {
     updateVis() {
         let vis = this;
 
-        vis.updateTitle();
+        let title = vis.titles[vis.selectedVariable];
+        vis.titleText.text(title);
+
         // horizontal bar chart: adjust the x-scale as before
         vis.xScale = d3.scaleLinear()
             .domain([0, d3.max(vis.topTenData, d => d[vis.selectedVariable])])
@@ -160,11 +163,5 @@ export class HorizontalBarVis {
             xScale: this.xScale,
             yScale: this.yScale,
         }
-    }
-
-    updateTitle() {
-        let vis = this;
-        let title = vis.titles[vis.selectedVariable];
-        vis.titleText.text("Bike Share Stations : " + title);
     }
 }
