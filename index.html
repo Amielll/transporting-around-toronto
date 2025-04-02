@@ -67,7 +67,34 @@
             </div>
 
             <div style="height: 100%; width: 100%" class="city-bikeshare vis page-section">
-                <div id="montreal-bikeshare-map-area" style="margin-top: 5vh; height: 100%; width: 100%"></div>
+                <div class="row">
+                    <div class="col" style="width: 50%"></div>
+                    <div class="col" style="display: flex;">
+                        <div class="btn-group" role="group" style="margin: 0 auto"> 
+                            <input type="radio" class="btn-check" name="btnradio" id="mtl-city-comp-btn" autocomplete="off" checked>
+                            <label class="btn btn-outline-primary" for="mtl-city-comp-btn">Montreal</label>
+
+                            <input type="radio" class="btn-check" name="btnradio" id="van-city-comp-btn" autocomplete="off">
+                            <label class="btn btn-outline-primary" for="van-city-comp-btn">Vancouver</label>
+                            <!-- 
+                            <button type="button" class="btn btn-primary" id="mtl-city-comp-btn">Montreal</button>
+                            <button type="button" class="btn btn-primary" id="van-city-comp-btn">Vancouver</button> -->
+                        </div>
+
+                        <!-- <label for="city-comp-toggle">Montreal&nbsp;</label>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" role="switch" id="city-comp-toggle">
+                        </div> 
+                        <label for="city-comp-toggle">&nbsp;Vancouver</label> -->
+                    </div>
+                </div>
+                <div class="row" style="height: 100%; width: 100%">
+                    <div class="col-6" id="tor-bikeshare-comp-map-area" style="margin-top: 5vh; height: 100%;"></div>
+                    <div class="col-6" id="mtl-van-bikeshare-comp-map-area" style="margin-top: 5vh; height: 100%;">
+                        <div id="mtl-bikeshare-comp-map-area" style="height: 80vh; width: 100%;"></div>
+                        <div id="van-bikeshare-comp-map-area" style="height: 80vh; width: 100%; visibility: hidden;"></div>
+                    </div>
+                </div>
             </div>                           
 
 
@@ -179,7 +206,28 @@
                 </p>
             </div>
 
-            <div style="height: 100%; width: 100%" class="neighbourhood-scatterplot vis page-section">
+            <div style="height: 100%; width: 100%" class="neighbourhood-scatterplot vis page-section container-fluid">
+                <select class="form-select" id="scatter-select-x">
+                    <option value="average_income" selected="selected">Average Annual Income</option>
+                    <option value="bicycle_commuters">Bike Commuter Proportion</option>
+                    <option value="bikeshare_stations">Bikeshare Stations</option>
+                    <option value="bike_parking_racks">Bike Parking Racks</option>
+                    <option value="collisions">Bike Collisions</option>
+                    <option value="thefts">Bike Thefts</option>
+                </select>
+                <select class="form-select" id="scatter-select-y">
+                    <option value="average_income">Average Annual Income</option>
+                    <option value="bicycle_commuters" selected="selected">Bike Commuter Proportion</option>
+                    <option value="bikeshare_stations">Bikeshare Stations</option>
+                    <option value="bike_parking_racks">Bike Parking Racks</option>
+                    <option value="collisions">Bike Collisions</option>
+                    <option value="thefts">Bike Thefts</option>
+                </select>
+                <div class="row">
+                    <div class="col-1"></div>
+                    <div class="col" id="neighbourhood-scatterplot-vis-area" style="height: 80vh; width:100%"></div>
+                    <div class="col-1"></div>
+                </div>
             </div>
             
 

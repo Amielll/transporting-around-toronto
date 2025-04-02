@@ -4,6 +4,7 @@ import {SingleNeighbourhoodController} from "./controllers/singleNeighbourhoodCo
 import { CityBikeshareCompController } from "./controllers/cityBikeshareCompController.js";
 import {TorNeighbourhoodsController} from "./controllers/torNeighbourhoodsController.js";
 import { CitiesScoreController } from "./controllers/citiesScoreController.js";
+import {NeighbourhoodScatterController} from "./controllers/neighbourhoodScatterController.js";
 
 async function main() {
     // load data
@@ -16,11 +17,13 @@ async function main() {
     let singleNeighbourhoodController = new SingleNeighbourhoodController();
     let cityBikeshareCompController = new CityBikeshareCompController();
     let citiesScoreController = new CitiesScoreController();
+    let neighbourhoodScatterController = new NeighbourhoodScatterController();
     torNeighbourhoodsController.initController();
     torBikeshareController.initController();
     singleNeighbourhoodController.initController();
     cityBikeshareCompController.initController();
     citiesScoreController.initController();
+    neighbourhoodScatterController.initController();
 }
 
 // main entrypoint for the project
