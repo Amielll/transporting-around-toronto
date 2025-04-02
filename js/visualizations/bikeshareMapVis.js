@@ -24,19 +24,6 @@ export class BikeshareMapVis extends BaseMapVis {
             .range([3, 0.5])
             .clamp(true);
 
-        // Draw station dots and set up click listener
-        vis.stationDots.enter()
-            .append("circle")
-            .attr("class", "station")
-            .attr("cx", d => vis.projection([d.longitude, d.latitude])[0])
-            .attr("cy", d => vis.projection([d.longitude, d.latitude])[1])
-            .attr("r", 1.5)
-            .attr("fill", "steelblue")
-            .attr("stroke", "#fff")
-            .attr("cursor", "pointer")
-            .attr("stroke-width", 0.5)
-            .on("click", (event, d) => vis.eventHandler.trigger("selectionChanged", d));
-
         // Zoom/pan functionality
         vis.zoomFunction = function(event) {
             vis.map.attr("transform", event.transform);
@@ -71,8 +58,22 @@ export class BikeshareMapVis extends BaseMapVis {
         let vis = this;
         super.updateVis(); // map path update
 
-        vis.map.selectAll("circle.station")
-            .attr("fill", d => d.id === vis.selectedStationId ? "red" : "steelblue");
+        // draw dots and set up listener
+        vis.stationDots = vis.map.selectAll("circle")
+            .data(vis.stationData, d => d.id);
+
+        vis.stationDots.enter()
+            .append("circle")
+            .attr("class", "station")
+            .attr("cx", d => vis.projection([d.longitude, d.latitude])[0])
+            .attr("cy", d => vis.projection([d.longitude, d.latitude])[1])
+            .attr("r", 1.5)
+            .on("click", function(event, d) {
+                d3.select(this).raise(); // 'this' refers to the clicked dot (not the vis)
+                vis.eventHandler.trigger("selectionChanged", d);
+            })
+            .merge(vis.stationDots)
+            .attr("class", d => d.id === vis.selectedStationId ? "station selected" : "station");
     }
 
     onSelectionChange(selectedStation) {
@@ -87,6 +88,8 @@ export class BikeshareMapVis extends BaseMapVis {
             vis.selectedStationId = selectedStation.id;
             vis.updateZoom(selectedStation);
         }
+
+        vis.updateVis();
     }
 
     updateZoom(d) {
