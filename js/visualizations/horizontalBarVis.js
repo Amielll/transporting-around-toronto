@@ -7,6 +7,17 @@ export class HorizontalBarVis {
         this.margin = margin;
         this.stationData = stationData;
         this.eventHandler = eventHandler;
+        this.selectedStationId = null;
+        this.selectedVariable = 'totalVolume';
+        this.titles = {
+            totalVolume: 'Volume of Trips at this Station (January 2024)',
+            avgDuration: 'Average Trip Duration (mins) (January 2024)',
+            capacity: 'Total Dock Capacity (March 2025)',
+            avgBikesAvailable: 'Average Bikes Available (March 2025)',
+            avgBikesDisabled: 'Average Bikes Disabled (March 2025)',
+            avgDocksDisabled: 'Average Docks Disabled (March 2025)'
+        }
+
         this.initVis();
     }
 
@@ -14,7 +25,7 @@ export class HorizontalBarVis {
         let vis = this;
 
         // Define margins and compute dimensions based on the parent element's size
-        vis.margin = { top: 20, right: 40, bottom: 20, left: 200 };
+        vis.margin = { top: 20, right: 100, bottom: 20, left: 200 };
         const container = document.getElementById(vis.parentElement).getBoundingClientRect();
         vis.width = container.width - vis.margin.left - vis.margin.right;
         vis.height = container.height - vis.margin.top - vis.margin.bottom;
@@ -30,14 +41,16 @@ export class HorizontalBarVis {
             .append('g')
             .attr('transform', `translate(${vis.margin.left}, ${vis.margin.top})`);
 
-        // add title
-        vis.svg.append('g')
-            .attr('class', 'title bar-title')
-            .append('text')
-            .text('Bike Share Station Top 10: Total Volume')
-            // Center the text horizontally and vertically within the title area
+        // Add title
+        vis.titleGroup = vis.svg.append("g")
+            .attr("class", "title")
+            .attr("id", `${vis.parentElement}-map-title`);
+
+        vis.titleText = vis.titleGroup.append("text")
             .attr('transform', `translate(${vis.width / 2}, ${vis.titleHeight / 2})`)
-            .attr('text-anchor', 'middle');
+            .attr("text-anchor", "middle")
+            .style("font-size", "16px")
+            .style("font-weight", "bold");
 
         // tooltip
         vis.tooltip = d3.select("body").append('div')
@@ -56,24 +69,24 @@ export class HorizontalBarVis {
         vis.wrangleData('totalVolume');
     }
 
-    wrangleData(selectedCategory) {
+    wrangleData(selectedVariable) {
         let vis = this;
 
-
-        vis.selectedCategory = selectedCategory;
-        vis.stationData.sort((a, b) => b[vis.selectedCategory] - a[vis.selectedCategory]);
+        vis.selectedVariable = selectedVariable;
+        vis.stationData.sort((a, b) => b[vis.selectedVariable] - a[vis.selectedVariable]);
         vis.topTenData = vis.stationData.slice(0, 10);
-
         this.updateVis();
     }
 
     updateVis() {
         let vis = this;
 
-        console.log(vis.topTenData);
+        let title = vis.titles[vis.selectedVariable];
+        vis.titleText.text(title);
+
         // horizontal bar chart: adjust the x-scale as before
         vis.xScale = d3.scaleLinear()
-            .domain([0, d3.max(vis.topTenData, d => d[vis.selectedCategory])])
+            .domain([0, d3.max(vis.topTenData, d => d[vis.selectedVariable])])
             .range([0, vis.width]);
 
         // Adjust the y-scale to account for the reduced height for bars only.
@@ -81,7 +94,7 @@ export class HorizontalBarVis {
         const barsHeight = vis.height - vis.titleHeight;
         vis.yScale = d3.scaleBand()
             .domain(vis.topTenData.map(d => d.name))
-            .range([barsHeight, 0])
+            .range([0, barsHeight])
             .padding(0.2);
 
         // Render the y-axis using the updated yScale
@@ -95,34 +108,60 @@ export class HorizontalBarVis {
 
         vis.bars.enter()
             .append("rect")
-            .on("mouseover", (event, d) => {
-                console.log(d);
-            })
             .on("click", (event, d) => {
                 vis.eventHandler.trigger("selectionChanged", d);
             })
             .merge(vis.bars)
             .transition().duration(750)
-            .attr("class", "bar")
+            .attr("class", d => d.id === vis.selectedStationId ? "bar selected" : "bar")
             .attr("y", d => vis.yScale(d.name))
             .attr("height", vis.yScale.bandwidth())
             .attr("x", 0)
-            .attr("width", d => vis.xScale(d[vis.selectedCategory]));
+            .attr("width", d => vis.xScale(d[vis.selectedVariable]));
 
         vis.bars.exit().remove();
+
+        vis.labels = vis.barsGroup.selectAll(".bar-label")
+            .data(vis.topTenData, d => d.id);
+
+        vis.labels.enter()
+            .append("text")
+            .attr("class", "bar-label")
+            .merge(vis.labels)
+            .transition().duration(750)
+            .attr("x", d => vis.xScale(d[vis.selectedVariable]) + 5) // slightly to the right of the bar
+            .attr("y", d => vis.yScale(d.name) + vis.yScale.bandwidth() / 2 + 5) // vertical center + tweak
+            .text(d => {
+                if (vis.selectedVariable !== 'totalVolume' && vis.selectedVariable !== 'capacity') {
+                    return d3.format(".2f")(d[vis.selectedVariable]);
+                } else {
+                    return d[vis.selectedVariable];
+                }
+            });
+
+        vis.labels.exit().remove();
 
     }
 
     onSelectionChange(selectedStation) {
         let vis = this;
-        console.log('selection changed...', selectedStation);
-        if (vis.topTenData.find(station => station.id === selectedStation.id)) {
-            // bar is already there, just update the colour of the selected station
-            vis.barsGroup.selectAll(".bar")
-                .transition().duration(500)
-                .style("fill", d => d.id === selectedStation.id ? "red" : "steelblue");
+
+        if (selectedStation.id === vis.selectedStationId) {
+            // this was already selected, deselect
+            vis.selectedStationId = null;
         } else {
-            // TODO: Handle case where bar isn't there...
+            // set new selected station
+            vis.selectedStationId = selectedStation.id;
+        }
+
+        vis.updateVis();
+    }
+
+    getScales() {
+        // expose scales so selectBarVis can use same spacing as this one if desired
+        return {
+            xScale: this.xScale,
+            yScale: this.yScale,
         }
     }
 }

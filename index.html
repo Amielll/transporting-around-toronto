@@ -127,7 +127,7 @@
                 <div class="col"></div>
                 <div class="col-7">
                     <ul class="insights-list">
-                        <li>Toronto has a higher bikeshare station coverage (by percentage of city area) than Montreal's.</li>
+                        <li>Toronto has a higher Bike Share station coverage (by percentage of city area) than Montreal's.</li>
                     </ul>
                 </div>
                 <div class="col"></div>
@@ -158,7 +158,7 @@
                             <select class="form-select" id="data-type1">
                                 <option value="average_income">Average Annual Income</option>
                                 <option value="bicycle_commuters">Bike Commuter Proportion</option>
-                                <option value="bikeshare_stations">Bikeshare Stations</option>
+                                <option value="bikeshare_stations">Bike Share Stations</option>
                                 <option value="bike_parking_racks">Bike Parking Racks</option>
                                 <option value="collisions">Bike Collisions</option>
                                 <option value="thefts">Bike Thefts</option>
@@ -168,7 +168,7 @@
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="" id="toggle-bike-share" checked>
                                 <label class="form-check-label" for="toggle-bike-share">
-                                View Bikeshare Stations
+                                View Bike Share Stations
                                 </label>
                             </div>
                             <div class="form-check">
@@ -316,9 +316,12 @@
             <!-- Bike Share Station Map -->
             <div style="height: 100%; width: 100%" class="neighbourhood-bikeshare text page-section">
                 <p>
-                    Lastly, let's examine Toronto's bikeshare stations more in depth. <br>
+                    Lastly, lets further examine <strong>Toronto's Bike Share network</strong>. <br>
                     <br>
-                    Where are they located? Which ones are used most? 
+                    Where are Bike Share stations located in the city? Which ones are used most frequently?
+                    How long do commuters typically take to complete their trip? <br> <br>
+
+                    Are bikes typically available at this station? How many docks are there? Are they maintained?
                 </p>
             </div>
 
@@ -327,25 +330,29 @@
                     <h2 id="bikeshare-station-title">Toronto's Bike Share Stations</h2>
                 </div>
                 <div class="row justify-content-center" style="height: 10vh; width: 100%; padding: 0; text-align: center;">
-                    <select class="custom-select align-self-center" style="width: 50%" id="bikeshare-station-metric">
+                    <select class="custom-select align-self-center" style="width: 50%" id="bikeshare-station-variable">
                         <option value="totalVolume" selected>Total Volume</option>
                         <option value="avgDuration">Average Trip Duration</option>
+                        <option value="capacity">Total Dock Capacity</option>
+                        <option value="avgBikesAvailable">Average Number of Bikes Available</option>
+                        <option value="avgBikesDisabled">Average Number of Bikes Disabled</option>
+                        <option value="avgDocksDisabled">Average Number of Docks Disabled</option>
                     </select>
                 </div>
                 <div class="row" style="width: 100%">
-                    <div class="col-8" id="bikeshare-station-map-vis" style="height: 80vh;"></div>
-                    <div class="col-4">
-                        <div id="bikeshare-station-summary">
-                            <h5 style="text-align: center">Summary</h5>
+                    <div class="col-7" id="bikeshare-station-map-vis" style="height: 80vh;"></div>
+                    <div class="col-5">
+                        <div id="bikeshare-station-bar-vis" style="height: 50%; width:100%"></div>
+                        <div id="tor-bikeshare-selected-station" style="height: 10vh; width:100%"></div>
+                        <div id="tor-bikeshare-instructions">
+                            Click on a station dot from the map or a bar from the graph to view more information about that station.
+                        </div>
+                        <div id="bikeshare-station-summary" style="display: none;">
                             <table class="table table-borderless">
                                 <tbody>
                                 <tr>
-                                    <td>Station:</td>
+                                    <td>Name:</td>
                                     <th scope="row" id="bikeshare-summary-station-name"></th>
-                                </tr>
-                                <tr>
-                                    <td>ID:</td>
-                                    <th scope="row" id="bikeshare-summary-station-id"></th>
                                 </tr>
                                 <tr>
                                     <td>Neighbourhood:</td>
@@ -358,7 +365,6 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div id="bikeshare-station-bar-vis" style="height: 50%"></div>
                     </div>
                 </div>
             </div>
@@ -370,9 +376,9 @@
                 <div class="col"></div>
                 <div class="col-7">
                     <ul class="insights-list">
-                        <li>Most bike commuters are downtown, but not in neighbourhoods with high bikeshare station density.</li>
+                        <li>Most bike commuters are downtown, but not in neighbourhoods with high Bike Share station density.</li>
                         <li>Bike parking racks are scarce in most neighbourhoods.</li>
-                        <li>Bike theft rate is correlated with bikeshare station density in a neighbourhood.</li>
+                        <li>Bike theft rate is correlated with Bike Share station density in a neighbourhood.</li>
                     </ul>
                 </div>
                 <div class="col"></div>
