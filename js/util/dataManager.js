@@ -29,7 +29,9 @@ export class DataManager {
             d3.json(`${this.path}/vancouver_station_information_cleaned.json`),
             d3.json(`${this.path}/vancouver_neighbourhoods.geojson`),
             d3.csv(`${this.path}/vancouver_trips.csv`),
-            d3.csv(`${this.path}/bna-city-ratings.csv`)
+            d3.csv(`${this.path}/bna-city-ratings.csv`),
+            d3.json(`${this.path}/cycling-network-montreal.geojson`),
+            d3.json(`${this.path}/cycling-network-vancouver.geojson`)
         ]);
 
 
@@ -51,6 +53,8 @@ export class DataManager {
             vanTripData: allData[12],
             vanStationData: this.processVancouverStationData(allData[10], {}, allData[12]),
             bnaScores : this.processScoresData(allData[13]),
+            mtlBikeLaneData: allData[14],
+            vanBikeLaneData: allData[15],
         }
 
         this.loaded = true;
