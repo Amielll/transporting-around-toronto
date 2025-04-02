@@ -1,5 +1,6 @@
 import * as d3 from "d3";
 
+
 export class DataManager {
     constructor() {
         if (DataManager.instance) {
@@ -69,11 +70,22 @@ export class DataManager {
             stationDataEntry.name = station["Station Name"];
             stationDataEntry.latitude = station["Latitude"];
             stationDataEntry.longitude = station["Longitude"];
-            stationDataEntry.capacity = station["capacity"];
 
-            stationDataEntry.statusSamples = []
+            // If city's bike status API has status information about a station, sample of it should exist in data.
             if (stationDataEntry.id in stationStatus) {
-                stationDataEntry.statusSamples = stationStatus[stationDataEntry.id]["samples"];
+                let samples = stationStatus[stationDataEntry.id]["samples"];
+
+                let totalBikesAvailable = samples.reduce((runningSum, s) => runningSum + s["num_bikes_available"], 0);
+                let totalBikesDisabled = samples.reduce((runningSum, s) => runningSum + s["num_bikes_disabled"], 0);
+                let totalDocksDisabled = samples.reduce((runningSum, s) => runningSum + s["num_docks_disabled"], 0);
+                stationDataEntry.avgBikesAvailable = totalBikesAvailable / samples.length;
+                stationDataEntry.avgBikesDisabled = totalBikesDisabled / samples.length;
+                stationDataEntry.avgDocksDisabled = totalDocksDisabled / samples.length;
+
+                // # of docks *could* change (e.g. city adds more), but for simplicity assume it's fixed
+                // arbitrarily choose most recent sample to get # of docks for this station
+                let sample = samples[samples.length - 1];
+                stationDataEntry.capacity = sample['num_docks_available'] + sample['num_docks_disabled'];
             }
 
             let filteredStartTrips = tripData.filter(tripDataEntry => tripDataEntry["Start Station Id"] === stationDataEntry.id);

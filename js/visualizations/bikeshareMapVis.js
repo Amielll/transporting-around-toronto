@@ -6,6 +6,7 @@ export class BikeshareMapVis extends BaseMapVis {
     constructor(parentElement, geoData, eventHandler, stationData, config={}) {
         super(parentElement, geoData, eventHandler, config);
         this.stationData = stationData;
+        this.selectedStationId = null;
         this.initVis();
     }
 
@@ -17,31 +18,15 @@ export class BikeshareMapVis extends BaseMapVis {
         vis.stationDots = vis.map.selectAll("circle")
             .data(vis.stationData, d => d.id);
 
+        // TODO: use this for toggling station dot size relative to selected variable?
         vis.radiusScale = d3.scaleLinear()
             .domain([1, 8])
             .range([3, 0.5])
             .clamp(true);
 
-        // Draw station dots and set up click listener
-        vis.stationDots.enter()
-            .append("circle")
-            .attr("class", "station")
-            .attr("cx", d => vis.projection([d.longitude, d.latitude])[0])
-            .attr("cy", d => vis.projection([d.longitude, d.latitude])[1])
-            .attr("r", vis.radiusScale(1))
-            .attr("fill", "steelblue")
-            .attr("stroke", "#fff")
-            .attr("cursor", "pointer")
-            .attr("stroke-width", vis.radiusScale(1) / 4)
-            .on("click", (event, d) => vis.eventHandler.trigger("selectionChanged", d));
-
         // Zoom/pan functionality
         vis.zoomFunction = function(event) {
             vis.map.attr("transform", event.transform);
-            vis.map.selectAll(".station")
-                .attr("r", vis.radiusScale(event.transform.k))
-                .attr("stroke-width", vis.radiusScale(event.transform.k) / 4)
-
             vis.updateVis();
         }
 
@@ -70,17 +55,41 @@ export class BikeshareMapVis extends BaseMapVis {
     }
 
     updateVis() {
+        let vis = this;
         super.updateVis(); // map path update
+
+        // draw dots and set up listener
+        vis.stationDots = vis.map.selectAll("circle")
+            .data(vis.stationData, d => d.id);
+
+        vis.stationDots.enter()
+            .append("circle")
+            .attr("class", "station")
+            .attr("cx", d => vis.projection([d.longitude, d.latitude])[0])
+            .attr("cy", d => vis.projection([d.longitude, d.latitude])[1])
+            .attr("r", 1.5)
+            .on("click", function(event, d) {
+                d3.select(this).raise(); // 'this' refers to the clicked dot (not the vis)
+                vis.eventHandler.trigger("selectionChanged", d);
+            })
+            .merge(vis.stationDots)
+            .attr("class", d => d.id === vis.selectedStationId ? "station selected" : "station");
     }
 
     onSelectionChange(selectedStation) {
         let vis = this;
 
-        vis.map.selectAll("circle.station")
-            .transition().duration(750)
-            .attr("fill", d => d.id === selectedStation.id ? "red" : "steelblue");
+        if (selectedStation.id === vis.selectedStationId) {
+            // this was already selected, deselect
+            vis.selectedStationId = null;
+            vis.resetZoom();
+        } else {
+            // set new selected station
+            vis.selectedStationId = selectedStation.id;
+            vis.updateZoom(selectedStation);
+        }
 
-        vis.updateZoom(selectedStation);
+        vis.updateVis();
     }
 
     updateZoom(d) {
@@ -95,6 +104,14 @@ export class BikeshareMapVis extends BaseMapVis {
         vis.mapContainer.transition().duration(750).call(
             vis.zoom.transform,
             d3.zoomIdentity.translate(translateX, translateY).scale(scale)
+        );
+    }
+
+    resetZoom() {
+        let vis = this;
+        vis.mapContainer.transition().duration(750).call(
+            vis.zoom.transform,
+            d3.zoomIdentity
         );
     }
 }

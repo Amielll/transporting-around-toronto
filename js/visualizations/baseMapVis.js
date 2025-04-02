@@ -13,8 +13,8 @@ export class BaseMapVis {
                 bottom: 20,
                 left: 20,
             },
-            mapFill: "#ddd",
-            mapStroke: "#333",
+            mapFill: "#eef0ee",
+            mapStroke: "#242e24",
             mapStrokeWidth: "1px",
             titleMargin: 20, // Space between title and map
             title: "Map Visualization",
