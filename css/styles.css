@@ -60,24 +60,24 @@ h1, h2, h3, h4, h5, h6, .title {
 
 
 .bar {
-  fill: steelblue;
+  fill: #096a09;
   cursor: pointer;
 }
 
 .bar.selected {
-  fill: red;
+  fill: #672A9C;
 }
 
 .station {
   cursor: pointer;
-  fill: steelblue;
-  stroke: #fff;
+  fill: #096a09;;
+  stroke: grey;
   stroke-width: 0.5px;
   z-index: 0;
 }
 
 .station.selected {
-  fill: red;
+  fill:#672A9C;
   z-index: 1;
 }
 
