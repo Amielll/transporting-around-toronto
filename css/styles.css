@@ -144,3 +144,13 @@ h1, h2, h3, h4, h5, h6, .title {
 table {
   border-collapse: collapse;
 }
+
+.text p {
+  color: #242e24;
+  font-size: 28px;
+}
+
+.insights {
+  color: #242e24;
+  font-size: 28px;
+}
