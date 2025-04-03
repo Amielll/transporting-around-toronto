@@ -60,24 +60,24 @@ h1, h2, h3, h4, h5, h6, .title {
 
 
 .bar {
-  fill: steelblue;
+  fill: #096a09;
   cursor: pointer;
 }
 
 .bar.selected {
-  fill: red;
+  fill: #672A9C;
 }
 
 .station {
   cursor: pointer;
-  fill: steelblue;
-  stroke: #fff;
+  fill: #096a09;;
+  stroke: grey;
   stroke-width: 0.5px;
   z-index: 0;
 }
 
 .station.selected {
-  fill: red;
+  fill:#672A9C;
   z-index: 1;
 }
 
@@ -128,6 +128,23 @@ h1, h2, h3, h4, h5, h6, .title {
   display: flex;
 }
 
+#loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#loader-wheel {
+  height: 25%;
+  width: 25%;
+  margin: auto;
+  animation: spin 6s linear infinite;
+}
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(180deg); }
+}
+
 .contributor-name {
   text-align: center;
   font-size: 1.5rem;
@@ -153,4 +170,21 @@ table {
 .insights {
   color: #242e24;
   font-size: 28px;
+}
+
+
+/* City switch buttons */
+.btn-outline-primary {
+  color: #242e24;
+  border-color: #242e24;
+}
+
+.btn-check:checked + .btn-outline-primary {
+  background-color: #242e24;
+  border-color: #242e24;
+  color: white;
+}
+
+.btn-outline-primary:hover {
+  background-color: #242e24;
 }

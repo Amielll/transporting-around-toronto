@@ -129,7 +129,7 @@ export class ScatterPlotVis {
             .attr("cx", d => vis.xScale(d.x))
             .attr("cy", d => vis.yScale(d.y))
             .attr("r", 5)
-            .attr("fill", "#4682b4");
+            .attr("fill", "#672A9C");
 
 
         vis.circles.exit().remove();

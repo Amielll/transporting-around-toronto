@@ -14,9 +14,15 @@
 </head>
 
 <body>
-<div id="app" class="container-fluid" style="width:100%">
-    <ul id="scroller-buttons"></ul>
+<div id="app" class="container-fluid" style="width:100%;">
+    <ul id="scroller-buttons" style="visibility: hidden;"></ul>
 
+    <div id="loader" style="height: 100%; width: 98%; background-color: #D2E0D3; position: absolute;">
+        <div style="text-align: center;">
+            <img id="loader-wheel" src="imgs/bike-wheel.svg">
+            <h6 style="margin-top:5%">LOADING</h6>
+        </div>
+    </div>
 
     <div class="row" style="height: 100%; width: 98%">
         <div class="col" style="height: 100%; width: 100%">
@@ -45,9 +51,26 @@
                 In particular, let's also look at the distribution of each variable within the city—are certain neighbourhoods significantly better than others for biking?</p>
             </div>  
 
-            <div style="height: 100%; width: 100%" class="city-demographics vis page-section">
-                <p>mtl choropleth</p>
-                <div id="montreal-choropleth-map-area" style="margin-top: 5vh; height: 100%; width: 100%"></div>
+            <div style="height: 100%; width: 100%" class="city-bikelanes vis page-section">
+                <div class="row" style="margin-top: 2%;">
+                    <div class="col" style="width: 50%"></div>
+                    <div class="col" style="display: flex;">
+                        <div class="btn-group" role="group" style="margin: 0 auto">
+                            <input type="radio" class="btn-check" name="btnradio1" id="mtl-lane-btn" autocomplete="off" checked>
+                            <label class="btn btn-outline-primary" for="mtl-lane-btn">Montreal</label>
+
+                            <input type="radio" class="btn-check" name="btnradio1" id="van-lane-btn" autocomplete="off">
+                            <label class="btn btn-outline-primary" for="van-lane-btn">Vancouver</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="height: 100%; width: 100%">
+                    <div class="col-6" id="tor-bikelane-map-area" style="margin-top: 5vh; height: 100%;"></div>
+                    <div class="col-6" id="mtl-van-bikelane-map-area" style="margin-top: 5vh; height: 100%;">
+                        <div id="mtl-bikelane-map-area" style="height: 80vh; width: 100%;"></div>
+                        <div id="van-bikelane-map-area" style="height: 80vh; width: 100%; visibility: hidden;"></div>
+                    </div>
+                </div>
             </div>
             
             <!-- Montreal Bikeshare Vis -->
@@ -58,7 +81,7 @@
                         <br>
                         All 3 cities' bike sharing programs operate with a docking model, where stations are placed around the city at which users rent and return bikes. <br>
                         <br>
-                        Since users are able rent a bike from one dock and return it to any other dock, major components of the <b>usability</b> of a bike share network are <b>station coverage</b> and <b>distribution</b>.<br>
+                        Since users are able to rent a bike from one dock and return it to any other dock, major components of the <b>usability</b> of a bike share network are <b>station coverage</b> and <b>distribution</b>.<br>
                         <!-- <br>
                         How do these bikeshare systems compare in terms of station coverage and distribution? <br> -->
                     </p>
@@ -67,14 +90,14 @@
             </div>
 
             <div style="height: 100%; width: 100%" class="city-bikeshare vis page-section">
-                <div class="row">
+                <div class="row" style="margin-top: 2%;">
                     <div class="col" style="width: 50%"></div>
                     <div class="col" style="display: flex;">
                         <div class="btn-group" role="group" style="margin: 0 auto"> 
-                            <input type="radio" class="btn-check" name="btnradio" id="mtl-city-comp-btn" autocomplete="off" checked>
+                            <input type="radio" class="btn-check" name="btnradio2" id="mtl-city-comp-btn" autocomplete="off" checked>
                             <label class="btn btn-outline-primary" for="mtl-city-comp-btn">Montreal</label>
 
-                            <input type="radio" class="btn-check" name="btnradio" id="van-city-comp-btn" autocomplete="off">
+                            <input type="radio" class="btn-check" name="btnradio2" id="van-city-comp-btn" autocomplete="off">
                             <label class="btn btn-outline-primary" for="van-city-comp-btn">Vancouver</label>
                         </div>
 
@@ -119,14 +142,16 @@
                 <div class="col"></div>
                 <div class="col-7">
                     <ul class="insights-list">
+                        <li>Overall, Bike Share station coverage across all 3 cities is clustered around the city centre.</li>
+                        <li>Montreal has better bike path coverage compared to Toronto and Vancouver.</li>
                         <li>Toronto has a higher Bike Share station coverage (by percentage of city area) than Montreal and Vancouver.</li>
-                        <li>Yet, on all six BNA metrics, Toronto ranked lowest and Montreal ranked highest.</li>
+                        <li>Despite Toronto's bike share station coverage, on all six BNA metrics, Toronto ranked lowest and Montreal ranked highest.</li>
                     </ul>
                 </div>
                 <div class="col"></div>
-            </div>                  
+            </div>
 
-            <div style="height: 100%; width: 100%" class="insights page-section row"> 
+            <div style="height: 100%; width: 100%" class="insights page-section row">
                 <h1>Main message: Toronto has sizable biking infrastructure, but it's ultimately lacking.</h1>
             </div>
 
@@ -398,6 +423,8 @@
 
             <div style="height: 100%; width: 100%" class="credits page-section"> 
                 <h2>Sources</h2>
+                <p>Bike Wheel icon: <br>
+                    Bicycle Wheel by ABDUL LATIF from <a href="https://thenounproject.com/browse/icons/term/bicycle-wheel/" target="_blank" title="Bicycle Wheel Icons">Noun Project</a> (CC BY 3.0)</p>
             </div>
             
         </div> 
