@@ -44,24 +44,18 @@
 
             <!-- Montreal Choropleth Vis -->
             <div style="height: 100%; width: 100%" class="city-demographics text page-section">
-                <!-- <p>First, let's compare each city's demographics. <br/>
+                <p>First, let's compare each city's demographics. <br/>
                 <br/>
                 Specifically, let's examine the demographic variables that might have an impact on biking in a city.<br>
                 <br/>
-                In particular, let's also look at the distribution of each variable within the city—are certain neighbourhoods significantly better than others for biking?</p> -->
-
-                <p>First, let's look at bike lanes. <br>
-                    <br>
-                    Bike lanes improve traffic flow by giving a dedicated space to bikers on the road. Bike lanes, when protected, also increase the safety of cyclists.<br>
-                    <br/>
-                    How do Toronto's bike lanes compare to Montreal and Vancouver?</p>
+                In particular, let's also look at the distribution of each variable within the city—are certain neighbourhoods significantly better than others for biking?</p>
             </div>  
 
             <div style="height: 100%; width: 100%" class="city-bikelanes vis page-section">
                 <div class="row" style="margin-top: 2%;">
                     <div class="col" style="width: 50%"></div>
                     <div class="col" style="display: flex;">
-                        <div class="btn-group" role="group" style="margin: 0 auto"> 
+                        <div class="btn-group" role="group" style="margin: 0 auto">
                             <input type="radio" class="btn-check" name="btnradio1" id="mtl-lane-btn" autocomplete="off" checked>
                             <label class="btn btn-outline-primary" for="mtl-lane-btn">Montreal</label>
 
@@ -105,16 +99,8 @@
 
                             <input type="radio" class="btn-check" name="btnradio2" id="van-city-comp-btn" autocomplete="off">
                             <label class="btn btn-outline-primary" for="van-city-comp-btn">Vancouver</label>
-                            <!-- 
-                            <button type="button" class="btn btn-primary" id="mtl-city-comp-btn">Montreal</button>
-                            <button type="button" class="btn btn-primary" id="van-city-comp-btn">Vancouver</button> -->
                         </div>
 
-                        <!-- <label for="city-comp-toggle">Montreal&nbsp;</label>
-                        <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" role="switch" id="city-comp-toggle">
-                        </div> 
-                        <label for="city-comp-toggle">&nbsp;Vancouver</label> -->
                     </div>
                 </div>
                 <div class="row" style="height: 100%; width: 100%">
@@ -133,12 +119,12 @@
                 <div class="col-9">
                     <p>Now that we've done some of our own investigating, let's see what the experts in the field are saying. <br/>
                         <br>
-                        People for Bikes is an organization dedicated to promoting bicycling as a safe and accessible mode of transportation. Every year, People for Bikes releases a city ranking, where each city is given a Bicycle Network Analysis (BNA) score.<br>
+                        People for Bikes is an organization dedicated to promoting bicycling as a safe and accessible mode of transportation. Every year, People for Bikes ranks cities by Bicycle Network Analysis (BNA) score.
+                        BNA scores act as an indicator for how well a city's bike network connects people with places they want to go.<br>
                         <br>
-                        According to the 2024 BNA scores, Toronto ranks <b>262th out of 2390</b> North American cities with a score of <b>47</b>. This is behind other major Canadian cities, Montreal with 71 and Vancouver with 66. <br>
-                        <br/>
-                        BNA scores act as an indicator for how well a city's bike network connects people with places they want to go. This score is calculated based on 6 metrics,
-                        People, Opportunity, Core Services, Recreation, Retail, and Transit. Let's dig deeper into what each of these metrics are, and how our major Canadian cities shape up. 
+                        According to the 2024 BNA scores, Toronto ranks <b>262th out of 2390</b> North American cities with a score of <b>47</b>. This is behind other major Canadian cities, Montreal with 71 and Vancouver with 66.<br>
+                        <br>
+                        A city's BNA score is based on six metrics. Let's see how our major Canadian cities shape up according to these metrics.
                     </p>
                 </div>
                 <div class="col"></div>
@@ -152,17 +138,20 @@
 
             <!-- city comparison insights -->
             <div style="height: 100%; width: 100%" class="insights page-section row"> 
-                <p>Insights for Toronto vs Montreal</p>
+                <h2>Insights for Toronto vs Montreal</h2>
                 <div class="col"></div>
                 <div class="col-7">
                     <ul class="insights-list">
-                        <li>Toronto has a higher bikeshare station coverage (by percentage of city area) than Montreal's.</li>
+                        <li>Toronto has a higher Bike Share station coverage (by percentage of city area) than Montreal and Vancouver.</li>
+                        <li>Yet, on all six BNA metrics, Toronto ranked lowest and Montreal ranked highest.</li>
                     </ul>
                 </div>
                 <div class="col"></div>
+            </div>
 
-                <p>Main message: Toronto has sizable biking infrastructure, but it's ultimately lacking.</p>
-            </div>                  
+            <div style="height: 100%; width: 100%" class="insights page-section row">
+                <h1>Main message: Toronto has sizable biking infrastructure, but it's ultimately lacking.</h1>
+            </div>
 
             <!-- Neighbourhood Choropleth Visualization -->
             <div style="height: 100%; width: 100%" class="neighbourhood-demographics text page-section">
@@ -171,7 +160,7 @@
                     <p>
                         While Toronto's bike scene on average may be worse than Montreal and Vancouver's, it definitely exists. There are spots within the city where the biking experience is better than others.<br>
                         <br>
-                        Let's look at some of the demographic variables that might have an impact on biking in an area. We will explore how Toronto's neighbourhoods differ, and how the distributions of variables may compare to one another.<br>
+                        Let's revisit some of the demographic variables that might have an impact on biking in an area. We will explore how Toronto's neighbourhoods differ, and how the distributions of variables may compare to one another.<br>
                     </p>
                 </div>
                 <div class="col"></div>
@@ -187,7 +176,7 @@
                             <select class="form-select" id="data-type1">
                                 <option value="average_income">Average Annual Income</option>
                                 <option value="bicycle_commuters">Bike Commuter Proportion</option>
-                                <option value="bikeshare_stations">Bikeshare Stations</option>
+                                <option value="bikeshare_stations">Bike Share Stations</option>
                                 <option value="bike_parking_racks">Bike Parking Racks</option>
                                 <option value="collisions">Bike Collisions</option>
                                 <option value="thefts">Bike Thefts</option>
@@ -197,7 +186,7 @@
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="" id="toggle-bike-share" checked>
                                 <label class="form-check-label" for="toggle-bike-share">
-                                View Bikeshare Stations
+                                View Bike Share Stations
                                 </label>
                             </div>
                             <div class="form-check">
@@ -345,9 +334,12 @@
             <!-- Bike Share Station Map -->
             <div style="height: 100%; width: 100%" class="neighbourhood-bikeshare text page-section">
                 <p>
-                    Lastly, let's examine Toronto's bikeshare stations more in depth. <br>
+                    Lastly, lets further examine <strong>Toronto's Bike Share network</strong>. <br>
                     <br>
-                    Where are they located? Which ones are used most? 
+                    Where are Bike Share stations located in the city? Which ones are used most frequently?
+                    How long do commuters typically take to complete their trip? <br> <br>
+
+                    Are bikes typically available at this station? How many docks are there? Are they maintained?
                 </p>
             </div>
 
@@ -356,25 +348,29 @@
                     <h2 id="bikeshare-station-title">Toronto's Bike Share Stations</h2>
                 </div>
                 <div class="row justify-content-center" style="height: 10vh; width: 100%; padding: 0; text-align: center;">
-                    <select class="custom-select align-self-center" style="width: 50%" id="bikeshare-station-metric">
+                    <select class="custom-select align-self-center" style="width: 50%" id="bikeshare-station-variable">
                         <option value="totalVolume" selected>Total Volume</option>
                         <option value="avgDuration">Average Trip Duration</option>
+                        <option value="capacity">Total Dock Capacity</option>
+                        <option value="avgBikesAvailable">Average Number of Bikes Available</option>
+                        <option value="avgBikesDisabled">Average Number of Bikes Disabled</option>
+                        <option value="avgDocksDisabled">Average Number of Docks Disabled</option>
                     </select>
                 </div>
                 <div class="row" style="width: 100%">
-                    <div class="col-8" id="bikeshare-station-map-vis" style="height: 80vh;"></div>
-                    <div class="col-4">
-                        <div id="bikeshare-station-summary">
-                            <h5 style="text-align: center">Summary</h5>
+                    <div class="col-7" id="bikeshare-station-map-vis" style="height: 80vh;"></div>
+                    <div class="col-5">
+                        <div id="bikeshare-station-bar-vis" style="height: 50%; width:100%"></div>
+                        <div id="tor-bikeshare-selected-station" style="height: 10vh; width:100%"></div>
+                        <div id="tor-bikeshare-instructions">
+                            Click on a station dot from the map or a bar from the graph to view more information about that station.
+                        </div>
+                        <div id="bikeshare-station-summary" style="display: none;">
                             <table class="table table-borderless">
                                 <tbody>
                                 <tr>
-                                    <td>Station:</td>
+                                    <td>Name:</td>
                                     <th scope="row" id="bikeshare-summary-station-name"></th>
-                                </tr>
-                                <tr>
-                                    <td>ID:</td>
-                                    <th scope="row" id="bikeshare-summary-station-id"></th>
                                 </tr>
                                 <tr>
                                     <td>Neighbourhood:</td>
@@ -387,7 +383,6 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div id="bikeshare-station-bar-vis" style="height: 50%"></div>
                     </div>
                 </div>
             </div>
@@ -395,13 +390,13 @@
             
             <!-- Toronto Insights -->
             <div style="height: 100%; width: 100%" class="insights page-section row">
-                <p>Insights for Toronto</p>
+                <h2>Insights for Toronto</h2>
                 <div class="col"></div>
                 <div class="col-7">
                     <ul class="insights-list">
-                        <li>Most bike commuters are downtown, but not in neighbourhoods with high bikeshare station density.</li>
+                        <li>Most bike commuters are downtown, but not in neighbourhoods with high Bike Share station density.</li>
                         <li>Bike parking racks are scarce in most neighbourhoods.</li>
-                        <li>Bike theft rate is correlated with bikeshare station density in a neighbourhood.</li>
+                        <li>Bike theft rate is correlated with Bike Share station density in a neighbourhood.</li>
                     </ul>
                 </div>
                 <div class="col"></div>

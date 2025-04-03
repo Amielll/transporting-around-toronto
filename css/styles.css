@@ -162,19 +162,29 @@ table {
   border-collapse: collapse;
 }
 
+.text p {
+  color: #242e24;
+  font-size: 28px;
+}
+
+.insights {
+  color: #242e24;
+  font-size: 28px;
+}
+
 
 /* City switch buttons */
 .btn-outline-primary {
-  color: #242e24; 
+  color: #242e24;
   border-color: #242e24;
 }
 
 .btn-check:checked + .btn-outline-primary {
-  background-color: #242e24; 
+  background-color: #242e24;
   border-color: #242e24;
-  color: white; 
+  color: white;
 }
 
 .btn-outline-primary:hover {
-  background-color: #242e24; 
+  background-color: #242e24;
 }
