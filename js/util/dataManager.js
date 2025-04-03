@@ -18,7 +18,7 @@ export class DataManager {
 
         const allData = await Promise.all([
             d3.json(`${this.path}/bike_share_stations_2024-01.json`),
-            d3.json(`${this.path}/bike_share_stationStatus.json`),
+            d3.json(`https://csc316scheduler-bwg6fsf7ase9eyhq.canadacentral-01.azurewebsites.net/api/stationStatus`),
             d3.csv(`${this.path}/bike_share_trips_2024-01.csv`),
             d3.json(`${this.path}/Neighbourhoods.geojson`),
             d3.json(`${this.path}/montreal_station_information_cleaned.json`),
