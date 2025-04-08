@@ -18,33 +18,33 @@ The project can be accessed [here](https://gray-field-055999b0f.6.azurestaticapp
 ### Interaction Overview
 - Navigate through the visualization by scrolling, using the arrow keys, or using the navigation dots (along the right side).
 
-#### Vis 1: Bike Path City Comparison (Nav-dot 4)
+##### Vis 1: Bike Path City Comparison (Nav-dot 4)
 - Click the buttons on the top right side to toggle the view between Montreal and Vancouver.
 
-#### Vis 2: Bike Share Station City Comparison (Nav-dot 6)
+##### Vis 2: Bike Share Station City Comparison (Nav-dot 6)
 - Click the buttons on the top right side to toggle the view between Montreal and Vancouver.
 - Hover over each station dot to see the station name and capacity.
 
-#### Vis 3: Bike Network Analysis (BNA) Scores (Nav-dot 8)
+##### Vis 3: Bike Network Analysis (BNA) Scores (Nav-dot 8)
 - Hover over a category (cluster of bars) to learn more about the category.
 - Click on any of a city's bars or the city entry in the legend to highlight that city's scores.
 - Click again on any of a city's bars or the city entry in the legend to un-highlight that city's scores and restore the original view.
 
-#### Vis 4: Toronto Neighbourhood Choropleths (Nav-dot 11)
+##### Vis 4: Toronto Neighbourhood Choropleths (Nav-dot 11)
 - Use the dropdowns to change the variable being displayed on either of the 2 maps.
 - Use the checkboxes to toggle the Bike Share Station & Bike Rack dots on and off.
 - Hover over a neighbourhood to see its name, and its values for the two displayed variables.
 
-#### Vis 5: Toronto Neighbourhood Scatterplot (Nav-dot 13)
+##### Vis 5: Toronto Neighbourhood Scatterplot (Nav-dot 13)
 - Use the dropdowns to change the variable being displayed on the x or y axis.
 
-#### Vis 6: Toronto Detailed Neighbourhood View (Nav-dot 15)
+##### Vis 6: Toronto Detailed Neighbourhood View (Nav-dot 15)
 - Click on a neighbourhood in the mini-map in the top right corner to zoom in on that neighbourhood on the big left-hand map and display its summary.
 - Click on a neighbourhood in the big left-hand map to zoom in on it and display its summary.
 - Scroll on the big left-hand map to zoom in and out. 
 - Use the checkboxes to toggle the Bike Share Station dots, Bike Rack dots, and Bike Paths on and off.
 
-#### Vis 7: Toronto Detailed Neighbourhood View (Nav-dot 17)
+##### Vis 7: Toronto Detailed Neighbourhood View (Nav-dot 17)
 - Use the dropdown to choose the statistic being displayed in the bar chart.
 - Click on a Bike Share Station to zoom in on it and view its statistics.
 - Click on a bar in the bar chart to zoom in on that corresponding Bike Share Station.
