@@ -2,12 +2,18 @@
 Our story about biking in Toronto told through data visualizations. Final Project submission for CSC316.
 
 ## Project Information
+This project was built using [D3js](https://d3js.org/) and deployed on an Azure Static Web App via Github Actions.
+
+This web application features several interactable visualizations that each look at a certain aspect about biking in
+Toronto (e.g. the Bike Share network) as well as several comparisons to Montreal and Vancouver. Most maps and charts
+are clickable and update according to selected variables and various toggles. For a quick example on usage, check out
+the demo below!
 
 ### Demo
 A two-minute video demoing the project can be found [here](https://drive.google.com/file/d/1A4xegE4duWqc6yf9bxhtcKd6n_MkuANR/view?usp=drive_link).
 
 ### Deployment
-The project is deployed on an Azure Static Web App and can be accessed [here](https://gray-field-055999b0f.6.azurestaticapps.net/).
+The project can be accessed [here](https://gray-field-055999b0f.6.azurestaticapps.net/).
 
 ### Local Setup
 In case the above link is no longer accessible at the time of reading this (resource may be torn down in the future), you
@@ -29,7 +35,15 @@ We provide the sources to all data used in this project below:
 - [Toronto Cycling Network](https://open.toronto.ca/dataset/cycling-network/)
 - [Toronto Bicycle Thefts](https://open.toronto.ca/dataset/bicycle-thefts/)
 - [Toronto Bike Share Ridership Data](https://open.toronto.ca/dataset/bike-share-toronto-ridership-data/)
-
+- [Toronto Neighbourhoods GeoJson Data](https://open.toronto.ca/dataset/neighbourhoods/)
+- [Toronto Demographics Data](https://open.toronto.ca/dataset/neighbourhood-profiles/)
+- [Montreal Neighbourhoods GeoJson Data](https://opendata.vancouver.ca/explore/dataset/bikeways/information/?disjunctive.year_of_construction&disjunctive.bike_route_name&disjunctive.bikeway_type&disjunctive.subtype)
+- [Montreal Bike Share Data](https://gbfs.velobixi.com/gbfs/gbfs.json)
+- [Vancouver Bike Paths Data](https://opendata.vancouver.ca/explore/dataset/bikeways/information/?disjunctive.year_of_construction&disjunctive.bike_route_name&disjunctive.bikeway_type&disjunctive.subtype)
+- [Vancouver Neighbourhoods GeoJson Data](https://opendata.vancouver.ca/explore/dataset/local-area-boundary/)
+- [Vancouver Bike Share Data](https://vancouver-gbfs.smoove.pro/gbfs/gbfs.json)
+- [BNA Data](https://cityratings.peopleforbikes.org/ratings)
+- 
 *Data returned by this API is automatically sampled every 6 hours via an Azure Function, starting from March 12, 2025 @ 8PM UTC.
 
 
@@ -37,4 +51,4 @@ We provide the sources to all data used in this project below:
 ### Contributors
 Authors: Dihan Niloy, Amiel Nurja, Mieko Yao
 
-Special thanks to Yunfu (Chris) Xu 
+Special thanks to Yunfu (Chris) Xu for his contributions in ideating for our project.
