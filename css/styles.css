@@ -188,3 +188,15 @@ table {
 .btn-outline-primary:hover {
   background-color: #242e24;
 }
+
+.credits p {
+  font-size: 0.9rem;
+}
+
+a:link {
+  color: #242e24;
+}
+
+a:visited {
+  color: #672A9C;
+}
