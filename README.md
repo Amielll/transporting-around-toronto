@@ -83,6 +83,7 @@ The sources to all data used in this project are as follows:
 - [Vancouver Neighbourhoods GeoJson Data](https://opendata.vancouver.ca/explore/dataset/local-area-boundary/)
 - [Vancouver Bike Share Data](https://vancouver-gbfs.smoove.pro/gbfs/gbfs.json)
 - [Bicycle Network Analysis Scores Data](https://cityratings.peopleforbikes.org/ratings)
+  
 *Data returned by this API is automatically sampled every 6 hours via an Azure Function, starting from March 12, 2025 @ 8PM UTC.
 
 
